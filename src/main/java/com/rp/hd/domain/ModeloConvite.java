@@ -9,6 +9,7 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 @Entity
 public class ModeloConvite extends BaseEntity {
@@ -33,6 +34,9 @@ public class ModeloConvite extends BaseEntity {
 	private int quantidadeRendaEmCentimetros;
 
 	private boolean temColagem; // indica se este modelo tem colagem;
+	
+	@Transient
+	private Papel papel;
 
 	@ManyToOne
 	@JoinColumn(name = "embalagem_id")
@@ -119,7 +123,7 @@ public class ModeloConvite extends BaseEntity {
 	}
 	
 	public BigDecimal getPrecoVenda(Papel papel, Colagem colagem) {
-		
+		this.papel = papel;
 		BigDecimal valorPapel = papel.getPrecoAtual();
 		BigDecimal valorColagem = BigDecimal.ZERO;
 		if (temColagem) {
@@ -128,6 +132,19 @@ public class ModeloConvite extends BaseEntity {
 		
 		return valorPapel.divide(new BigDecimal(this.getModeloFaca().getValor())).add(valorColagem).setScale(2,BigDecimal.ROUND_HALF_UP);
 	}
+	
+	@Override
+	public String toString() {
+		String modelo = String.format("Envelope Modelo %s", getNome());
+		String papelStr = "";
+		if (papel != null) {
+			papelStr = String.format("Papel %s %dg", papel.getNome(), papel.getGramatura().getValor() );
+			return String.format("%s - %s", modelo, papelStr);
+		}
+		return modelo;
+	}
+
+
 
 	public static enum ModeloFaca {
 		FORMATO1(1), FORMATO2(2), FORMATO4(4), FORMATO6(6), FORMATO8(8);

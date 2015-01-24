@@ -1,15 +1,18 @@
 package com.rp.hd.domain;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.rp.hd.domain.Calculadora.Orcamento.Item;
+import com.rp.hd.domain.exceptions.ModeloInvalidoException;
+import com.rp.hd.domain.exceptions.PapelInvalidoException;
 
 public class Calculadora {
 
 	private final int quantidadeConvites;
 	private final ModeloConvite modelo;
+	private final Colagem colagem;
 	private final Papel papelEnvelope;
 	private final Papel papelInterno;
 	private final Impressao impressaoEnvelope;
@@ -26,8 +29,8 @@ public class Calculadora {
 	private final ImpressaoNome impressaoNome;
 	private final Embalagem embalagem;
 
-	private Calculadora(int quantidadeConvites, ModeloConvite modelo,
-			Papel papelEnvelope, Papel papelInterno,
+	public Calculadora(int quantidadeConvites, ModeloConvite modelo,
+			Colagem colagem, Papel papelEnvelope, Papel papelInterno,
 			Impressao impressaoEnvelope, Impressao impressaoInterno, Fita fita,
 			Laco laco, HotStamp hotStamp, Serigrafia serigrafiaEnvelope,
 			Serigrafia serigrafiaInterno, Renda renda, Ima ima,
@@ -35,6 +38,7 @@ public class Calculadora {
 			Embalagem embalagem) {
 		this.quantidadeConvites = quantidadeConvites;
 		this.modelo = modelo;
+		this.colagem = colagem;
 		this.papelEnvelope = papelEnvelope;
 		this.papelInterno = papelInterno;
 		this.impressaoEnvelope = impressaoEnvelope;
@@ -51,16 +55,58 @@ public class Calculadora {
 		this.impressaoNome = impressaoNome;
 		this.embalagem = embalagem;
 	}
-	
+
 	public Orcamento calcular() {
 		Orcamento o = new Orcamento();
+		calcularPrecoModeloConvite(o);
+		calcularPapelInterno(o);
+		calcularValorImpressaoEnvelope(o);
+		calcularValorImpressaoInterno(o);
+		calcularValorFita(o);
+		calcularImpressaoNome(o);
 		return o;
 	}
-	
-	public Item calcularPrecoModeloConvite() {
-		this.modelo.get
+
+	public void calcularPrecoModeloConvite(Orcamento o) {
+		BigDecimal valor = this.modelo.getPrecoVenda(papelEnvelope, colagem);
+		o.addItem(o.new Item(this.modelo.toString(), valor));
 	}
 	
+	public void calcularPapelInterno(Orcamento o) {
+		int quantidadeFolhasParaPapelInterno = modelo.getTamanhoItemInterno();
+		if (papelInterno != null) {
+			BigDecimal valorPapel = this.papelInterno.getPrecoAtual();
+			valorPapel = valorPapel.divide(new BigDecimal(quantidadeFolhasParaPapelInterno)).setScale(2,RoundingMode.HALF_UP);
+			o.addItem(o.new Item(String.format("Papel Interno %s", papelInterno.toString()), valorPapel));	
+		}
+	}
+	
+	public void calcularValorImpressaoEnvelope(Orcamento o) {
+		if (impressaoEnvelope != null) {
+			BigDecimal precoVenda = impressaoEnvelope.getPrecoVenda();
+			o.addItem(o.new Item(impressaoEnvelope.toString(), precoVenda));	
+		}
+	}
+	
+	public void calcularValorImpressaoInterno(Orcamento o) {
+		if (impressaoInterno != null) {
+			BigDecimal precoVenda = impressaoInterno.getPrecoVenda();
+			o.addItem(o.new Item(impressaoInterno.toString(), precoVenda));	
+		}
+	}
+	
+	public void calcularValorFita(Orcamento o) {
+		if (fita != null) {
+			o.addItem(o.new Item(fita.toString(),fita.getPrecoVenda(modelo)));
+		}
+	}
+	
+	public void calcularImpressaoNome(Orcamento o) {
+		if (impressaoNome != null) {
+			o.addItem(o.new Item(impressaoNome.toString(), impressaoNome.getPrecoVenda()));
+		}
+	}
+
 	public class Orcamento {
 
 		private List<Item> items = new ArrayList<>();
@@ -81,6 +127,19 @@ public class Calculadora {
 		public void setPrecoFinal(BigDecimal precoFinal) {
 			this.precoFinal = precoFinal;
 		}
+		
+
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			
+			items.forEach(item-> {
+				sb.append(item.toString()).append(System.getProperty("line.separator"));
+			});
+			return sb.toString();
+		}
+
+
 
 		public class Item {
 			private final String item;
@@ -97,6 +156,11 @@ public class Calculadora {
 
 			public BigDecimal getValor() {
 				return valor;
+			}
+
+			@Override
+			public String toString() {
+				return String.format("Item orçado: %s - Valor: %s", item, valor.toPlainString());
 			}
 
 		}
@@ -122,6 +186,15 @@ public class Calculadora {
 		private Strass strass;
 		private ImpressaoNome impressaoNome;
 		private Embalagem embalagem;
+		private Colagem colagem;
+
+		private CalculadoraBuilder() {
+
+		}
+
+		public static CalculadoraBuilder getInstance() {
+			return new CalculadoraBuilder();
+		}
 
 		public CalculadoraBuilder quantidadeConvites(int quantidade) {
 			this.quantidadeConvites = quantidade;
@@ -204,7 +277,26 @@ public class Calculadora {
 			return this;
 		}
 
+		public CalculadoraBuilder colagem(Colagem colagem) {
+			this.colagem = colagem;
+			return this;
+		}
+
 		public Calculadora build() {
+
+			if (modelo == null) {
+				throw new ModeloInvalidoException();
+			}
+
+			if (papelEnvelope == null) {
+				throw new PapelInvalidoException();
+			}
+
+			return new Calculadora(quantidadeConvites, modelo, colagem,
+					papelEnvelope, papelInterno, impressaoEnvelope,
+					impressaoInterno, fita, laco, hotStamp, serigrafiaEnvelope,
+					serigrafiaInterno, renda, ima, quantidadeStrass, strass,
+					impressaoNome, embalagem);
 
 		}
 	}

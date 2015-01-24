@@ -1,5 +1,7 @@
 package com.rp.hd.domain;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -16,10 +18,12 @@ public class Fita extends BaseEntity {
 
 	@Convert(converter = NumeracaoFitaConverter.class)
 	private NumeracaoFita numeracao;
-	
+
+	private BigDecimal markup;
+
 	@ElementCollection
-	@CollectionTable(name="fita_precos")
-	private List<PrecoVigencia> precos;
+	@CollectionTable(name = "fita_precos")
+	private List<PrecoVigencia> precos = new ArrayList<>();
 
 	public TipoFita getTipoFita() {
 		return tipoFita;
@@ -43,6 +47,14 @@ public class Fita extends BaseEntity {
 
 	public void addPreco(PrecoVigencia p) {
 		this.precos.add(p);
+	}
+
+	public BigDecimal getMarkup() {
+		return markup;
+	}
+
+	public void setMarkup(BigDecimal markup) {
+		this.markup = markup;
 	}
 
 	public enum TipoFita {
@@ -96,6 +108,22 @@ public class Fita extends BaseEntity {
 					}).findFirst();
 			return result.get();
 		}
+	}
+
+	public BigDecimal getCustoAtual() {
+		return PrecoVigenciaService.getPrecoAtual(this.precos).getValor();
+	}
+
+	public BigDecimal getPrecoVenda(ModeloConvite modelo) {
+		return getCustoAtual()
+				.multiply(new BigDecimal(modelo.getQuantidadeFitaContorno()))
+				.multiply(markup).setScale(2, BigDecimal.ROUND_HALF_UP);
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Fita %s num %d", tipoFita.getTipo(),
+				numeracao.getNumero());
 	}
 
 }

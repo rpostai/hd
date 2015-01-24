@@ -4,21 +4,26 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.rp.hd.domain.Embalagem.TipoEmbalagem;
+import com.rp.hd.domain.Fita.NumeracaoFita;
+import com.rp.hd.domain.Fita.TipoFita;
 import com.rp.hd.domain.ModeloConvite.ModeloFaca;
 import com.rp.hd.domain.utils.DateUtils;
 
 public class BaseDados {
 	
 	private static Vigencia vigencia;
+	private BigDecimal MARKUP = new BigDecimal("3.3");
 	
 	private Map<Integer, Gramatura> gramaturas = new HashMap<>();
 	private Map<String, Papel> papeis = new HashMap<>();
 	private Map<String, Embalagem> embalagens = new HashMap<>();
 	private Map<String, ModeloConvite> modelos = new HashMap<>();
+	private Map<String, Impressao> impressoes = new HashMap<>();
+	private Map<String, Fita> fitas = new HashMap<>();
+	private Map<String, ImpressaoNome> impressaoNomes = new HashMap<>();
 	private Colagem colagem;
 	
 	static {
@@ -37,6 +42,9 @@ public class BaseDados {
 		criaPapeis();
 		criaEmbalagens();
 		criaModelos();
+		criaImpressoes();
+		criaFitas();
+		criaImpressaoNomes();
 	}
 	
 
@@ -171,6 +179,94 @@ public class BaseDados {
 		
 	}
 	
+	public void criaImpressoes() {
+		Impressao face1 = new Impressao();
+		face1.setDescricao("Impressão Digital 1 Face");
+		face1.setMarkup(MARKUP);
+		
+		PrecoVigencia p = new PrecoVigencia();
+		p.setVigencia(vigencia);
+		p.setValor(new BigDecimal("0.35"));
+		
+		face1.addPreco(p);
+		
+		Impressao face2 = new Impressao();
+		face2.setDescricao("Impressão Digital 2 Faces");
+		face2.setMarkup(MARKUP);
+		
+		p = new PrecoVigencia();
+		p.setVigencia(vigencia);
+		p.setValor(new BigDecimal("0.60"));
+		
+		face2.addPreco(p);
+		
+		impressoes.put("1face", face1);
+		impressoes.put("2face", face2);
+		
+	}
+	
+	public void criaFitas() {
+		Fita f1 = new Fita();
+		f1.setMarkup(MARKUP);
+		f1.setNumeracao(NumeracaoFita.TRES);
+		f1.setTipoFita(TipoFita.CETIM);
+		
+		PrecoVigencia p = new PrecoVigencia();
+		p.setVigencia(vigencia);
+		p.setValor(new BigDecimal("0.0025"));
+		f1.addPreco(p);
+		
+		Fita f2 = new Fita();
+		f2.setMarkup(MARKUP);
+		f2.setNumeracao(NumeracaoFita.CINCO);
+		f2.setTipoFita(TipoFita.CETIM);
+		
+		p = new PrecoVigencia();
+		p.setVigencia(vigencia);
+		p.setValor(new BigDecimal("0.0032"));
+		f2.addPreco(p);
+		
+		fitas.put("cetim3", f1);
+		fitas.put("cetim5", f2);
+		
+	}
+	
+	private void criaImpressaoNomes() {
+		ImpressaoNome i1= new ImpressaoNome();
+		i1.setDescricao("Tags 3x3 cm");
+		i1.setMarkup(MARKUP);
+		
+		PrecoVigencia p = new PrecoVigencia();
+		p.setVigencia(vigencia);
+		p.setValor(new BigDecimal("0.05"));
+		i1.addPreco(p);
+		
+		impressaoNomes.put("tag", i1);
+		
+		ImpressaoNome i2= new ImpressaoNome();
+		i2.setDescricao("Impressao Verso Parcial");
+		i2.setMarkup(MARKUP);
+		
+		p = new PrecoVigencia();
+		p.setVigencia(vigencia);
+		p.setValor(new BigDecimal("0.15"));
+		i2.addPreco(p);
+		
+		impressaoNomes.put("versoparcial", i2);
+		
+		ImpressaoNome i3= new ImpressaoNome();
+		i3.setDescricao("Impressao Verso Total");
+		i3.setMarkup(MARKUP);
+		
+		p = new PrecoVigencia();
+		p.setVigencia(vigencia);
+		p.setValor(new BigDecimal("0.30"));
+		i3.addPreco(p);
+		
+		impressaoNomes.put("versototal", i3);
+		
+	}
+	
 	public Papel getPapel(String chave) {
 		return papeis.get(chave);
 	}
@@ -181,6 +277,18 @@ public class BaseDados {
 	
 	public Colagem getColagem() {
 		return this.colagem;
+	}
+	
+	public Impressao getImpressao(String chave) {
+		return impressoes.get(chave);
+	}
+	
+	public Fita getFita(String chave) {
+		return fitas.get(chave);
+	}
+	
+	public ImpressaoNome getImpressaoNome(String chave) {
+		return impressaoNomes.get(chave);
 	}
 
 }
