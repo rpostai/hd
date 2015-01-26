@@ -1,5 +1,6 @@
 package com.rp.hd.domain;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +12,8 @@ import javax.persistence.ElementCollection;
 public class Strass extends BaseEntity {
 
 	private TamanhoStrass tamanho;
+
+	private BigDecimal markup = BigDecimal.ONE;
 
 	@ElementCollection
 	@CollectionTable(name = "strass_preco")
@@ -30,6 +33,12 @@ public class Strass extends BaseEntity {
 
 	public void addPreco(PrecoVigencia preco) {
 		this.precos.add(preco);
+	}
+
+	public BigDecimal getPrecoVenda(int quantidade) {
+		PrecoVigencia p = PrecoVigenciaService.getPrecoAtual(precos);
+		return p.getValor().multiply(new BigDecimal(quantidade))
+				.multiply(markup).setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 
 	private static enum TamanhoStrass {
@@ -53,6 +62,14 @@ public class Strass extends BaseEntity {
 			return result.get();
 		}
 
+	}
+
+	public BigDecimal getMarkup() {
+		return markup;
+	}
+
+	public void setMarkup(BigDecimal markup) {
+		this.markup = markup;
 	}
 
 }

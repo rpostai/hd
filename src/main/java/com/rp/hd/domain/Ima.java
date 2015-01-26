@@ -1,5 +1,6 @@
 package com.rp.hd.domain;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,8 @@ import javax.persistence.Entity;
 public class Ima extends BaseEntity {
 	
 	private int tamanho;
+	
+	private BigDecimal markup;
 	
 	private List<PrecoVigencia> precos = new ArrayList<>();
 
@@ -27,5 +30,11 @@ public class Ima extends BaseEntity {
 	public void addPreco(PrecoVigencia preco) {
 		this.precos.add(preco);
 	}
+	
+	public BigDecimal getPrecoVenda() {
+		return PrecoVigenciaService.getPrecoAtual(precos).getValor().multiply(markup).setScale(2, BigDecimal.ROUND_HALF_UP);
+	}
+	
+	
 	
 }

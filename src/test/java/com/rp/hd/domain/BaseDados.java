@@ -24,7 +24,12 @@ public class BaseDados {
 	private Map<String, Impressao> impressoes = new HashMap<>();
 	private Map<String, Fita> fitas = new HashMap<>();
 	private Map<String, ImpressaoNome> impressaoNomes = new HashMap<>();
+	private Renda renda;
 	private Colagem colagem;
+	private Serigrafia serigrafiaInterno;
+	private Serigrafia serigrafiaEnvelope;
+	private HotStamp hotStamp;
+	private Strass strass;
 	
 	static {
 		Date d1 = DateUtils.getDate();
@@ -45,6 +50,10 @@ public class BaseDados {
 		criaImpressoes();
 		criaFitas();
 		criaImpressaoNomes();
+		criaRenda();
+		criaSerigrafiaInterno();
+		criaHotStamp();
+		criaStrass();
 	}
 	
 
@@ -267,6 +276,54 @@ public class BaseDados {
 		
 	}
 	
+	private void criaRenda() {
+		this.renda = new Renda();
+		renda.setDescricao("Renda Branca");
+		renda.setMarkup(MARKUP);
+
+		PrecoVigencia p = new PrecoVigencia();
+		p.setVigencia(vigencia);
+		p.setValor(new BigDecimal("0.0058"));
+		renda.addPreco(p);
+	}
+	
+	public void criaSerigrafiaInterno() {
+		this.serigrafiaInterno = new Serigrafia();
+		
+		PrecoVigencia p = new PrecoVigencia();
+		p.setVigencia(vigencia);
+		p.setValor(new BigDecimal("1.2"));
+		serigrafiaInterno.addPreco(p);
+		
+	}
+	
+	public void criaSerigrafiaEnvelope() {
+		this.serigrafiaEnvelope = new Serigrafia();
+		
+		PrecoVigencia p = new PrecoVigencia();
+		p.setVigencia(vigencia);
+		p.setValor(new BigDecimal("1.2"));
+		serigrafiaEnvelope.addPreco(p);
+	}
+	
+	public void criaHotStamp() {
+		hotStamp = new HotStamp();
+		
+		PrecoVigencia p = new PrecoVigencia();
+		p.setVigencia(vigencia);
+		p.setValor(new BigDecimal("1.2"));
+		hotStamp.addPreco(p);
+	}
+	
+	public void criaStrass() {
+		strass = new Strass();
+		strass.setMarkup(MARKUP);
+		PrecoVigencia p = new PrecoVigencia();
+		p.setVigencia(vigencia);
+		p.setValor(new BigDecimal("0.02"));
+		strass.addPreco(p);
+	}
+	
 	public Papel getPapel(String chave) {
 		return papeis.get(chave);
 	}
@@ -289,6 +346,26 @@ public class BaseDados {
 	
 	public ImpressaoNome getImpressaoNome(String chave) {
 		return impressaoNomes.get(chave);
+	}
+	
+	public Renda getRenda() {
+		return this.renda;
+	}
+	
+	public Serigrafia getAplicacaoSerigrafiaInterno() {
+		return this.serigrafiaInterno;
+	}
+	
+	public Serigrafia getAplicacaoSerigrafiaEnvelope() {
+		return this.serigrafiaEnvelope;
+	}
+	
+	public HotStamp getHotStamp() {
+		return this.hotStamp;
+	}
+	
+	public Strass getStrass() {
+		return this.strass;
 	}
 
 }

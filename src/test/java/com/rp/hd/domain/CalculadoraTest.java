@@ -104,5 +104,63 @@ public class CalculadoraTest {
 				.getValor());
 		System.out.println(orcamento);
 	}
+	
+	@Test
+	public void deveCalcularModeloComRenda() {
+		Calculadora calculadora = Calculadora.CalculadoraBuilder.getInstance()
+				.quantidadeConvites(100)
+				.modeloConvite(dados.getModelo("paulamedio"))
+				.papelEnvelope(dados.getPapel("aspen250"))
+				.renda(dados.getRenda())
+				.build();
+		Orcamento orcamento = calculadora.calcular();
+		Assert.assertEquals(new BigDecimal("0.34"), orcamento.getItems().get(1)
+				.getValor());
+		System.out.println(orcamento);
+	}
+	
+	@Test
+	public void deveCalcularAplicacaoSerigrafiaInterno() {
+		Calculadora calculadora = Calculadora.CalculadoraBuilder.getInstance()
+				.quantidadeConvites(100)
+				.modeloConvite(dados.getModelo("paulamedio"))
+				.papelEnvelope(dados.getPapel("aspen250"))
+				.serigrafiaInterno(dados.getAplicacaoSerigrafiaInterno())
+				.build();
+		Orcamento orcamento = calculadora.calcular();
+		Assert.assertEquals(new BigDecimal("1.2"), orcamento.getItems().get(1)
+				.getValor());
+		System.out.println(orcamento);
+	}
+	
+	@Test
+	public void deveCalcularAplicacaoHotStamp() {
+		Calculadora calculadora = Calculadora.CalculadoraBuilder.getInstance()
+				.quantidadeConvites(100)
+				.modeloConvite(dados.getModelo("paulamedio"))
+				.papelEnvelope(dados.getPapel("aspen250"))
+				.hotstamp(dados.getHotStamp())
+				.build();
+		Orcamento orcamento = calculadora.calcular();
+		Assert.assertEquals(new BigDecimal("1.2"), orcamento.getItems().get(1)
+				.getValor());
+		System.out.println(orcamento);
+	}
+	
+	@Test
+	public void deveCalcularAplicacaoStrass() {
+		Calculadora calculadora = Calculadora.CalculadoraBuilder.getInstance()
+				.quantidadeConvites(100)
+				.modeloConvite(dados.getModelo("paulamedio"))
+				.papelEnvelope(dados.getPapel("aspen250"))
+				.strass(dados.getStrass(), 4)
+				.build();
+		Orcamento orcamento = calculadora.calcular();
+		Assert.assertEquals(new BigDecimal("0.26"), orcamento.getItems().get(1)
+				.getValor());
+		System.out.println(orcamento);
+	}
+	
+	
 
 }

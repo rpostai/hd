@@ -64,6 +64,11 @@ public class Calculadora {
 		calcularValorImpressaoInterno(o);
 		calcularValorFita(o);
 		calcularImpressaoNome(o);
+		calcularRenda(o);
+		calcularAplicacaoSerigrafiaInterno(o);
+		calcularAplicacaoSerigrafiaEnvelope(o);
+		calcularHotStamping(o);
+		calcularAplicacaoStrass(o);
 		return o;
 	}
 
@@ -106,7 +111,43 @@ public class Calculadora {
 			o.addItem(o.new Item(impressaoNome.toString(), impressaoNome.getPrecoVenda()));
 		}
 	}
-
+	
+	public void calcularRenda(Orcamento o) {
+		if (renda != null) {
+			o.addItem(o.new Item(renda.toString(),renda.getPrecoVenda(modelo)));
+		}
+	}
+	
+	public void calcularAplicacaoSerigrafiaInterno(Orcamento o) {
+		if (serigrafiaInterno != null) {
+			o.addItem(o.new Item(serigrafiaInterno.toString(),serigrafiaInterno.getPrecoVenda()));
+		}
+	}
+	
+	public void calcularAplicacaoSerigrafiaEnvelope(Orcamento o) {
+		if (serigrafiaEnvelope != null) {
+			o.addItem(o.new Item(serigrafiaEnvelope.toString(),serigrafiaEnvelope.getPrecoVenda()));
+		}
+	}
+	
+	public void calcularHotStamping(Orcamento o) {
+		if (hotStamp != null) {
+			o.addItem(o.new Item(hotStamp.toString(), hotStamp.getPrecoVenda()));
+		}
+	}
+	
+	public void calcularAplicacaoStrass(Orcamento o) {
+		if (quantidadeStrass > 0) {
+			o.addItem(o.new Item(strass.toString(), strass.getPrecoVenda(quantidadeStrass)));
+		}
+	}
+	
+	public void calcularFechamentoIma(Orcamento o) {
+		if (ima != null) {
+			o.addItem(o.new Item(ima.toString(), ima.getPrecoVenda()));
+		}
+	}
+	
 	public class Orcamento {
 
 		private List<Item> items = new ArrayList<>();
