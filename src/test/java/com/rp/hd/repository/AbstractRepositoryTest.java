@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 
 import com.rp.hd.domain.BaseEntity;
 import com.rp.hd.domain.exceptions.BaseException;
+import com.rp.hd.domain.utils.DateUtils;
 import com.rp.hd.repository.jpa.BaseRepository;
 import com.rp.hd.repository.jpa.listener.RepositoryEntityListener;
 import com.rp.hd.services.GeradorHash;
@@ -38,6 +39,7 @@ public abstract class AbstractRepositoryTest {
 
 				.addPackage(GeradorHash.class.getPackage())
 				.addPackage(BaseException.class.getPackage())
+				.addPackage(DateUtils.class.getPackage())
 				.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
 				.addAsResource("test-persistence.xml",
 						"META-INF/persistence.xml")

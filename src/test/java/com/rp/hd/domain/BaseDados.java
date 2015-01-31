@@ -30,6 +30,7 @@ public class BaseDados {
 	private Serigrafia serigrafiaEnvelope;
 	private HotStamp hotStamp;
 	private Strass strass;
+	private CorteEnvelope corte;
 	
 	static {
 		Date d1 = DateUtils.getDate();
@@ -54,6 +55,7 @@ public class BaseDados {
 		criaSerigrafiaInterno();
 		criaHotStamp();
 		criaStrass();
+		criaCorte();
 	}
 	
 
@@ -70,17 +72,11 @@ public class BaseDados {
 	}
 	
 	public void criaGramaturas() {
-		Gramatura g180 = new Gramatura();
-		g180.setId(1l);
-		g180.setValor(180);
+		Gramatura g180 = Gramatura.G180;
 
-		Gramatura g240 = new Gramatura();
-		g240.setId(1l);
-		g240.setValor(240);
+		Gramatura g240 = Gramatura.G240;
 		
-		Gramatura g250 = new Gramatura();
-		g250.setId(1l);
-		g250.setValor(250);
+		Gramatura g250 = Gramatura.G250;
 		
 		gramaturas.put(180, g180);
 		gramaturas.put(240, g240);
@@ -324,6 +320,16 @@ public class BaseDados {
 		strass.addPreco(p);
 	}
 	
+	public void criaCorte() {
+		corte = new CorteEnvelope();
+		
+		PrecoVigencia p = new PrecoVigencia();
+		p.setVigencia(vigencia);
+		p.setValor(new BigDecimal("50"));
+		corte.addPreco(p);
+		
+	}
+	
 	public Papel getPapel(String chave) {
 		return papeis.get(chave);
 	}
@@ -366,6 +372,10 @@ public class BaseDados {
 	
 	public Strass getStrass() {
 		return this.strass;
+	}
+	
+	public CorteEnvelope getCorte() {
+		return this.corte;
 	}
 
 }

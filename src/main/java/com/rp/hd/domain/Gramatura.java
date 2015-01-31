@@ -1,24 +1,28 @@
 package com.rp.hd.domain;
 
-import javax.persistence.Entity;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import java.util.Arrays;
+import java.util.Optional;
 
-@Entity
-public class Gramatura extends BaseEntity {
+public enum Gramatura {
 
-	@NotNull
-	@Min(value = 0)
-	@Max(value = 300)
-	private int valor;
+	G120(120), G180(180), G240(240), G250(250), G300(300);
+
+	private final int valor;
+	
+	private Gramatura(int valor) {
+		this.valor = valor;
+	}
 
 	public int getValor() {
 		return valor;
 	}
-
-	public void setValor(int valor) {
-		this.valor = valor;
+	
+	public static Gramatura getGramatura(Integer valor) {
+		Optional<Gramatura> result = Arrays.asList(values()).stream()
+				.filter(x -> {
+					return valor.equals(x.getValor());
+				}).findFirst();
+		return result.get();
 	}
 
 }

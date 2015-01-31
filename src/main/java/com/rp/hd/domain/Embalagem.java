@@ -1,5 +1,6 @@
 package com.rp.hd.domain;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,8 +18,10 @@ public class Embalagem extends BaseEntity {
 
 	private int densindade;
 	
+	private BigDecimal markup = BigDecimal.ONE;
+
 	@ElementCollection
-	@CollectionTable(name="embalagem_preco")
+	@CollectionTable(name = "embalagem_preco")
 	private List<PrecoVigencia> precos = new ArrayList<>();
 
 	private TipoEmbalagem tipoEmbalagem;
@@ -54,7 +57,7 @@ public class Embalagem extends BaseEntity {
 	public void setTipoEmbalagem(TipoEmbalagem tipoEmbalagem) {
 		this.tipoEmbalagem = tipoEmbalagem;
 	}
-	
+
 	public List<PrecoVigencia> getPrecos() {
 		return Collections.unmodifiableList(precos);
 	}
@@ -66,10 +69,19 @@ public class Embalagem extends BaseEntity {
 	public static enum TipoEmbalagem {
 		PP, PE
 	}
+	
+	public BigDecimal getCustoAtual() {
+		return PrecoVigenciaService.getPrecoAtual(this.precos).getValor();
+	}
+
+	public BigDecimal getPrecoVenda() {
+		return getCustoAtual()
+				.multiply(markup).setScale(2, BigDecimal.ROUND_HALF_UP);
+	}
 
 	@Override
 	public String toString() {
-		return String.format("%s-%dx%dx%d", tipoEmbalagem.name(), altura, largura,
-				densindade);
+		return String.format("%s-%dx%dx%d", tipoEmbalagem.name(), altura,
+				largura, densindade);
 	}
 }

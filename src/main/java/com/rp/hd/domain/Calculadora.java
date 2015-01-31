@@ -28,6 +28,7 @@ public class Calculadora {
 	private final Strass strass;
 	private final ImpressaoNome impressaoNome;
 	private final Embalagem embalagem;
+	private final CorteEnvelope corte;
 
 	public Calculadora(int quantidadeConvites, ModeloConvite modelo,
 			Colagem colagem, Papel papelEnvelope, Papel papelInterno,
@@ -35,7 +36,7 @@ public class Calculadora {
 			Laco laco, HotStamp hotStamp, Serigrafia serigrafiaEnvelope,
 			Serigrafia serigrafiaInterno, Renda renda, Ima ima,
 			int quantidadeStrass, Strass strass, ImpressaoNome impressaoNome,
-			Embalagem embalagem) {
+			Embalagem embalagem,CorteEnvelope corte) {
 		this.quantidadeConvites = quantidadeConvites;
 		this.modelo = modelo;
 		this.colagem = colagem;
@@ -54,6 +55,7 @@ public class Calculadora {
 		this.strass = strass;
 		this.impressaoNome = impressaoNome;
 		this.embalagem = embalagem;
+		this.corte = corte;
 	}
 
 	public Orcamento calcular() {
@@ -69,6 +71,8 @@ public class Calculadora {
 		calcularAplicacaoSerigrafiaEnvelope(o);
 		calcularHotStamping(o);
 		calcularAplicacaoStrass(o);
+		calcularPrecoCorte(o);
+		calcularEmbalagem(o);
 		return o;
 	}
 
@@ -145,6 +149,18 @@ public class Calculadora {
 	public void calcularFechamentoIma(Orcamento o) {
 		if (ima != null) {
 			o.addItem(o.new Item(ima.toString(), ima.getPrecoVenda()));
+		}
+	}
+	
+	public void calcularPrecoCorte(Orcamento o) {
+		if (corte != null) {
+			o.addItem(o.new Item(corte.toString(), corte.getPrecoVenda(quantidadeConvites)));	
+		}
+	}
+	
+	public void calcularEmbalagem(Orcamento o) {
+		if (this.embalagem != null) {
+			o.addItem(o.new Item(embalagem.toString(),embalagem.getPrecoVenda()));;
 		}
 	}
 	
@@ -228,6 +244,7 @@ public class Calculadora {
 		private ImpressaoNome impressaoNome;
 		private Embalagem embalagem;
 		private Colagem colagem;
+		private CorteEnvelope corte;
 
 		private CalculadoraBuilder() {
 
@@ -322,8 +339,17 @@ public class Calculadora {
 			this.colagem = colagem;
 			return this;
 		}
+		
+		public CalculadoraBuilder corte(CorteEnvelope corte) {
+			this.corte = corte;
+			return this;
+		}
 
 		public Calculadora build() {
+			
+//			if (corte == null) {
+//				throw new CorteInvalidoException();
+//			}
 
 			if (modelo == null) {
 				throw new ModeloInvalidoException();
@@ -337,7 +363,7 @@ public class Calculadora {
 					papelEnvelope, papelInterno, impressaoEnvelope,
 					impressaoInterno, fita, laco, hotStamp, serigrafiaEnvelope,
 					serigrafiaInterno, renda, ima, quantidadeStrass, strass,
-					impressaoNome, embalagem);
+					impressaoNome, embalagem,corte);
 
 		}
 	}

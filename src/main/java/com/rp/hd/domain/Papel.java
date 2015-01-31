@@ -5,18 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
+import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Papel extends BaseEntity {
 
 	private String nome;
 
-	@ManyToOne
-	@JoinColumn(name = "gramatura_id")
+	@Convert(converter=GramaturaConverter.class)
 	private Gramatura gramatura;
 
 	@ElementCollection
@@ -58,7 +56,7 @@ public class Papel extends BaseEntity {
 	}
 
 	public BigDecimal getPrecoAtual() {
-		return getCustoAtual().multiply(markup);
+		return getCustoAtual().multiply(markup).setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 
 	public BigDecimal getMarkup() {

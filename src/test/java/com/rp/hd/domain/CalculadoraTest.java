@@ -161,6 +161,20 @@ public class CalculadoraTest {
 		System.out.println(orcamento);
 	}
 	
+	@Test
+	public void deveCalcularPrecoCorte() {
+		Calculadora calculadora = Calculadora.CalculadoraBuilder.getInstance()
+				.quantidadeConvites(100)
+				.modeloConvite(dados.getModelo("paulamedio"))
+				.papelEnvelope(dados.getPapel("aspen250"))
+				.corte(dados.getCorte())
+				.build();
+		Orcamento orcamento = calculadora.calcular();
+		Assert.assertEquals(new BigDecimal("0.5"), orcamento.getItems().get(1)
+				.getValor());
+		System.out.println(orcamento);
+	}
+	
 	
 
 }

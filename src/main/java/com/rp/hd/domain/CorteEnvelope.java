@@ -1,0 +1,36 @@
+package com.rp.hd.domain;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+
+@Entity
+public class CorteEnvelope extends BaseEntity {
+
+	private BigDecimal markup = BigDecimal.ONE;
+
+	@ElementCollection
+	@CollectionTable(name = "corte_enveloe_precos")
+	private List<PrecoVigencia> precos = new ArrayList<>();
+
+	public void addPreco(PrecoVigencia p) {
+		this.precos.add(p);
+	}
+
+	public BigDecimal getMarkup() {
+		return markup;
+	}
+
+	public void setMarkup(BigDecimal markup) {
+		this.markup = markup;
+	}
+
+	public BigDecimal getPrecoVenda(int quantidadeConvites) {
+		return PrecoVigenciaService.getPrecoAtual(precos).getValor().divide(new BigDecimal(quantidadeConvites)).multiply(markup);
+	}
+
+}
