@@ -1,13 +1,14 @@
 package com.rp.hd.domain;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class Vigencia {
+public class Vigencia implements Serializable {
 
 	@Column(name = "data_inicial")
 	private Date dataInicial;
