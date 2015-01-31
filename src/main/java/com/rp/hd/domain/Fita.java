@@ -8,12 +8,16 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 
+@Entity
 public class Fita extends BaseEntity {
 
 	@Convert(converter = TipoFitaConverter.class)
+	@Column(name="tipo_fita")
 	private TipoFita tipoFita;
 
 	@Convert(converter = NumeracaoFitaConverter.class)

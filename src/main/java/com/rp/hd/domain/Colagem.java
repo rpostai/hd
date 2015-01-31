@@ -7,12 +7,14 @@ import java.util.List;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * @author rodrigo.postai
  *
  */
 @Entity
+@Table(name="colagem")
 public class Colagem extends BaseEntity {
 
 	private String descricao;

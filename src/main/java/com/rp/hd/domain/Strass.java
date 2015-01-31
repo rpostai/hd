@@ -8,7 +8,9 @@ import java.util.Optional;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 
+@Entity
 public class Strass extends BaseEntity {
 
 	private TamanhoStrass tamanho;

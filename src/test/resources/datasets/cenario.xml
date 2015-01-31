@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	
+	<papel id="100" nome="Papel Metalizado Aspen 250" gramatura="250" markup="1" data_cadastro="2015-01-01"/>
+	<papel id="101" nome="Papel Metalizado Majorca 250" gramatura="250" markup="1" data_cadastro="2015-01-01"/>
+	<papel id="102" nome="Papel Color Plus 180g" gramatura="180" markup="1" data_cadastro="2015-01-01"/>
+	<papel id="103" nome="Papel Color Plus 240g" gramatura="240" markup="1" data_cadastro="2015-01-01"/>
+	<papel id="104" nome="Papel Markatto" gramatura="240" markup="1" data_cadastro="2015-01-01"/>
+	
+	<papel_precos papel_id="100" valor="6"/>
+	<papel_precos papel_id="101" valor="6"/>
+	<papel_precos papel_id="102" valor="4"/>
+	<papel_precos papel_id="103" valor="5"/>
+	<papel_precos papel_id="103" valor="7"/>
+	
+	<fita id="100" markup="1" tipo_fita="C" numeracao="3" data_cadastro="2015-01-01"/>
+	<fita id="101" markup="1" tipo_fita="C" numeracao="5" data_cadastro="2015-01-01"/>
+	<fita id="102" markup="1" tipo_fita="C" numeracao="9" data_cadastro="2015-01-01"/>
+	
+	<fita_precos fita_id = "100" valor="3"/>
+	<fita_precos fita_id = "101" valor="3.5"/>
+	<fita_precos fita_id = "102" valor="3"/>
+	
+	<laco id="100" markup="1" qtd_centimetros_fita="30" descricao="Channel Simples" data_cadastro="2015-01-01"/>
+	<laco id="101" markup="1" qtd_centimetros_fita="40" descricao="Channel Simples" data_cadastro="2015-01-01"/>
+	
+	<laco_maoobra_preco laco_id="100" valor="0.50" />
+	<laco_maoobra_preco laco_id="101" valor="0.70"/>
+	
+	<renda id="100" descricao="Renda Básica" markup="1" data_cadastro="2015-01-01"/>
+	<renda_precos renda_id="100" valor="5"/>
+	
+	<impressao id="100" descricao="1 Face PB" markup="1" data_cadastro="2015-01-01"/>
+	<impressao id="101" descricao="2 Faces PB" markup="1" data_cadastro="2015-01-01"/>
+	<impressao id="102" descricao="1 Face Color" markup="1" data_cadastro="2015-01-01"/>
+	<impressao id="103" descricao="2 Faces Color" markup="1" data_cadastro="2015-01-01"/>
+	
+	<impressao_precos impressao_id="100" valor="0.50"/>
+	<impressao_precos impressao_id="101" valor="0.60"/>
+	<impressao_precos impressao_id="102" valor="0.70"/>
+	<impressao_precos impressao_id="103" valor="0.80"/>
+	
+	<impressao_nome id="100" descricao="Tag" markup="1" data_cadastro="2015-01-01"/>
+	<impressao_nome id="101" descricao="Verso Parcial" markup="1" data_cadastro="2015-01-01"/>
+	<impressao_nome id="102" descricao="Verso Total" markup="1" data_cadastro="2015-01-01"/>
+	
+	<impressao_nome_precos impressao_nome_id="100" valor="0.5"/>
+	<impressao_nome_precos impressao_nome_id="101" valor="1.0"/>
+	<impressao_nome_precos impressao_nome_id="102" valor="1.5"/>
+	
+	<corte_envelope id="100" markup="1" data_cadastro="2015-01-01"/>
+	<corte_envelope_precos corte_envelope_id="100" valor="50"/>
+	
+	<colagem id="100" descricao="Colagem Simples" markup="1" data_cadastro="2015-01-01"/>
+	<colagem_precos colagem_id="100" valor="0.2"/>
+	
+	
+	<serigrafia id="100" descricao="Serigrafia Com Relevo" markup="1" tipo_cobranca="U" data_cadastro="2015-01-01"/>
+	<serigrafia id="101" descricao="Serigrafia Imressao" markup="1" tipo_cobranca="U" data_cadastro="2015-01-01"/>
+	
+	<serigrafia_precos serigrafia_id="100" valor="1"/>
+	<serigrafia_precos serigrafia_id="101" valor="1"/>
+	
+	<ima id="100" tamanho="3" markup="1" data_cadastro="2015-01-01"/>
+	<ima id="101" tamanho="5" markup="1" data_cadastro="2015-01-01"/>
+	
+	<ima_precos ima_id="100" valor="1"/>
+	<ima_precos ima_id="101" valor="1.5"/>
+	
+	<hot_stamp id="100" descricao="Aplicaçao de Hot Stamp" markup="1" data_cadastro="2015-01-01"/>
+	<hot_stamp_precos hot_stamp_id="100" valor="1"/>
+	
+	<embalagem id="100" altura="20" largura="20" densidade="10" markup="1" tipo_embalagem="PP"  data_cadastro="2015-01-01"/>
+	<embalagem id="101" altura="20" largura="10" densidade="10" markup="1" tipo_embalagem="PP"  data_cadastro="2015-01-01"/>
+	<embalagem id="102" altura="15" largura="10" densidade="10" markup="1" tipo_embalagem="PP"  data_cadastro="2015-01-01"/>
+	
+	<modelo_convite id="100" codigo="001" nome="Paula Grande" modelo_faca="4" auto_envelopado="1" 
+		quantidade_fita_contorno="42" tamanho_item_interno="8" renda_aplicavel="1" 
+		quantidade_renda_cm="22" tem_colagem="0" embalagem_id="100"  data_cadastro="2015-01-01"/>
+		
+	<modelo_convite id="101" codigo="002" nome="Paula Médio" modelo_faca="6" auto_envelopado="1" 
+		quantidade_fita_contorno="35" tamanho_item_interno="16" renda_aplicavel="1" 
+		quantidade_renda_cm="18" tem_colagem="1" embalagem_id="101"  data_cadastro="2015-01-01"/>
+		
+	<modelo_convite id="102" codigo="003" nome="Paula Médio" modelo_faca="8" auto_envelopado="1" 
+		quantidade_fita_contorno="32" tamanho_item_interno="16" renda_aplicavel="1" 
+		quantidade_renda_cm="17" tem_colagem="1" embalagem_id="102"  data_cadastro="2015-01-01"/>
+	
+		
+</dataset>
+

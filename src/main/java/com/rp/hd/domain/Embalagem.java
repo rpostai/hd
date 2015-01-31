@@ -2,10 +2,13 @@ package com.rp.hd.domain;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 
@@ -16,7 +19,7 @@ public class Embalagem extends BaseEntity {
 
 	private int largura;
 
-	private int densindade;
+	private int densidade;
 	
 	private BigDecimal markup = BigDecimal.ONE;
 
@@ -24,6 +27,8 @@ public class Embalagem extends BaseEntity {
 	@CollectionTable(name = "embalagem_preco")
 	private List<PrecoVigencia> precos = new ArrayList<>();
 
+	@Column(name="tipo_embalagem")
+	@Convert(converter=TipoEmbalagemConverter.class)
 	private TipoEmbalagem tipoEmbalagem;
 
 	public int getAltura() {
@@ -42,12 +47,12 @@ public class Embalagem extends BaseEntity {
 		this.largura = largura;
 	}
 
-	public int getDensindade() {
-		return densindade;
+	public int getDensidade() {
+		return densidade;
 	}
 
-	public void setDensindade(int densindade) {
-		this.densindade = densindade;
+	public void setDensidade(int densindade) {
+		this.densidade = densindade;
 	}
 
 	public TipoEmbalagem getTipoEmbalagem() {
@@ -67,7 +72,13 @@ public class Embalagem extends BaseEntity {
 	}
 
 	public static enum TipoEmbalagem {
-		PP, PE
+		PP, PE;
+		
+		public static TipoEmbalagem getTipoEmbalagem(String tipo) {
+			return Arrays.asList(values()).stream().filter(emb -> {
+				return emb.name().equals(tipo);
+			}).findFirst().get();
+		}
 	}
 	
 	public BigDecimal getCustoAtual() {
@@ -82,6 +93,6 @@ public class Embalagem extends BaseEntity {
 	@Override
 	public String toString() {
 		return String.format("%s-%dx%dx%d", tipoEmbalagem.name(), altura,
-				largura, densindade);
+				largura, densidade);
 	}
 }

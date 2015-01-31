@@ -7,8 +7,10 @@ import java.util.List;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="corte_envelope")
 public class CorteEnvelope extends BaseEntity {
 
 	private BigDecimal markup = BigDecimal.ONE;

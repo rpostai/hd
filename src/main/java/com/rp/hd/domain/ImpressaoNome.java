@@ -6,7 +6,12 @@ import java.util.List;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="impressao_nome")
 public class ImpressaoNome extends BaseEntity {
 
 	private String descricao;
@@ -14,7 +19,7 @@ public class ImpressaoNome extends BaseEntity {
 	private BigDecimal markup;
 
 	@ElementCollection
-	@CollectionTable(name = "impressao_nome_precos")
+	@CollectionTable(name = "impressao_nome_precos", joinColumns=@JoinColumn(name="impressao_nome_id"))
 	private List<PrecoVigencia> precos = new ArrayList<>();
 
 	public String getDescricao() {

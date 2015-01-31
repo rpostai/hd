@@ -133,7 +133,7 @@ public class BaseDados {
 		Embalagem pp1 = new Embalagem();
 		pp1.setAltura(15);
 		pp1.setLargura(25);
-		pp1.setDensindade(10);
+		pp1.setDensidade(10);
 		pp1.setTipoEmbalagem(TipoEmbalagem.PP);
 		pp1.addPreco(p1);
 		
@@ -146,7 +146,7 @@ public class BaseDados {
 		Embalagem pp2 = new Embalagem();
 		pp2.setAltura(15);
 		pp2.setLargura(25);
-		pp2.setDensindade(10);
+		pp2.setDensidade(10);
 		pp2.setTipoEmbalagem(TipoEmbalagem.PP);
 		pp2.addPreco(p1);
 		

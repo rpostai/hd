@@ -30,13 +30,13 @@ public class Calculadora {
 	private final Embalagem embalagem;
 	private final CorteEnvelope corte;
 
-	public Calculadora(int quantidadeConvites, ModeloConvite modelo,
+	private Calculadora(int quantidadeConvites, ModeloConvite modelo,
 			Colagem colagem, Papel papelEnvelope, Papel papelInterno,
 			Impressao impressaoEnvelope, Impressao impressaoInterno, Fita fita,
 			Laco laco, HotStamp hotStamp, Serigrafia serigrafiaEnvelope,
 			Serigrafia serigrafiaInterno, Renda renda, Ima ima,
 			int quantidadeStrass, Strass strass, ImpressaoNome impressaoNome,
-			Embalagem embalagem,CorteEnvelope corte) {
+			CorteEnvelope corte) {
 		this.quantidadeConvites = quantidadeConvites;
 		this.modelo = modelo;
 		this.colagem = colagem;
@@ -54,7 +54,7 @@ public class Calculadora {
 		this.quantidadeStrass = quantidadeStrass;
 		this.strass = strass;
 		this.impressaoNome = impressaoNome;
-		this.embalagem = embalagem;
+		this.embalagem = modelo.getEmbalagem();
 		this.corte = corte;
 	}
 
@@ -363,7 +363,7 @@ public class Calculadora {
 					papelEnvelope, papelInterno, impressaoEnvelope,
 					impressaoInterno, fita, laco, hotStamp, serigrafiaEnvelope,
 					serigrafiaInterno, renda, ima, quantidadeStrass, strass,
-					impressaoNome, embalagem,corte);
+					impressaoNome, corte);
 
 		}
 	}
