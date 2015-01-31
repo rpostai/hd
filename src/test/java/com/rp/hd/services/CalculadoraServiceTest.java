@@ -2,19 +2,21 @@ package com.rp.hd.services;
 
 import javax.inject.Inject;
 
+import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.rp.hd.domain.Calculadora.Orcamento;
 
+@UsingDataSet("cenario.xml")
+@CleanupUsingScript("clean.sql")
 public class CalculadoraServiceTest extends AbstractServiceTest {
 
 	@Inject
 	private CalculadoraService service;
 
 	@Test
-	@UsingDataSet("cenario.xml")
 	public void deveRetornarTodosDadosParaPaginaCalculadora() {
 		CalculadoraDados dados = service.getDadosCalculadora();
 		Assert.assertNotNull(dados);
@@ -42,13 +44,13 @@ public class CalculadoraServiceTest extends AbstractServiceTest {
 	}
 
 	@Test
-	@UsingDataSet("cenario.xml")
 	public void deveCalcularOPreco() {
-		service.calcular(150, 100l, 104l, 104l,
+		Orcamento o = service.calcular(150, 100l, 104l, 104l,
 				0l, 100l, 100l, 101l, 100l,
 				0l, 0l, 0l, 0l,
 				0, 0l, 0l);
-		
+		Assert.assertNotNull(o);
+		System.out.println(o);
 	}
 
 }

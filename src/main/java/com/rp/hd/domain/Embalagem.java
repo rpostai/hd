@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 
 @Entity
 public class Embalagem extends BaseEntity {
@@ -24,7 +25,7 @@ public class Embalagem extends BaseEntity {
 	private BigDecimal markup = BigDecimal.ONE;
 
 	@ElementCollection
-	@CollectionTable(name = "embalagem_preco")
+	@CollectionTable(name = "embalagem_precos", joinColumns=@JoinColumn(name="embalagem_id"))
 	private List<PrecoVigencia> precos = new ArrayList<>();
 
 	@Column(name="tipo_embalagem")

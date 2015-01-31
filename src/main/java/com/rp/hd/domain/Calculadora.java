@@ -75,7 +75,7 @@ public class Calculadora {
 		calcularEmbalagem(o);
 		return o;
 	}
-
+	
 	public void calcularPrecoModeloConvite(Orcamento o) {
 		BigDecimal valor = this.modelo.getPrecoVenda(papelEnvelope, colagem);
 		o.addItem(o.new Item(this.modelo.toString(), valor));
@@ -167,7 +167,6 @@ public class Calculadora {
 	public class Orcamento {
 
 		private List<Item> items = new ArrayList<>();
-		private BigDecimal precoFinal;
 
 		public List<Item> getItems() {
 			return items;
@@ -178,13 +177,12 @@ public class Calculadora {
 		}
 
 		public BigDecimal getPrecoFinal() {
-			return precoFinal;
+			return this.items.stream().parallel().map(item-> {
+				return item.valor;
+			}).reduce((x,y) -> {
+				return x.add(y);
+			}).get();
 		}
-
-		public void setPrecoFinal(BigDecimal precoFinal) {
-			this.precoFinal = precoFinal;
-		}
-		
 
 		@Override
 		public String toString() {
@@ -193,6 +191,7 @@ public class Calculadora {
 			items.forEach(item-> {
 				sb.append(item.toString()).append(System.getProperty("line.separator"));
 			});
+			sb.append("Preço final individual: " + getPrecoFinal());
 			return sb.toString();
 		}
 
