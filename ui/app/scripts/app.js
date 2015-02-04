@@ -17,7 +17,7 @@ angular
     'ngSanitize',
     'ngTouch'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider,$stateProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -30,4 +30,12 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+
+    $stateProvider
+      .state('home', {
+        url: "/home",
+        templateUrl: "partials/main.html"
+      })
+
+
   });

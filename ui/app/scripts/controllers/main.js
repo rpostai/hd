@@ -7,11 +7,16 @@
  * # MainCtrl
  * Controller of the hdApp
  */
-angular.module('hdApp')
-  .controller('MainCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+angular.module('hdApp', ['ui.router'])
+  .controller('MainController', function ($scope) {
+    $scope.modelos = [];
+
+    $scope.init = function() {
+      $scope.modelos = [
+        "../images/img1.jpg",
+        "../images/img2.jpg",
+      ]
+    }
+
+
   });
