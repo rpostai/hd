@@ -8,7 +8,7 @@ angular.module('hdApp')
     $scope.init = function() {
       $scope.modelos = [
         "../images/img1.jpg",
-        "../images/img2.jpg",
+        "../images/img2.jpg"
       ]
     }
 

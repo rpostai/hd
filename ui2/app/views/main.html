@@ -1,21 +1,19 @@
-<div ng-controller="MainController" >
+<div ng-controller="MainController">
 
-  <div class="tile double block bg-darkRed">
+    <div class="tile double block bg-darkRed">
+        <a ui-sref="modelos" class="tile-content image-set">
+            <img src="{{modelo}}" ng-repeat="modelo in modelos"/>
+        </a>
+    </div>
 
-    <div class="tile live" data-role="live-tile" data-effect="..." data-easing="...">
-      <a ui-sref="modelos" class="tile-content" ng-repeat="modelo in modelos">
-        <img src="{{modelo}}"/>
-      </a>
-    </div>
-  </div>
 
-  <div class="tile double block bg-darkGreen">
-    <div class="tile-content icon">
-      <i class="icon-cart-2"></i>
-    </div>
-    <div class="tile-status">
-      <span class="name">Atendimento</span>
-    </div>
-  </div>
+    <a ui-sref="atendimento" class="tile double block bg-darkGreen">
+        <div class="tile-content icon">
+            <i class="icon-cart-2"></i>
+        </div>
+        <div class="tile-status">
+            <span class="name">Atendimento</span>
+        </div>
+    </a>
 
 </div>
