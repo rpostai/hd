@@ -1,6 +1,6 @@
 <div class="panel" ng-controller="AtendimentoController">
   <div class="panel-header">
-    Tela de atendimento
+    Orçamento
   </div>
   <div class="panel-content">
 
@@ -25,12 +25,12 @@
 
     <label for="cmbImpressaoEnvelope">Impressão no envelope</label>
     <select id="cmbImpressaoEnvelope" ng-model="orcamento.impressaoEnvelope" ng-options="imp as imp.nome for imp in impressoes track by imp.id">
-      <option value="">-- Selecione o tipo de impressao --</option>
+      <option value="">-- Selecione o tipo de impressão --</option>
     </select>
 
     <label for="cmbImpressaoInterno">Impressão interno</label>
     <select id="cmbImpressaoInterno" ng-model="orcamento.impressaoInterno" ng-options="imp as imp.nome for imp in impressoes track by imp.id">
-      <option value="">-- Selecione o tipo de impressao --</option>
+      <option value="">-- Selecione o tipo de impressão --</option>
     </select>
 
     <label for="cmbFita">Fita</label>
@@ -38,7 +38,7 @@
       <option value="">-- Selecione a fita --</option>
     </select>
 
-    <label for="cmbLaco">Fita</label>
+    <label for="cmbLaco">Laço</label>
     <select id="cmbLaco" ng-model="orcamento.laco" ng-options="laco as laco.nome for laco in lacos track by laco.id">
       <option value="">-- Selecione o tipo de laço --</option>
     </select>
@@ -81,7 +81,7 @@
     <button class="button default" ng-click="calcular()">Calcular</button>
 
     <div class="balloon right">
-      <h1>R$ {{orcamento.preco}} por unidade</h1>
+      <h1>R$ {{precoPorUnidade}} por unidade</h1>
     </div>
 
   </div>

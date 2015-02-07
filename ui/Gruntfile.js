@@ -63,38 +63,49 @@ module.exports = function (grunt) {
 
     // The actual grunt server settings
     connect: {
-      options: {
-        port: 9000,
-        // Change this to '0.0.0.0' to access the server from outside.
-        hostname: 'localhost',
-        livereload: 35729
-      },
-      livereload: {
-        options: {
-          open: true,
-          base: [
-            '.tmp',
-            '<%= yeoman.app %>'
-          ]
-        }
-      },
-      test: {
-        options: {
-          port: 9001,
-          base: [
-            '.tmp',
-            'test',
-            '<%= yeoman.app %>'
-          ]
-        }
-      },
-      dist: {
-        options: {
-          base: '<%= yeoman.dist %>'
-        }
-      }
+		options: {
+	        port: 9000,
+	        // Change this to '0.0.0.0' to access the server from outside.
+	        hostname: 'localhost',
+	        livereload: 35729
+	      },
+	      
+    	  proxies: [
+                {
+                    context: '/servicos',
+                    host: 'localhost',
+                    port: 8080,
+                    rewrite: {
+                        '^/servicos/(.+)': '^/hd/servicos/$1'
+                    }
+                }
+          ],  
+	      livereload: {
+	        options: {
+	          open: true,
+	          base: [
+	            '.tmp',
+	            '<%= yeoman.app %>'
+	          ]
+	        }
+	      },
+	      test: {
+	        options: {
+	          port: 9001,
+	          base: [
+	            '.tmp',
+	            'test',
+	            '<%= yeoman.app %>'
+	          ]
+	        }
+	      },
+	      dist: {
+	        options: {
+	          base: '<%= yeoman.dist %>'
+	        }
+	      }    		
     },
-
+    
     // Make sure code styles are up to par and there are no obvious mistakes
     jshint: {
       options: {
@@ -354,6 +365,7 @@ module.exports = function (grunt) {
       'bowerInstall',
       'concurrent:server',
       'autoprefixer',
+      'configureProxies:server',
       'connect:livereload',
       'watch'
     ]);
@@ -394,4 +406,7 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+  
+  grunt.loadNpmTasks('grunt-connect-proxy');
+  
 };
