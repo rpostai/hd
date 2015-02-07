@@ -9,34 +9,25 @@
  * Main module of the application.
  */
 angular
-  .module('hdApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngResource',
-    'ngRoute',
-    'ngSanitize',
-    'ngTouch',
-    'ui.router'
-  ])
-  .config(function ($routeProvider,$stateProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
-      })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
+    .module('hdApp', [
+        'ngResource',
+        'ui.router'
+    ])
+    .config(function ($stateProvider,$urlRouterProvider) {
 
-    $stateProvider
-      .state('home', {
-        url: "/home",
-        templateUrl: "partials/main.html"
-      })
+        $urlRouterProvider.otherwise("/home");
 
-
-  });
+        $stateProvider
+            .state('home', {
+                url: "/home",
+                templateUrl: "views/main.html"
+            })
+            .state('atendimento', {
+                url: "/atendimento",
+                templateUrl: "views/atendimento.html"
+            })
+            .state('modelos', {
+                url: "/modelos",
+                templateUrl: "views/modelos.html"
+            })
+    });
