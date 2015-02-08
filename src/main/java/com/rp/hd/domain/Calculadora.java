@@ -83,7 +83,7 @@ public class Calculadora {
 	
 	public void calcularPapelInterno(Orcamento o) {
 		int quantidadeFolhasParaPapelInterno = modelo.getTamanhoItemInterno();
-		if (papelInterno != null) {
+		if (papelInterno != null && quantidadeFolhasParaPapelInterno > 0) {
 			BigDecimal valorPapel = this.papelInterno.getPrecoAtual();
 			valorPapel = valorPapel.divide(new BigDecimal(quantidadeFolhasParaPapelInterno)).setScale(2,RoundingMode.HALF_UP);
 			o.addItem(o.new Item(String.format("Papel Interno %s", papelInterno.toString()), valorPapel));	

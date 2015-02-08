@@ -10,7 +10,7 @@ import com.rp.hd.repository.Repository;
 
 public abstract class BaseRepository<T> implements Repository<T> {
 
-	@PersistenceContext(unitName = "performancePU")
+	@PersistenceContext(unitName = "hdPU")
 	protected EntityManager em;
 
 	private Class<T> clazz;
@@ -19,8 +19,8 @@ public abstract class BaseRepository<T> implements Repository<T> {
 		this.clazz = clazz;
 	}
 
-	public void salvar(T obj) {
-		em.persist(obj);
+	public T salvar(T obj) {
+		return em.merge(obj);
 	}
 
 	public void excluir(Long id) {

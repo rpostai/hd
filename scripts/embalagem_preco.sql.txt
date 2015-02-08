@@ -1,0 +1,25 @@
+INSERT INTO embalagem_precos(
+            embalagem_id, valor, data_final, data_inicial)
+    VALUES (1, 0.1, '2015-02-07', NULL);
+
+INSERT INTO embalagem_precos(
+            embalagem_id, valor, data_final, data_inicial)
+    VALUES (2, 0.11, '2015-02-07', NULL);
+
+INSERT INTO embalagem_precos(
+            embalagem_id, valor, data_final, data_inicial)
+    VALUES (3, 0.06, '2015-02-07', NULL);
+
+INSERT INTO embalagem_precos(
+            embalagem_id, valor, data_final, data_inicial)
+    VALUES (4, 0.07, '2015-02-07', NULL);
+
+
+INSERT INTO embalagem_precos(
+            embalagem_id, valor, data_final, data_inicial)
+    VALUES (5, 0.08, '2015-02-07', NULL);
+        
+
+INSERT INTO embalagem_precos(
+            embalagem_id, valor, data_final, data_inicial)
+    VALUES (6, 0.16, '2015-02-07', NULL);    

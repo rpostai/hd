@@ -11,7 +11,8 @@
 angular
     .module('hdApp', [
         'ngResource',
-        'ui.router'
+        'ui.router',
+        'angular-storage'
     ])
     .config(function ($stateProvider,$urlRouterProvider) {
 

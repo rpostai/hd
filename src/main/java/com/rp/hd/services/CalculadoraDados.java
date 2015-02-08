@@ -96,7 +96,7 @@ public class CalculadoraDados implements Serializable {
 	private Dado novoDado(Long id, String descricao) {
 		Dado dado = new Dado();
 		dado.setId(id);
-		dado.setDescricao(descricao);
+		dado.setNome(descricao);
 		return dado;
 	}
 	

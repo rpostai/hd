@@ -7,12 +7,16 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.CollectionTable;
+import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 
 @Entity
 public class Strass extends BaseEntity {
 
+	private String descricao;
+
+	@Convert(converter = TamanhoStrassConverter.class)
 	private TamanhoStrass tamanho;
 
 	private BigDecimal markup = BigDecimal.ONE;
@@ -43,7 +47,12 @@ public class Strass extends BaseEntity {
 				.multiply(markup).setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 
-	private static enum TamanhoStrass {
+	@Override
+	public String toString() {
+		return descricao + " " + tamanho.getTamanho();
+	}
+
+	public static enum TamanhoStrass {
 		PEQUENO("P"), MEDIO("M"), GRANDE("G");
 
 		private final String tamanho;
@@ -72,6 +81,14 @@ public class Strass extends BaseEntity {
 
 	public void setMarkup(BigDecimal markup) {
 		this.markup = markup;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 }

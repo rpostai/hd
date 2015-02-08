@@ -5,6 +5,7 @@
 	<artifactId>principal</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>HD Software</name>
+	<packaging>war</packaging>
 
 	<dependencyManagement>
 		<dependencies>
@@ -44,7 +45,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -132,6 +133,15 @@
 					<configuration>
 						<source>1.8</source>
 						<target>1.8</target>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>2.6</version>
+					<configuration>
+						<failOnMissingWebXml>false</failOnMissingWebXml>
 					</configuration>
 				</plugin>
 			</plugins>

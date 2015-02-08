@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface Repository<T> {
 	
-	void salvar(T obj);
+	T salvar(T obj);
 
 	void excluir(Long id);
 

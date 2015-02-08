@@ -2,6 +2,12 @@ package com.rp.hd.services;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import com.rp.hd.domain.Calculadora;
 import com.rp.hd.domain.Calculadora.Orcamento;
@@ -33,6 +39,7 @@ import com.rp.hd.repository.jpa.SerigrafiaRepository;
 import com.rp.hd.repository.jpa.StrassRepository;
 
 @Stateless
+@Path("calculadora")
 public class CalculadoraService {
 
 	@Inject
@@ -74,6 +81,9 @@ public class CalculadoraService {
 	@Inject
 	ColagemRepository colagemRepository;
 
+	@GET
+	@Path("atendimento")
+	@Produces(MediaType.APPLICATION_JSON)
 	public CalculadoraDados getDadosCalculadora() {
 		CalculadoraDados dados = new CalculadoraDados();
 
@@ -124,79 +134,82 @@ public class CalculadoraService {
 		return dados;
 	}
 
-	public Orcamento calcular(int quantidade, Long modelo,
-			Long papelEnvelope, Long papelinterno, Long impressaoEnvelope, Long impressaoInterno,
-			Long fita, Long laco,
-			Long impressaoNome, Long renda, Long serigrafiaEnvelope,
-			Long serigrafiaInterno, Long hotstamp, int quantidadeStrass,
-			Long strass, Long ima) {
+	@POST
+	@Path("calcular")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Orcamento calcular(SolicitacaoOrcamento orcamento) {
 
-		if (quantidade == 0) {
+		if (orcamento.getQuantidade() == 0) {
 			throw new IllegalArgumentException(
 					"Quantidade deve ser maior do que zero");
 		}
 
-		if (modelo == null) {
+		if (orcamento.getModelo() == null) {
 			throw new IllegalArgumentException(
 					"Modelo de convite é obrigatório");
 		}
 
-		ModeloConvite m = modeloConviteRepository.get(modelo);
-		
+		ModeloConvite m = modeloConviteRepository.get(orcamento.getModelo().getId());
+
 		Papel papelEnvelopeAplicado = null;
-		if (papelEnvelope != null && papelEnvelope > 0) {
-			papelEnvelopeAplicado = papelRepository.get(papelEnvelope);
+		if (orcamento.getPapelEnvelope() != null) {
+			papelEnvelopeAplicado = papelRepository.get(orcamento.getPapelEnvelope().getId());
 		}
 		Papel papelInternoAplicado = null;
-		if (papelinterno != null && papelinterno > 0) {
-			papelInternoAplicado = papelRepository.get(papelinterno);
+		if (orcamento.getPapelEnvelope() != null) {
+			papelInternoAplicado = papelRepository.get(orcamento.getPapelEnvelope().getId());
 		}
 		Impressao impressaoEnvelopeAplicado = null;
-		if (impressaoEnvelope != null && impressaoEnvelope > 0) {
-			impressaoEnvelopeAplicado = impressaoRepository.get(impressaoEnvelope);
+		if (orcamento.getImpressaoEnvelope() != null) {
+			impressaoEnvelopeAplicado = impressaoRepository
+					.get(orcamento.getImpressaoEnvelope().getId());
 		}
 		Impressao impressaoInternoAplicado = null;
-		if (impressaoInterno != null && impressaoInterno > 0) {
-			impressaoInternoAplicado = impressaoRepository.get(impressaoInterno);
+		if (orcamento.getImpressaoInterno() != null) {
+			impressaoInternoAplicado = impressaoRepository
+					.get(orcamento.getImpressaoInterno().getId());
 		}
 		Renda rendaAplicada = null;
-		if (renda != null && renda !=0) {
-			rendaAplicada = rendaRepository.get(renda);
+		if (orcamento.getRenda() != null) {
+			rendaAplicada = rendaRepository.get(orcamento.getRenda().getId());
 		}
 		Ima imaAplicado = null;
-		if (ima != null && ima > 0) {
-			imaAplicado = imaRepository.get(ima);
+		if (orcamento.getIma() != null) {
+			imaAplicado = imaRepository.get(orcamento.getIma().getId());
 		}
 		HotStamp hotStampAplicado = null;
-		if (hotstamp != null && hotstamp > 0) {
-			hotStampAplicado = hotStampRepository.get(hotstamp);
+		if (orcamento.getHotstamp() != null) {
+			hotStampAplicado = hotStampRepository.get(orcamento.getHotstamp().getId());
 		}
 		Strass strassAplicado = null;
-		if (strass != null && strass >0 ) {
-			strassAplicado = strassRepository.get(strass);
+		if (orcamento.getStrass() != null) {
+			strassAplicado = strassRepository.get(orcamento.getStrass().getId());
 		}
 		ImpressaoNome impressaoNomeAplicado = null;
-		if (impressaoNome != null && impressaoNome > 0) {
-			impressaoNomeAplicado = impressaoNomeRepository.get(impressaoNome);
+		if (orcamento.getImpressaoNome() != null) {
+			impressaoNomeAplicado = impressaoNomeRepository.get(orcamento.getImpressaoNome().getId());
 		}
 		Fita fitaAplicada = null;
-		if (fita != null && fita >0) {
-			fitaAplicada = fitaRepository.get(fita);
+		if (orcamento.getFita() != null) {
+			fitaAplicada = fitaRepository.get(orcamento.getFita().getId());
 		}
-		
+
 		Laco lacoAplicado = null;
-		if (laco != null && laco > 0) {
-			lacoAplicado = lacoRepository.get(laco);
+		if (orcamento.getLaco() != null) {
+			lacoAplicado = lacoRepository.get(orcamento.getLaco().getId());
 		}
-		
+
 		Serigrafia serigrafiaAplicadaEnvelope = null;
-		if (serigrafiaEnvelope != null && serigrafiaEnvelope > 0) {
-			serigrafiaAplicadaEnvelope = serigrafiaRepository.get(serigrafiaEnvelope);
+		if (orcamento.getSerigrafiaEnvelope() != null ) {
+			serigrafiaAplicadaEnvelope = serigrafiaRepository
+					.get(orcamento.getSerigrafiaEnvelope().getId());
 		}
-		
+
 		Serigrafia serigrafiaAplicadaInterno = null;
-		if (serigrafiaInterno != null && serigrafiaInterno > 0) {
-			serigrafiaAplicadaInterno = serigrafiaRepository.get(serigrafiaInterno);
+		if (orcamento.getSerigrafiaInterno() != null) {
+			serigrafiaAplicadaInterno = serigrafiaRepository
+					.get(orcamento.getSerigrafiaInterno().getId());
 		}
 
 		CorteEnvelope corte = corteEnvelopeRepository.getTodos().get(0);
@@ -204,24 +217,19 @@ public class CalculadoraService {
 
 		Calculadora.CalculadoraBuilder builder = Calculadora.CalculadoraBuilder
 				.getInstance();
-		
-		Calculadora calc = builder.quantidadeConvites(quantidade).modeloConvite(m)
-				.papelEnvelope(papelEnvelopeAplicado)
-				.papelInterno(papelInternoAplicado)
-				.colagem(colagem)
-				.corte(corte)
-				.impressaoEnvelope(impressaoEnvelopeAplicado)
-				.impressaoInterno(impressaoInternoAplicado)
-				.fita(fitaAplicada)
-				.laco(lacoAplicado)
-				.hotstamp(hotStampAplicado)
-				.strass(strassAplicado, quantidadeStrass)
-				.renda(rendaAplicada)
-				.ima(imaAplicado)
-				.impressaoNome(impressaoNomeAplicado)
+
+		Calculadora calc = builder.quantidadeConvites(orcamento.getQuantidade())
+				.modeloConvite(m).papelEnvelope(papelEnvelopeAplicado)
+				.papelInterno(papelInternoAplicado).colagem(colagem)
+				.corte(corte).impressaoEnvelope(impressaoEnvelopeAplicado)
+				.impressaoInterno(impressaoInternoAplicado).fita(fitaAplicada)
+				.laco(lacoAplicado).hotstamp(hotStampAplicado)
+				.strass(strassAplicado, orcamento.getQuantidadeStrass()).renda(rendaAplicada)
+				.ima(imaAplicado).impressaoNome(impressaoNomeAplicado)
 				.serigrafiaEnvelope(serigrafiaAplicadaEnvelope)
 				.serigrafiaInterno(serigrafiaAplicadaInterno).build();
-		
+
 		return calc.calcular();
 	}
+	
 }

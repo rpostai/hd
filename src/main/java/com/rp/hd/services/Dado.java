@@ -4,7 +4,7 @@ public class Dado {
 
 	private long id;
 
-	private String descricao;
+	private String nome;
 
 	public long getId() {
 		return id;
@@ -14,12 +14,12 @@ public class Dado {
 		this.id = id;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setNome(String descricao) {
+		this.nome = descricao;
 	}
 
 }

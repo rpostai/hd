@@ -45,10 +45,13 @@ public class CalculadoraServiceTest extends AbstractServiceTest {
 
 	@Test
 	public void deveCalcularOPreco() {
-		Orcamento o = service.calcular(150, 100l, 104l, 104l,
-				0l, 100l, 100l, 101l, 100l,
-				0l, 0l, 0l, 0l,
-				0, 0l, 0l);
+		SolicitacaoOrcamento o = new SolicitacaoOrcamento();
+		o.setQuantidade(150);
+		
+//		Orcamento o = service.calcular(150, 100l, 104l, 104l,
+//				0l, 100l, 100l, 101l, 100l,
+//				0l, 0l, 0l, 0l,
+//				0, 0l, 0l);
 		Assert.assertNotNull(o);
 		System.out.println(o);
 	}
