@@ -118,13 +118,16 @@ function HeaderController($scope, $http, store) {
 			$scope.atendimento.label = !$scope.atendimento.estado ? 'Iniciar atendimento'
 					: 'Finalizar atendimento'
 
-			$scope.atendimento.pessoa1 = $scope.atendimentoSalvo.cliente1.nome;
-			$scope.atendimento.email1 = $scope.atendimentoSalvo.cliente1.email;
-			$scope.atendimento.fone1 = $scope.atendimentoSalvo.cliente1.telefone;
-
-			$scope.atendimento.pessoa2 = $scope.atendimentoSalvo.cliente2.nome;
-			$scope.atendimento.email2 = $scope.atendimentoSalvo.cliente2.email;
-			$scope.atendimento.fone2 = $scope.atendimentoSalvo.cliente2.telefone;
+			if ($scope.atendimentoSalvo.cliente1 != null) {
+				$scope.atendimento.pessoa1 = $scope.atendimentoSalvo.cliente1.nome;
+				$scope.atendimento.email1 = $scope.atendimentoSalvo.cliente1.email;
+				$scope.atendimento.fone1 = $scope.atendimentoSalvo.cliente1.telefone;	
+			}			
+			if ($scope.atendimentoSalvo.cliente2 != null) {
+				$scope.atendimento.pessoa2 = $scope.atendimentoSalvo.cliente2.nome;
+				$scope.atendimento.email2 = $scope.atendimentoSalvo.cliente2.email;
+				$scope.atendimento.fone2 = $scope.atendimentoSalvo.cliente2.telefone;	
+			}
 		}
 		$scope.tempoUltimoAtendimento = store.get('tempoUltimoAtendimento');
 	}

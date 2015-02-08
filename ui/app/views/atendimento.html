@@ -1,88 +1,124 @@
-<div class="panel" ng-controller="AtendimentoController">
-  <div class="panel-header">
-    Orçamento
-  </div>
-  <div class="panel-content">
-
-    <label for="txtQuantidade">Quantidade</label>
-    <input id="txtQuantidade" type="text" ng-model="orcamento.quantidade"/>
-
-    <label for="cmbModelo">Modelo</label>
-    <select id="cmbModelo" ng-model="orcamento.modelo" ng-options="modelo as modelo.nome for modelo in modelos track by modelo.id">
-      <option value="">-- Selecione o modelo --</option>
-    </select>
-
-    <label for="cmbPapelEnvelope">Papel do envelope</label>
-    <select id="cmbPapelEnvelope" ng-model="orcamento.papelEnvelope" ng-options="papel as papel.nome for papel in papeis track by papel.id">
-      <option value="">-- Selecione o modelo --</option>
-    </select>
-
-
-    <label for="cmbPapelInterno">Papel interno</label>
-    <select id="cmbPapelInterno" ng-model="orcamento.papelInterno" ng-options="papel as papel.nome for papel in papeis track by papel.id">
-      <option value="">-- Selecione o modelo --</option>
-    </select>
-
-    <label for="cmbImpressaoEnvelope">Impressão no envelope</label>
-    <select id="cmbImpressaoEnvelope" ng-model="orcamento.impressaoEnvelope" ng-options="imp as imp.nome for imp in impressoes track by imp.id">
-      <option value="">-- Selecione o tipo de impressão --</option>
-    </select>
-
-    <label for="cmbImpressaoInterno">Impressão interno</label>
-    <select id="cmbImpressaoInterno" ng-model="orcamento.impressaoInterno" ng-options="imp as imp.nome for imp in impressoes track by imp.id">
-      <option value="">-- Selecione o tipo de impressão --</option>
-    </select>
-
-    <label for="cmbFita">Fita</label>
-    <select id="cmbFita" ng-model="orcamento.fita" ng-options="fita as fita.nome for fita in fitas track by fita.id">
-      <option value="">-- Selecione a fita --</option>
-    </select>
-
-    <label for="cmbLaco">Laço</label>
-    <select id="cmbLaco" ng-model="orcamento.laco" ng-options="laco as laco.nome for laco in lacos track by laco.id">
-      <option value="">-- Selecione o tipo de laço --</option>
-    </select>
-
-    <label for="cmbRenda">Aplicação de Renda</label>
-    <select id="cmbRenda" ng-model="orcamento.renda" ng-options="renda as renda.nome for renda in rendas track by renda.id">
-      <option value="">-- Selecione aplicação de renda --</option>
-    </select>
-
-    <label for="cmbImpressaoNome">Impressão do nome</label>
-    <select id="cmbImpressaoNome" ng-model="orcamento.impressaoNome" ng-options="impnome as impnome.nome for impnome in impressoesNome track by impnome.id">
-      <option value="">-- Selecione a impressão do nome--</option>
-    </select>
-
-    <label for="cmbSerigrafiaInterno">Impressão em Serigrafia Interno</label>
-    <select id="cmbSerigrafiaInterno" ng-model="orcamento.serigrafiaInterno" ng-options="ser as ser.nome for ser in serigrafias track by ser.id">
-      <option value="">-- Selecione aplicação de serigrafia-</option>
-    </select>
-
-    <label for="cmbSerigrafiaEnvelope">Impressão em Serigrafia Envelope</label>
-    <select id="cmbSerigrafiaEnvelope" ng-model="orcamento.serigrafiaEnvelope" ng-options="ser as ser.nome for ser in serigrafias track by ser.id">
-      <option value="">-- Selecione aplicação de serigrafia-</option>
-    </select>
-
-    <label for="cmbHotStamp">Aplicação Hot Stamp</label>
-    <select id="cmbHotStamp" ng-model="orcamento.hotstamp" ng-options="hot as hot.nome for hot in hotstamp track by hot.id">
-      <option value="">-- Selecione aplicação de hotstamp-</option>
-    </select>
-
-    <label for="cmbStrass">Aplicação de Strass/Meia Pérola</label>
-    <select id="cmbStrass" ng-model="orcamento.strass" ng-options="st as st.nome for st in strass track by st.id">
-      <option value="">-- Selecione strass/pérola-</option>
-    </select>
-
-    <label for="cmbIma">Fechamento com Imã</label>
-    <select id="cmbIma" ng-model="orcamento.ima" ng-options="ima as ima.nome for ima in imas track by ima.id">
-      <option value="">-- Selecione o fechamento com imã --</option>
-    </select>
-
-    <button class="button default" ng-click="calcular()">Calcular</button>
-
-    <div class="balloon right">
-      <h1>R$ {{precoPorUnidade}} por unidade</h1>
-    </div>
-
-  </div>
+<div ng-include="'views/header.html'"></div>
+<div class="grid fluid" ng-controller="AtendimentoController">
+	<div class="row">
+		<div class="span4">
+			<label for="txtQuantidade">Quantidade</label>
+	    	<input id="txtQuantidade" type="text" ng-model="orcamento.quantidade"/>
+		</div>
+		<div class="span4">
+			<label for="cmbModelo">Modelo</label>
+	    	<select id="cmbModelo" ng-model="orcamento.modelo" ng-options="modelo as modelo.nome for modelo in modelos track by modelo.id">
+	      		<option value="">-- Selecione o modelo --</option>
+	    	</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span4">
+			<label for="cmbPapelEnvelope">Papel do envelope</label>
+		    <select id="cmbPapelEnvelope" ng-model="orcamento.papelEnvelope" ng-options="papel as papel.nome for papel in papeis track by papel.id">
+		      <option value="">-- Selecione o modelo --</option>
+		    </select>
+		</div>
+		<div class="span4">
+			<label for="cmbPapelInterno">Papel interno</label>
+		    <select id="cmbPapelInterno" ng-model="orcamento.papelInterno" ng-options="papel as papel.nome for papel in papeis track by papel.id">
+		      <option value="">-- Selecione o modelo --</option>
+		    </select>
+		</div>
+		<div class="span4">
+			<label for="cmbImpressaoEnvelope">Impressão no envelope</label>
+		    <select id="cmbImpressaoEnvelope" ng-model="orcamento.impressaoEnvelope" ng-options="imp as imp.nome for imp in impressoes track by imp.id">
+		      <option value="">-- Selecione o tipo de impressão --</option>
+		    </select>	
+		</div>
+	</div>
+	<div class="row">
+		<div class="span4">
+			<label for="cmbImpressaoInterno">Impressão interno</label>
+		    <select id="cmbImpressaoInterno" ng-model="orcamento.impressaoInterno" ng-options="imp as imp.nome for imp in impressoes track by imp.id">
+		      <option value="">-- Selecione o tipo de impressão --</option>
+		    </select>
+		</div>
+		<div class="span4">
+			<label for="cmbFita">Fita</label>
+		    <select id="cmbFita" ng-model="orcamento.fita" ng-options="fita as fita.nome for fita in fitas track by fita.id">
+		      <option value="">-- Selecione a fita --</option>
+		    </select>
+		</div>
+		<div class="span4">
+			<label for="cmbLaco">Laço</label>
+		    <select id="cmbLaco" ng-model="orcamento.laco" ng-options="laco as laco.nome for laco in lacos track by laco.id">
+		      <option value="">-- Selecione o tipo de laço --</option>
+		    </select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span4">
+			<label for="cmbRenda">Aplicação de Renda</label>
+		    <select id="cmbRenda" ng-model="orcamento.renda" ng-options="renda as renda.nome for renda in rendas track by renda.id">
+		      <option value="">-- Selecione aplicação de renda --</option>
+		    </select>
+		</div>
+		<div class="span4">
+			<label for="cmbImpressaoNome">Impressão do nome</label>
+		    <select id="cmbImpressaoNome" ng-model="orcamento.impressaoNome" ng-options="impnome as impnome.nome for impnome in impressoesNome track by impnome.id">
+		      <option value="">-- Selecione a impressão do nome--</option>
+		    </select>
+		</div>
+		<div class="span4">
+			<label for="cmbSerigrafiaInterno">Impressão em Serigrafia Interno</label>
+	    	<select id="cmbSerigrafiaInterno" ng-model="orcamento.serigrafiaInterno" ng-options="ser as ser.nome for ser in serigrafias track by ser.id">
+	      		<option value="">-- Selecione aplicação de serigrafia-</option>
+	    	</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span4">
+		    <label for="cmbSerigrafiaEnvelope">Impressão em Serigrafia Envelope</label>
+		    <select id="cmbSerigrafiaEnvelope" ng-model="orcamento.serigrafiaEnvelope" ng-options="ser as ser.nome for ser in serigrafias track by ser.id">
+		      <option value="">-- Selecione aplicação de serigrafia-</option>
+		    </select>
+		</div>
+		<div class="span4">
+			 <label for="cmbHotStamp">Aplicação Hot Stamp</label>
+		    <select id="cmbHotStamp" ng-model="orcamento.hotstamp" ng-options="hot as hot.nome for hot in hotstamp track by hot.id">
+		      <option value="">-- Selecione aplicação de hotstamp-</option>
+		    </select>
+		</div>
+		<div class="span4">
+		    <label for="cmbStrass">Aplicação de Strass/Meia Pérola</label>
+		    <select id="cmbStrass" ng-model="orcamento.strass" ng-options="st as st.nome for st in strass track by st.id">
+		      <option value="">-- Selecione strass/pérola-</option>
+		    </select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span4">
+			<label for="cmbIma">Fechamento com Imã</label>
+		    <select id="cmbIma" ng-model="orcamento.ima" ng-options="ima as ima.nome for ima in imas track by ima.id">
+		      <option value="">-- Selecione o fechamento com imã --</option>
+		    </select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span12">
+	      <p>R$ {{precoPorUnidade}} por unidade</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span3">
+	      <button class="button default" ng-click="calcular()">Calcular</button>
+		</div>
+		<div class="span3">
+	      <button class="button default" ng-click="adicionarOrcamento()">Adicionar ao orçamento</button>
+		</div>
+		<div class="span3">
+	      <button class="button default" ng-click="verTodosOrcamentos()">Ver orçamentos</button>
+		</div>
+		<div class="span3">
+	      <button class="button default" ng-click="enviarPorEmail()">Enviar por email</button>
+		</div>
+	</div>
+	
 </div>
+

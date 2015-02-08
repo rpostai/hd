@@ -1,24 +1,16 @@
-.metro {
-	display: block;
-	float: left;
-}
 .header {
     width:100%;
-    position:fixed;
-    top:0px;
     bottom: auto;
     background:#F0F0F0;
     border:1px solid #CCC;
     display: block;
     float: left;
 }
-
 .content {
-    width:100%;
+    width:960%;
     background: #F0F0F0;
     border: 1px solid #CCC;
-    display: block;
-    float: left;
+    margin: 0 auto;
 }
 
 .form_cliente {
