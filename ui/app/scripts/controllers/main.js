@@ -4,6 +4,10 @@ angular.module('hdApp')
   .controller('MainController', function ($scope) {
 
     $scope.modelos = [];
+    
+    $scope.imagemNovidade = "";
+    	
+    $scope.imagemInformativo = "";
 
     $scope.init = function() {
       $scope.modelos = [

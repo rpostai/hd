@@ -1,19 +1,91 @@
-<div ng-controller="MainController">
-
-    <div class="tile double block bg-darkRed">
-        <a ui-sref="modelos" class="tile-content image-set">
-            <img src="{{modelo}}" ng-repeat="modelo in modelos"/>
+<header class="margin20 nrm nlm">
+    <div class="clearfix">
+        <a class="place-left" href="#" title="">
+            <h1>News Portal</h1>
         </a>
     </div>
+</header>
 
-
-    <a ui-sref="atendimento" class="tile double block bg-darkGreen">
-        <div class="tile-content icon">
-            <i class="icon-cart-2"></i>
+<div class="main-content clearfix" ng-controller="MainController">
+    <div class="tile-area no-padding clearfix">
+        
+	        <div class="tile-group no-margin no-padding1 clearfix" style="width: 100%;">
+	            
+	            <div class="tile quadro double-vertical ol-transparent">
+	            	<div class="tile-content">
+                    <div class="carousel" data-role="carousel" data-height="100%" data-width="100%" data-controls="false">
+                        <div class="slide" ng-repeat="modelo in modelos">
+                            <img src="{{modelo}}" />
+                        </div>
+                    </div>
+                </div>
+	            </div>
+	            <a class="tile double bg-lightBlue" ui-sref="atendimento">
+		            <div class="tile-content icon">
+	                    <span class="icon-user"></span>
+	                </div>
+	                <div class="tile-status">
+	            		<span class="name">Novo Atendimento</span>
+	        		</div>
+	            </a>
+	            <a class="tile bg-orange ol-transparent" ui-sref="modelos">
+	            	<div class="tile-content icon">
+                    	<span class="icon-camera"></span>
+	                </div>
+	                <div class="tile-status">
+	            		<span class="name">Modelos</span>
+	        		</div>	
+	            </a>
+	            <a class="tile bg-teal ol-transparent">
+		            <div class="tile-content icon">
+                    	<span class="icon-search"></span>
+                	</div>
+                	<div class="tile-status">
+            			<span class="name">Orcamentos realizados</span>
+        			</div>
+        		</a>	
+	            <a class="tile ol-transparent bg-red">
+	            	<div class="tile-content icon">
+                    	<span class="icon-clock"></span>
+                	</div>
+                	<div class="tile-status">
+            			<span class="name">Acompanhamento de pedidos</span>
+        			</div>
+	            </a>
+	            <a class="tile ol-transparent">
+	            	<div class="tile-content icon bg-green">
+                    <span class=" icon-camera-3"></span>
+                	</div>
+                	<div class="tile-status">
+            			<span class="name">Todas fotos</span>
+        			</div>
+	            </a>
+	            
+	            <a class="tile double ol-transparent bg-cyan">
+	            	<div class="tile-content icon">
+                    	<span class="icon-camera-3"></span>
+                	</div>
+                	<div class="tile-status">
+            			<span class="name">Acompanhamento de pedidos</span>
+        			</div>
+	            </a>
+	        </div>
+	   </div> <!--  primeiro grupo -->
+	   
+	   <div class="tile-group no-margin no-padding clearfix" style="width: 100%">
+            <div class="tile double ol-transparent"></div>
+            <div class="tile double ol-transparent"></div>
+            <div class="tile double ol-transparent"></div>
+            <div class="tile double ol-transparent"></div>
         </div>
-        <div class="tile-status">
-            <span class="name">Atendimento</span>
-        </div>
-    </a>
-
+	   
+	   
 </div>
+
+<footer>
+    <div class="bottom-menu-wrapper">
+        <ul class="horizontal-menu compact">
+            <li>&copy; 2015 HD</li>
+        </ul>
+    </div>
+</footer>
