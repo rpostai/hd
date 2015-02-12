@@ -1,1 +1,26 @@
-Tela de modelos
+<header class="margin20 nrm nlm">
+    <div class="clearfix">
+        <a class="place-left" href="#" title="">
+            <h1>Modelos</h1>
+        </a>
+    </div>
+</header>
+
+<div class="main-content clearfix" ng-controller="ModeloController">
+    <div class="tile-area no-padding clearfix">
+        
+	   <div class="tile-group no-margin no-padding clearfix" style="width: 100%">
+	   		
+	   		<a  ui-sref="modelos.modelo(modelo.id)" class="tile double" style="height: 200px" ng-repeat="modelo in modelos">
+    			<div class="tile-content image">
+        			<img src="{{modelo.foto}}">
+    			</div>
+    			<div class="brand bg-dark opacity">
+        			<span class="text">
+            			{{modelo.nome}}
+        			</span>
+    			</div>
+			</a>
+	   		
+        </div>
+</div>

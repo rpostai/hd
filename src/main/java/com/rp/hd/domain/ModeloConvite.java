@@ -1,20 +1,29 @@
 package com.rp.hd.domain;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.Convert;
-import javax.persistence.Converts;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
 @Table(name="modelo_convite")
+@NamedQueries({
+	@NamedQuery(name="ModeloConvite.ModelosComFotos", query = "select o from ModeloConvite o join fetch o.fotos"),
+	@NamedQuery(name="ModeloConvite.ModeloComFotos", query = "select o from ModeloConvite o join fetch o.fotos where o.id = :modelo")
+})
 public class ModeloConvite extends BaseEntity {
 
 	@Column(name="codigo")
@@ -42,8 +51,6 @@ public class ModeloConvite extends BaseEntity {
 	@Convert(converter=BooleaToIntConverter.class)
 	private boolean rendaAplicavel; // indica se é aplicável renda ou não neste
 									// modelo de envelope
-
-	
 	@Column(name="quantidade_renda_cm")
 	private int quantidadeRendaEmCentimetros;
 
@@ -57,6 +64,10 @@ public class ModeloConvite extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "embalagem_id")
 	private Embalagem embalagem;
+	
+	@ElementCollection()
+	@CollectionTable(name="modelo_convite_fotos")
+	private List<ModeloConviteFoto> fotos = new ArrayList<>();
 
 	public String getCodigo() {
 		return codigo;
@@ -159,7 +170,14 @@ public class ModeloConvite extends BaseEntity {
 		}
 		return modelo;
 	}
+	
+	public List<ModeloConviteFoto> getFotos() {
+		return fotos;
+	}
 
+	public void addFoto(ModeloConviteFoto foto) {
+		this.fotos.add(foto);
+	}
 
 
 	public static enum ModeloFaca {

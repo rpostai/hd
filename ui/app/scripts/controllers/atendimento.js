@@ -1,7 +1,7 @@
 /**
  * Created by rodrigo.postai on 06/02/2015.
  */
-function AtendimentoController($scope, $http) {
+function AtendimentoController($scope, $http, store) {
 
   $scope.orcamento = {
     modelo: null,
@@ -42,6 +42,17 @@ function AtendimentoController($scope, $http) {
   }
   
   $scope.calcular = function() {
+	  
+	  $scope.atendimento = store.get("atendimento").id;
+	  
+	  $http.post("http://localhost:8080/hd/servicos/calculadora/calcular/"+$scope.atendimento, $scope.orcamento).success(function(data) {
+		  $scope.precoPorUnidade = data.precoFinal;
+	  }).error(function(data) {
+		 alert('Erro ao calcular preço. Procure o administrador do sistema'); 
+	  });
+  }
+  
+  $scope.adicionarOrcamento = function() {
 	  $http.post("http://localhost:8080/hd/servicos/calculadora/calcular", $scope.orcamento).success(function(data) {
 		  $scope.precoPorUnidade = data.precoFinal;
 	  }).error(function(data) {

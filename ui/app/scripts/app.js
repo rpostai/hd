@@ -31,4 +31,9 @@ angular
                 url: "/modelos",
                 templateUrl: "views/modelos.html"
             })
+            .state('modelo', {
+                url: "/modelo/{modelo}",
+                templateUrl: "views/modelo.html",
+                controller: 'ModeloController'
+            })
     });
