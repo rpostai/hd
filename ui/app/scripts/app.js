@@ -12,7 +12,8 @@ angular
     .module('hdApp', [
         'ngResource',
         'ui.router',
-        'angular-storage'
+        'angular-storage',
+        'angular-carousel'
     ])
     .config(function ($stateProvider,$urlRouterProvider) {
 

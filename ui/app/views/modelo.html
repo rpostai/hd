@@ -6,13 +6,32 @@
     </div>
 </header>
 
-<div class="main-content clearfix" ng-controller="ModelosController" ng-init="getModelo()">
-    <div class="tile-area no-padding clearfix">
-        
-	   <div class="tile-group no-margin no-padding clearfix" style="width: 100%">
-	   		
-	   		<div  class="tile double" style="height: 200px" ng-repeat="foto in modelo.fotos">
-        		<img src="{{foto}}">
-			</div>
+<div class="grid">
+    <div class="row">
+        <div class="span5">
+
+        <div class="carousel" data-role="carousel">
+    <div class="slide" ng-repeat="foto in modelo.foto" >
+        <img src="{{foto}}" class="cover1"/>
+    </div>
+    <a class="controls left"><i class="icon-arrow-left-3"></i></a>
+    <a class="controls right"><i class="icon-arrow-right-3"></i></a>
+    </div>
+            </div>
         </div>
-</div>
+    </div>
+
+<script>
+    $(function(){
+        $(".carousel").carousel({
+            height: 500,
+            effect: 'fade',
+            markers: {
+                show: true,
+                type: 'square',
+                position: 'bottom-right'
+            }
+        });
+    })
+
+</script>
