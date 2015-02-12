@@ -1,7 +1,7 @@
 /**
  * Created by rodrigo.postai on 06/02/2015.
  */
-function ModeloController($scope, $http, store) {
+function ModelosController($scope, $http, store) {
 
   $scope.getModelos = function() {
 	  $http.get("http://localhost:8080/hd/servicos/atendimento/modelos").success(

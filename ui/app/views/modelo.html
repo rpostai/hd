@@ -1,0 +1,18 @@
+<header class="margin20 nrm nlm">
+    <div class="clearfix">
+        <a class="place-left" href="#" title="">
+            <h1>Modelo {{modelo.nome}}</h1>
+        </a>
+    </div>
+</header>
+
+<div class="main-content clearfix" ng-controller="ModelosController" ng-init="getModelo()">
+    <div class="tile-area no-padding clearfix">
+        
+	   <div class="tile-group no-margin no-padding clearfix" style="width: 100%">
+	   		
+	   		<div  class="tile double" style="height: 200px" ng-repeat="foto in modelo.fotos">
+        		<img src="{{foto}}">
+			</div>
+        </div>
+</div>

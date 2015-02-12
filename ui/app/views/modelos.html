@@ -6,12 +6,12 @@
     </div>
 </header>
 
-<div class="main-content clearfix" ng-controller="ModeloController">
+<div class="main-content clearfix" ng-controller="ModelosController">
     <div class="tile-area no-padding clearfix">
         
 	   <div class="tile-group no-margin no-padding clearfix" style="width: 100%">
 	   		
-	   		<a  ui-sref="modelos.modelo(modelo.id)" class="tile double" style="height: 200px" ng-repeat="modelo in modelos">
+	   		<a  ui-sref="modelo({modelo: modelo.id})" class="tile double" style="height: 200px" ng-repeat="modelo in modelos">
     			<div class="tile-content image">
         			<img src="{{modelo.foto}}">
     			</div>
