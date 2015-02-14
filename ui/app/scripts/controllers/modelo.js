@@ -3,6 +3,8 @@
  */
 function ModeloController($scope, $http, $stateParams) {
 
+    $scope.carouselIndex = 0;
+
   $scope.getModelo = function() {
 	  $http.get("http://localhost:8080/hd/servicos/atendimento/modelos/"+$stateParams.modelo).success(
 			  function(data, status, headers, config) {
@@ -11,6 +13,13 @@ function ModeloController($scope, $http, $stateParams) {
 			  			function (data, status, headers, config) {
 			  				alert("Erro ao recuperar modelos");
 			  	})
+
   }
+
+    $scope.init = function() {
+        $scope.getModelo();
+    }
+
+    $scope.init();
   
 }
