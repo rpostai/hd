@@ -8,12 +8,12 @@
 		
 		<div class="span8 form_cliente">
 			<div class="panel">
-				<input type="text" id="pessoa1" ng-model="atendimento.pessoa1" placeholder="Cliente" ng-change="atualizarCliente()">
-		    	<input type="text" id="email1" ng-model="atendimento.email1" placeholder="Email" ng-change="atualizarCliente()">
-		    	<input type="text" id="fone1" ng-model="atendimento.fone1" placeholder="Telefone" ng-change="atualizarCliente()">
-				<input id="pessoa2" ng-model="atendimento.pessoa2" type="text" placeholder="Cliente" ng-change="atualizarCliente()">
-				<input id="email2" ng-model="atendimento.email2" type="text" placeholder="Email" ng-change="atualizarCliente()">
-				<input id="fone2" ng-model="atendimento.fone2" type="text" placeholder="Telefone" ng-change="atualizarCliente()">
+				<input type="text" id="pessoa1" ng-model="atendimento.pessoa1" placeholder="Cliente" ng-change="atualizarCliente()" class="input-control text">
+		    	<input type="text" id="email1" ng-model="atendimento.email1" placeholder="Email" ng-change="atualizarCliente()" class="input-control text">
+		    	<input type="text" id="fone1" ng-model="atendimento.fone1" placeholder="Telefone" ng-change="atualizarCliente()" class="input-control text">
+				<input id="pessoa2" ng-model="atendimento.pessoa2" type="text" placeholder="Cliente" ng-change="atualizarCliente()" class="input-control text">
+				<input id="email2" ng-model="atendimento.email2" type="text" placeholder="Email" ng-change="atualizarCliente()" class="input-control text">
+				<input id="fone2" ng-model="atendimento.fone2" type="text" placeholder="Telefone" ng-change="atualizarCliente()" class="input-control text">
 			</div>
 		</div>
 	    	
@@ -23,7 +23,7 @@
 				<div class="panel-content">
 					<p>Número: {{atendimento.numero}}</p>
 					<p>Data/Hora Início: {{atendimento.dataInicio}}</p>
-					<p ng-show="{{tempoUltimoAtendimento != undefined}}">Tempo total de atendimento: {{tempoUltimoAtendimento}}
+					<p ng-show="{{tempoUltimoAtendimento != undefined}}">Tempo total de atendimento: {{tempoUltimoAtendimento}} minuto(s)
 				</div>
 			</div>
 		</div>

@@ -1,25 +1,32 @@
 /**
  * Created by rodrigo.postai on 06/02/2015.
  */
-function AtendimentoController($scope, $http, store) {
+function AtendimentoController($scope, $http, store,$rootScope) {
 
-  $scope.orcamento = {
-    modelo: null,
-    quantidade: 0,
-    papelEnvelope: null,
-    papelInterno: null,
-    impressaoEnvelope: null,
-    impressaoInterno:null,
-    fita:null,
-    laco: null,
-    renda: null,
-    impressaoNome: null,
-    serigrafiaInterno: null,
-    serigrafiaEnvelope: null,
-    hotstamp: null,
-    strass: null,
-    ima: null
-  };
+  $scope.iniciarAtendimento = function() {
+	  $scope.orcamento = {
+			    modelo: null,
+			    quantidade: 0,
+			    papelEnvelope: null,
+			    papelInterno: null,
+			    impressaoEnvelope: null,
+			    impressaoInterno:null,
+			    fita:null,
+			    laco: null,
+			    renda: null,
+			    impressaoNome: null,
+			    serigrafiaInterno: null,
+			    serigrafiaEnvelope: null,
+			    hotstamp: null,
+			    strass: null,
+			    ima: null
+			  };
+  }
+  
+  $rootScope.$on("atendimentoNovo", function(args) {
+	  $scope.iniciarAtendimento();
+  })
+  
 
   $scope.getDadosAtendimento = function() {
 	  $http.get("http://localhost:8080/hd/servicos/calculadora/atendimento").success(
@@ -61,6 +68,7 @@ function AtendimentoController($scope, $http, store) {
   }
   
   $scope.init = function() {
+	  $scope.iniciarAtendimento();
 	  $scope.getDadosAtendimento();
   }
   

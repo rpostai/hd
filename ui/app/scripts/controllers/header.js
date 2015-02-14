@@ -2,8 +2,8 @@
  * 
  */
 
-function HeaderController($scope, $http, store) {
-
+function HeaderController($scope, $http, store,$rootScope) {
+	
 	$scope.definirNovoAtendimento = function() {
 		$scope.atendimento = {
 			estado : false,
@@ -17,6 +17,7 @@ function HeaderController($scope, $http, store) {
 			label : !this.estado ? 'Iniciar atendimento'
 					: 'Finalizar atendimento'
 		}
+		$rootScope.$broadcast("atendimentoNovo");
 	}
 
 	$scope.atendimentoSalvo = null;
@@ -36,7 +37,7 @@ function HeaderController($scope, $http, store) {
 						$scope.atendimentoSalvo = data;
 						store.set('atendimento', data);
 						$scope.atendimento.numero = data.numero;
-						$scope.atendimento.dataInicio = data.dataInicio;
+						$scope.atendimento.dataInicio = moment(new Date(data.dataInicio)).format('DD/MM/YYYY HH:mm:ss');
 						$scope.atendimento.estado = true;
 						$scope.atendimento.label = 'Finalizar atendimento';
 					});
@@ -50,6 +51,7 @@ function HeaderController($scope, $http, store) {
 					$scope.atendimentoSalvo).success(function(data) {
 				store.remove('atendimento');
 				store.set('tempoUltimoAtendimento', data);
+				$scope.tempoUltimoAtendimento = data;
 				$scope.definirNovoAtendimento();
 			})
 
@@ -113,7 +115,7 @@ function HeaderController($scope, $http, store) {
 		$scope.atendimentoSalvo = store.get('atendimento');
 		if ($scope.atendimentoSalvo != null) {
 			$scope.atendimento.numero = $scope.atendimentoSalvo.numero;
-			$scope.atendimento.dataInicio = $scope.atendimentoSalvo.dataInicio;
+			$scope.atendimento.dataInicio =  moment(new Date($scope.atendimentoSalvo.dataInicio)).format('DD/MM/YYYY HH:mm:ss');
 			$scope.atendimento.estado = true;
 			$scope.atendimento.label = !$scope.atendimento.estado ? 'Iniciar atendimento'
 					: 'Finalizar atendimento'
