@@ -1,5 +1,6 @@
 package com.rp.hd.repository.jpa;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import com.rp.hd.domain.ModeloConvite;
+import com.rp.hd.domain.ModeloConviteFoto;
 
 @Stateless
 public class ModeloConviteRepository extends BaseRepository<ModeloConvite> {
@@ -28,6 +30,17 @@ public class ModeloConviteRepository extends BaseRepository<ModeloConvite> {
 		} catch (NoResultException e) {
 			return Optional.empty();
 		}
+	}
+	
+	public List<ModeloConviteFoto> getTodasFotos() {
+		List<ModeloConviteFoto> result = new ArrayList<ModeloConviteFoto>();
+		
+		em.createNamedQuery("ModeloConvite.ModelosComFotos", ModeloConvite.class).getResultList().stream().forEach(x-> {
+			result.addAll(x.getFotos());
+		});
+		
+		return result;
+		
 	}
 
 }

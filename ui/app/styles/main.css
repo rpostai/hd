@@ -39,3 +39,14 @@
   color: #777;
   border-top: 1px solid #e5e5e5;
 }
+
+ul {
+	list-style: none;
+}
+
+ul.fotos li{
+	display: block;
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}

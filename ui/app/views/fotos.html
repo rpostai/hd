@@ -1,0 +1,14 @@
+<header class="margin20 nrm nlm">
+	<div class="clearfix">
+		<a class="place-left" href="#" title="">
+			<h1>Fotos</h1>
+		</a>
+	</div>
+</header>
+
+<ul class="fotos">
+	<li ng-repeat="modelo in modelos">
+		<h3>{{modelo.nome}}</h3>
+		<img src="{{modelo.foto.caminho}}" class="span6">
+	</li>
+</ul>

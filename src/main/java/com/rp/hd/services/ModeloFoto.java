@@ -8,9 +8,9 @@ public class ModeloFoto implements Serializable {
 
 	private final Long id;
 	private final String nome;
-	private final List<String> foto = new ArrayList<String>();
+	private final List<Foto> foto = new ArrayList<Foto>();
 
-	public ModeloFoto(Long id, String nome, String foto) {
+	public ModeloFoto(Long id, String nome, Foto foto) {
 		this.id = id;
 		this.nome = nome;
 		if (foto != null) {
@@ -18,7 +18,7 @@ public class ModeloFoto implements Serializable {
 		}
 	}
 	
-	public void addFoto(String foto) {
+	public void addFoto(Foto foto) {
 		this.foto.add(foto);
 	}
 
@@ -30,14 +30,14 @@ public class ModeloFoto implements Serializable {
 		return nome;
 	}
 
-	public String getFoto() {
+	public Foto getFoto() {
 		if (!foto.isEmpty()) {
 			return foto.get(0);
 		}
 		return null;
 	}
 	
-	public List<String> getFotos() {
+	public List<Foto> getFotos() {
 		return this.foto;
 	}	
 

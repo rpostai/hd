@@ -1,5 +1,6 @@
 package com.rp.hd.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -117,7 +118,7 @@ public class AtendimentoService {
 								.getCaminho();
 
 						ModeloFoto m = new ModeloFoto(modelo.getId(), modelo
-								.getNome(), caminho);
+								.getNome(), new Foto(1, caminho));
 						return m;
 					} else {
 						ModeloFoto m = new ModeloFoto(modelo.getId(), modelo
@@ -137,13 +138,29 @@ public class AtendimentoService {
 		if (modelo.isPresent()) {
 			ModeloFoto m = new ModeloFoto(modelo.get().getId(), modelo.get().getNome(), null);
 			modelo.get().getFotos().forEach(foto -> {
-				m.addFoto(foto.getCaminho());
+				m.addFoto(new Foto (foto.getOrdem(), foto.getCaminho()));
 			});
 			return m;
 		}
 		return null;
 	}
-
+	
+	@GET
+	@Path("fotos")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<ModeloFoto> getTodasFotos() {
+		List<ModeloFoto> result = new ArrayList<ModeloFoto>();
+		modeloConviteRepository
+				.getModelosComFotos()
+				.stream().forEach(x -> {
+					x.getFotos().forEach(foto-> {
+						ModeloFoto m = new ModeloFoto(x.getId(),x.getNome(), new Foto(foto.getOrdem(), foto.getCaminho()));
+						result.add(m);
+					});
+				});
+		return result;
+	}
 	// @POST
 	// @Path("orcamento/{atendimento}")
 	// @Consumes(MediaType.APPLICATION_JSON)

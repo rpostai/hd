@@ -21,8 +21,8 @@ import javax.persistence.Transient;
 @Entity
 @Table(name="modelo_convite")
 @NamedQueries({
-	@NamedQuery(name="ModeloConvite.ModelosComFotos", query = "select o from ModeloConvite o join fetch o.fotos"),
-	@NamedQuery(name="ModeloConvite.ModeloComFotos", query = "select o from ModeloConvite o join fetch o.fotos where o.id = :modelo")
+	@NamedQuery(name="ModeloConvite.ModelosComFotos", query = "select distinct o from ModeloConvite o left join fetch o.fotos"),
+	@NamedQuery(name="ModeloConvite.ModeloComFotos", query = "select distinct o from ModeloConvite o left join fetch o.fotos where o.id = :modelo")
 })
 public class ModeloConvite extends BaseEntity {
 

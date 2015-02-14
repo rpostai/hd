@@ -36,4 +36,15 @@ angular
                 templateUrl: "views/modelo.html",
                 controller: 'ModeloController'
             })
+            .state('fotos', {
+            	url: "/fotos",
+            	templateUrl: "views/fotos.html",
+            	controller: function($scope, $http) {
+            		$http.get('http://localhost:8080/hd/servicos/atendimento/fotos').success(function(data) {
+            			$scope.modelos = data;
+            		}).error(function(data) {
+            			alert ('Não foi possível recuperar as fotos')
+            		})
+            	}
+            })
     });
