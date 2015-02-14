@@ -12,7 +12,8 @@ angular
     .module('hdApp', [
         'ngResource',
         'ui.router',
-        'angular-storage'
+        'angular-storage',
+        'ui.bootstrap'
     ])
     .config(function ($stateProvider,$urlRouterProvider) {
 
@@ -46,5 +47,9 @@ angular
             			alert ('Não foi possível recuperar as fotos')
             		})
             	}
+            })
+            .state('orcamentos', {
+            	url: '/orcamentos',
+            	templateUrl: 'views/orcamentos.html'
             })
     });

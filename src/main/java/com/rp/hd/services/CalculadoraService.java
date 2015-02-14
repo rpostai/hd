@@ -1,6 +1,7 @@
 package com.rp.hd.services;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -91,6 +92,7 @@ public class CalculadoraService {
 
 	@Inject
 	ColagemRepository colagemRepository;
+	
 
 	@GET
 	@Path("atendimento")

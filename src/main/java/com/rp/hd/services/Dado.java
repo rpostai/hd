@@ -5,6 +5,14 @@ public class Dado {
 	private long id;
 
 	private String nome;
+	
+	public Dado() {
+	}
+
+	public Dado(long id, String nome) {
+		this.id = id;
+		this.nome = nome;
+	}
 
 	public long getId() {
 		return id;

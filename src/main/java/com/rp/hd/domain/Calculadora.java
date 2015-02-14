@@ -177,6 +177,8 @@ public class Calculadora {
 	public class Orcamento {
 
 		private int quantidade;
+		
+		private BigDecimal precoFinal;
 
 		private List<Item> items = new ArrayList<>();
 
@@ -202,6 +204,11 @@ public class Calculadora {
 			}).reduce((x, y) -> {
 				return x.add(y);
 			}).get();
+		}
+		
+
+		public void setPrecoFinal(BigDecimal precoFinal) {
+			this.precoFinal = precoFinal;
 		}
 
 		@Override

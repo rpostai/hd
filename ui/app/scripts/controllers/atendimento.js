@@ -1,7 +1,7 @@
 /**
  * Created by rodrigo.postai on 06/02/2015.
  */
-function AtendimentoController($scope, $http, store,$rootScope) {
+function AtendimentoController($scope, $http, store,$rootScope, $state) {
 
   $scope.iniciarAtendimento = function() {
 	  $scope.orcamento = {
@@ -65,6 +65,25 @@ function AtendimentoController($scope, $http, store,$rootScope) {
 	  }).error(function(data) {
 		 alert('Erro ao calcular preço. Procure o administrador do sistema'); 
 	  });
+  }
+  
+  
+  $scope.verTodosOrcamentos = function() {
+	  var atendimento = store.get("atendimento");
+	  if (atendimento != null) {
+		  $state.go("orcamentos");  
+	  }
+  }
+  
+  $scope.enviarPorEmail = function() {
+	  var atendimento = store.get("atendimento");
+	  if (atendimento != null) {
+		  $http.post("http://localhost:8080/hd/servicos/atendimento/enviarcliente",atendimento).success(function(data) {
+			  alert('Email enviado com sucesso!')
+		  }).error(function(data) {
+			  alert('Erro ao enviar email!')
+		  });
+	  }
   }
   
   $scope.init = function() {

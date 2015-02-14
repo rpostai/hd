@@ -21,6 +21,7 @@ public class SolicitacaoOrcamento implements Serializable {
 	private Dado strass;
 	private int quantidadeStrass;
 	private Dado ima;
+	private BigDecimal valor;
 
 	public int getQuantidade() {
 		return quantidade;
@@ -149,6 +150,15 @@ public class SolicitacaoOrcamento implements Serializable {
 	public void setQuantidadeStrass(int quantidadeStrass) {
 		this.quantidadeStrass = quantidadeStrass;
 	}
+
+	public BigDecimal getValor() {
+		return valor;
+	}
+
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
+	}
+
 	@Override
 	public String toString() {
 		return "SolicitacaoOrcamento [quantidade=" + quantidade + ", modelo="
@@ -159,7 +169,7 @@ public class SolicitacaoOrcamento implements Serializable {
 				+ ", impressaoNome=" + impressaoNome + ", serigrafiaInterno="
 				+ serigrafiaInterno + ", serigrafiaEnvelope="
 				+ serigrafiaEnvelope + ", hotstamp=" + hotstamp + ", strass="
-				+ strass + ", ima=" + ima+"]";
+				+ strass + ", ima=" + ima + "]";
 	}
 
 }

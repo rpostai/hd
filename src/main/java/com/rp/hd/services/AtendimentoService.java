@@ -16,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.rp.hd.domain.ModeloConvite;
 import com.rp.hd.domain.atendimento.Atendimento;
+import com.rp.hd.domain.atendimento.Orcamento;
 import com.rp.hd.repository.jpa.ColagemRepository;
 import com.rp.hd.repository.jpa.CorteEnvelopeRepository;
 import com.rp.hd.repository.jpa.FitaRepository;
@@ -161,83 +162,11 @@ public class AtendimentoService {
 				});
 		return result;
 	}
-	// @POST
-	// @Path("orcamento/{atendimento}")
-	// @Consumes(MediaType.APPLICATION_JSON)
-	// @Produces(MediaType.APPLICATION_JSON)
-	// public void adicionarOrcmaneto(@PathParam("atendimento") Long
-	// atendimentoId, SolicitacaoOrcamento sol) {
-	// Atendimento atendimento = repository.get(atendimentoId);
-	// if (atendimento != null) {
-	// throw new
-	// IllegalArgumentException("Para realizar um orçamento é obrigatório ter um atendimento iniciado");
-	// }
-	//
-	// Orcamento o = new Orcamento();
-	// o.setQuantidade(sol.getQuantidade());
-	//
-	// if (sol.getModelo() != null) {
-	// o.setModelo(modeloConviteRepository.get(sol.getModelo().getId()));
-	// }
-	//
-	// if (sol.getPapelEnvelope() != null) {
-	// o.setPapelEnvelope(papelRepository.get(sol.getPapelEnvelope().getId()));
-	// }
-	//
-	// if (sol.getPapelInterno() != null) {
-	// o.setPapelInterno(papelRepository.get(sol.getPapelInterno().getId()));
-	// }
-	//
-	// if (sol.getFita() != null) {
-	// o.setFita(fitaRepository.get(sol.getFita().getId()));
-	// }
-	//
-	// if (sol.getLaco() != null) {
-	// o.setLaco(lacoRepository.get(sol.getLaco().getId()));
-	// }
-	//
-	// if (sol.getHotstamp() != null) {
-	// o.setHotstamp(hotStampRepository.get(sol.getHotstamp().getId()));
-	// }
-	//
-	// if (sol.getIma() != null) {
-	// o.setIma(imaRepository.get(sol.getIma().getId()));
-	// }
-	//
-	// if (sol.getRenda() != null) {
-	// o.setRenda(rendaRepository.get(sol.getRenda().getId()));
-	// }
-	//
-	// if (sol.getImpressaoEnvelope() != null) {
-	// o.setImpressaoEnvelope(impressaoRepository.get(sol.getImpressaoEnvelope().getId()));
-	// }
-	//
-	// if (sol.getImpressaoInterno() != null) {
-	// o.setImpressaoInterno(impressaoRepository.get(sol.getImpressaoInterno().getId()));
-	// }
-	//
-	// if (sol.getImpressaoNome() != null) {
-	// o.setImpressaoNome(impressaoNomeRepository.get(sol.getImpressaoNome().getId()));
-	// }
-	//
-	// if (sol.getSerigrafiaEnvelope() != null) {
-	// o.setSerigrafiaEnvelope(serigrafiaRepository.get(sol.getSerigrafiaEnvelope().getId()));
-	// }
-	//
-	// if (sol.getSerigrafiaInterno() != null) {
-	// o.setSerigrafiaInterno(serigrafiaRepository.get(sol.getSerigrafiaInterno().getId()));
-	// }
-	//
-	// if (sol.getQuantidadeStrass() > 0) {
-	// o.setQuantidadeStrass(sol.getQuantidadeStrass());
-	// }
-	//
-	// if (sol.getStrass() != null) {
-	// o.setStrass(strassRepository.get(sol.getStrass().getId()));
-	// }
-	//
-	// orcamentoRepository.salvar(o);
-	//
-	// }
-
+	
+	@GET
+	@Path("orcamentos/{atendimento}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<SolicitacaoOrcamento> getOrcamentosAtendimento(@PathParam("atendimento") Long atendimento) {
+		return orcamentoRepository.getOrcamentosPorAtendimento(atendimento);
+	}
 }

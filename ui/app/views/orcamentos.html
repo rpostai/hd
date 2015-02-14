@@ -1,0 +1,84 @@
+<header class="margin20 nrm nlm">
+	<div class="clearfix">
+		<a class="place-left" href="#" title="">
+			<h1>Orcamentos</h1>
+		</a>
+	</div>
+</header>
+
+<div class="main-content clearfix" ng-controller="OrcamentosController"
+	ng-init="getOrcamentos">
+
+	<tabset> 
+		<tab ng-repeat="orc in orcamentos" heading="{{ orc.modelo.nome}}-{{$index}}">
+			 <table class="table striped">
+			 	<thead>
+			 		<tr>
+			 			<th width="30%">Item</th>
+			 			<th width="70%">Descrição</th>
+			 		</tr>
+			 	</thead>
+			 	<tbody>
+			 		<tr>
+			 			<td>Quantidade: </td>
+			 			<td>{{orc.quantidade}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Modelo: </td>
+			 			<td>{{orc.modelo.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Papel Envelope: </td>
+			 			<td>{{orc.papelEnvelope.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Papel Interno: </td>
+			 			<td>{{orc.papelInterno.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Impressão Envelope: </td>
+			 			<td>{{orc.impressaoEnvelope.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Impressão Interno: </td>
+			 			<td>{{orc.impressaoInterno.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Fita: </td>
+			 			<td>{{orc.fita.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Laço: </td>
+			 			<td>{{orc.laco.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Impressão nome dos convidados: </td>
+			 			<td>{{orc.impressaoNome.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Strass/Meia Pérola: </td>
+			 			<td>{{orc.strass.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Fechamento com imã: </td>
+			 			<td>{{orc.ima.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Serigrafia Papel Interno: </td>
+			 			<td>{{orc.serigrafiaInterno.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Serigrafia Envelope: </td>
+			 			<td>{{orc.serigrafiaEnvelope.nome}}</td>
+			 		</tr>
+			 		
+			 		<tr>
+			 			<td>Valor Individual: </td>
+			 			<td>{{orc.valor}}</td>
+			 		</tr>
+			 	</tbody>
+			 </table>
+		</tab> 
+	</tabset>
+
+</div>
