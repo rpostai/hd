@@ -1,5 +1,6 @@
 package com.rp.hd.services;
 
+import java.io.FileInputStream;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,11 +28,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
+import com.google.common.io.ByteStreams;
 import com.rp.hd.domain.ModeloConvite;
 import com.rp.hd.domain.atendimento.Atendimento;
 import com.rp.hd.repository.jpa.ColagemRepository;
@@ -172,7 +175,7 @@ public class AtendimentoService {
 			throws Exception {
 
 		Atendimento atendimento = repository.get(atendimentoId);
-
+		
 		try {
 			Message msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(
@@ -192,12 +195,37 @@ public class AtendimentoService {
 
 			msg.setSubject(String.format("Orçamento %s",
 					atendimento.getNumero()));
+			
+			List<SolicitacaoOrcamento> orcamentos = getOrcamentosAtendimento(atendimento
+					.getId());
 
 			Multipart mp = new MimeMultipart();
 
 			MimeBodyPart htmlPart = new MimeBodyPart();
-			htmlPart.setContent(criarEmail(atendimento), "text/html");
+			htmlPart.setContent(criarEmail(atendimento,orcamentos), "text/html");
 			mp.addBodyPart(htmlPart);
+			
+			orcamentos.forEach(orc -> {
+				if (orc.getModelo() != null) {
+					Optional<ModeloConvite> ultimasFotosModelo = modeloConviteRepository.getUltimasFotosModelo(orc.getModelo().getId());	
+					ultimasFotosModelo.ifPresent(modelo -> {
+						modelo.getFotos().forEach(foto -> {
+							FileInputStream file;
+							try {
+								file = new FileInputStream("/images/img1.jpg");
+								byte[] bytes = ByteStreams.toByteArray(file);
+								MimeBodyPart attachment = new MimeBodyPart();
+								attachment.setFileName(modelo.getNome() +"_" +  RandomStringUtils.randomAlphabetic(4) + ".jpg");
+								attachment.setContent(bytes, "image/jpeg");
+								mp.addBodyPart(attachment);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							
+						});
+					});
+				}
+			});
 
 			// MimeBodyPart attachment = new MimeBodyPart();
 			// attachment.setFileName("manual.pdf");
@@ -213,7 +241,7 @@ public class AtendimentoService {
 		}
 	}
 
-	private String criarEmail(Atendimento atendimento) {
+	private String criarEmail(Atendimento atendimento, List<SolicitacaoOrcamento> orcamentos) {
 
 		Properties p = new Properties();
 		p.setProperty("resource.loader", "file");
@@ -233,8 +261,7 @@ public class AtendimentoService {
 		c.add(Calendar.DAY_OF_MONTH, 15);
 		context.put("validade", SD.format(c.getTime()));
 
-		List<SolicitacaoOrcamento> orcamentos = getOrcamentosAtendimento(atendimento
-				.getId());
+		
 
 		context.put("orcamentos", orcamentos);
 

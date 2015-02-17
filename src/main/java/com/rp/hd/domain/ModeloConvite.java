@@ -22,7 +22,7 @@ import javax.persistence.Transient;
 @Table(name="modelo_convite")
 @NamedQueries({
 	@NamedQuery(name="ModeloConvite.ModelosComFotos", query = "select distinct o from ModeloConvite o left join fetch o.fotos"),
-	@NamedQuery(name="ModeloConvite.ModeloComFotos", query = "select distinct o from ModeloConvite o left join fetch o.fotos where o.id = :modelo")
+	@NamedQuery(name="ModeloConvite.ModeloComFotos", query = "select distinct o from ModeloConvite o left join fetch o.fotos f where o.id = :modelo order by f.ordem desc")
 })
 public class ModeloConvite extends BaseEntity {
 

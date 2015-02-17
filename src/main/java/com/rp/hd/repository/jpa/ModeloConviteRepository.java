@@ -32,6 +32,18 @@ public class ModeloConviteRepository extends BaseRepository<ModeloConvite> {
 		}
 	}
 	
+	public Optional<ModeloConvite> getUltimasFotosModelo(Long modeloId) {
+		TypedQuery<ModeloConvite> tq = em.createNamedQuery("ModeloConvite.ModeloComFotos", ModeloConvite.class);
+		tq.setFirstResult(0);
+		tq.setMaxResults(3);
+		tq.setParameter("modelo", modeloId);
+		try {
+			return Optional.of(tq.getSingleResult());
+		} catch (NoResultException e) {
+			return Optional.empty();
+		}
+	}
+	
 	public List<ModeloConviteFoto> getTodasFotos() {
 		List<ModeloConviteFoto> result = new ArrayList<ModeloConviteFoto>();
 		
