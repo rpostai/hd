@@ -16,6 +16,15 @@
 				<scope>test</scope>
 				<type>pom</type>
 			</dependency>
+
+			<dependency>
+				<groupId>org.picketlink</groupId>
+				<artifactId>picketlink-javaee-6.0</artifactId>
+				<version>2.7.0.CR2</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -118,6 +127,59 @@
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>
 			<version>1.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>0.2</version>
+		</dependency>
+
+		<!-- PicketLink Uber Dependency. It provides all PicketLink dependencies 
+			from a single JAR. You still can define each module separately, if you want 
+			to. -->
+		<dependency>
+			<groupId>org.picketlink</groupId>
+			<artifactId>picketlink</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- PicketLink Simple Schema for IDM JPA Identity Store. This is just 
+			a simple and specific schema that maps all types provided by PicketLink IDM 
+			Basic Model. Eg.: User, Role and Group types. You can always provide your 
+			own entities/schema in order to better satisfy your requirements. -->
+		<dependency>
+			<groupId>org.picketlink</groupId>
+			<artifactId>picketlink-idm-simple-schema</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.picketlink</groupId>
+			<artifactId>picketlink-json</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.googlecode.jsontoken</groupId>
+			<artifactId>jsontoken</artifactId>
+			<version>1.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpcore</artifactId>
+				</exclusion>
+				<!-- <exclusion> <groupId>com.google.code.gson</groupId> <artifactId>gson</artifactId> 
+					</exclusion> -->
+				<exclusion>
+					<groupId>com.google.collections</groupId>
+					<artifactId>google-collections</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 
