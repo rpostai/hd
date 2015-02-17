@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Happy Day Conviteria</title>
+	<style type="text/css">
+	   table {
+          border: 1px solid black;
+       }
+	   tbody tr:nth-child(odd) {
+ 		  background-color: #ccc;
+	   }
+	</style>
+</head>
+<body>
+    
+	<p>
+	Olá $cliente1 #if(!$cliente2) $cliente2 #end.<br/>
+    Ficamos muito felizes com sua visita e esperamos que possamos atendê-los da melhor forma possível.
+    Conforme conversamos, segue o(s) orçamento(s) dos modelos que você(s) se interess(ou)(aram):
+	</p>
+	
+	#foreach($orc in $orcamentos)
+		<table>
+	 	<thead>
+			<tr>
+			<th colspan="2">
+				Orçamento: $foreach.count
+			</th>
+			</tr>
+	 		<tr>
+	 			<th width="30%">Item</th>
+	 			<th width="70%">Descrição</th>
+	 		</tr>
+	 	</thead>
+	 	<tbody>
+	 		
+		 		<tr>
+		 			<td>Quantidade: </td>
+		 			<td>$orc.quantidade</td>
+		 		</tr>
+		 		<tr>
+		 			<td>Modelo: </td>
+		 			<td>$orc.modelo.nome</td>
+		 		</tr>
+				#if($orc.papelEnvelope)
+		 		<tr>
+		 			<td>Papel Envelope: </td>
+		 			<td>$orc.papelEnvelope.nome</td>
+		 		</tr>
+				#end
+				#if($orc.papelInterno)
+		 		<tr>
+		 			<td>Papel Interno: </td>
+		 			<td>$orc.papelInterno.nome</td>
+		 		</tr>
+				#end
+				#if($orc.impressaoEnvelope)
+		 		<tr>
+		 			<td>Impressão Envelope: </td>
+		 			<td>$orc.impressaoEnvelope.nome</td>
+		 		</tr>
+				#end
+				#if($orc.impressaoInterno)
+		 		<tr>
+		 			<td>Impressão Interno: </td>
+		 			<td>$orc.impressaoInterno.nome</td>
+		 		</tr>
+				#end
+				#if($orc.fita)
+		 		<tr>
+		 			<td>Fita: </td>
+		 			<td>$orc.fita.nome</td>
+		 		</tr>
+				#end
+				#if($orc.laco)
+		 		<tr>
+		 			<td>Laço: </td>
+		 			<td>$orc.laco.nome</td>
+		 		</tr>
+				#end
+				
+				#if($orc.impressaoNome)
+		 		<tr>
+		 			<td>Impressão nome dos convidados: </td>
+		 			<td>$orc.impressaoNome.nome</td>
+		 		</tr>
+				#end
+				
+				#if($orc.strass)
+		 		<tr>
+		 			<td>Strass/Meia Pérola: </td>
+		 			<td>$orc.strass.nome</td>
+		 		</tr>
+				#end
+				
+				#if($orc.ima)
+		 		<tr>
+		 			<td>Fechamento com imã: </td>
+		 			<td>$orc.ima.nome</td>
+		 		</tr>
+				#end
+				
+				#if($orc.serigrafiaInterno)
+		 		<tr>
+		 			<td>Serigrafia Papel Interno: </td>
+		 			<td>$orc.serigrafiaInterno.nome</td>
+		 		</tr>
+				#end
+				
+				#if($orc.serigrafiaEnvelope)
+		 		<tr>
+		 			<td>Serigrafia Envelope: </td>
+		 			<td>$orc.serigrafiaEnvelope.nome</td>
+		 		</tr>
+				#end
+		 		
+				#if($orc.valor)
+		 		<tr>
+		 			<td><b>Valor Individual:</b></td>
+		 			<td><b>R$ $orc.valor</b></td>
+		 		</tr>
+				#end
+				
+				#if($orc.valorTotal)
+				<tr>
+		 			<td><b><b>Valor Total:</b></td>
+		 			<td><b>R$ $orc.valorTotal</b></td>
+		 		</tr>
+				#end
+	 	</tbody>
+	 </table>
+	 </br>
+	 </br>
+	#end
+	
+	<p>
+	Lembramos que este orçamento é válido até $validade. </br>
+	Ao retornar, por favor anote o número do orçamento e traga com você para facilitar nosso atendimento.
+	</br>
+	</br>
+	Obrigada,
+	</br>
+	</br>
+	Happy Day Conviteria
+	</p>
+	
+</body>
+</html>

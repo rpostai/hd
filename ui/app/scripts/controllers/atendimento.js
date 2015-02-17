@@ -78,7 +78,7 @@ function AtendimentoController($scope, $http, store,$rootScope, $state) {
   $scope.enviarPorEmail = function() {
 	  var atendimento = store.get("atendimento");
 	  if (atendimento != null) {
-		  $http.post("http://localhost:8080/hd/servicos/atendimento/enviarcliente",atendimento).success(function(data) {
+		  $http.get("http://localhost:8080/hd/servicos/atendimento/enviaremail/"+atendimento.id).success(function(data) {
 			  alert('Email enviado com sucesso!')
 		  }).error(function(data) {
 			  alert('Erro ao enviar email!')

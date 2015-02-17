@@ -17,7 +17,7 @@ import javax.persistence.Entity;
 public class Fita extends BaseEntity {
 
 	@Convert(converter = TipoFitaConverter.class)
-	@Column(name="tipo_fita")
+	@Column(name = "tipo_fita")
 	private TipoFita tipoFita;
 
 	@Convert(converter = NumeracaoFitaConverter.class)
@@ -62,28 +62,35 @@ public class Fita extends BaseEntity {
 	}
 
 	public enum TipoFita {
-		CETIM("C"), GORGURAO("G");
+		CETIM("C", "Cetim"), GORGURAO("G", "Gorgurão");
 
-		private String tipo;
+		private final String tipo;
+		private final String descricao;
 
-		private TipoFita(String tipo) {
+		private TipoFita(String tipo, String descricao) {
 			this.tipo = tipo;
+			this.descricao = descricao;
 		}
 
 		public String getTipo() {
 			return tipo;
 		}
 
-		public void setTipo(String tipo) {
-			this.tipo = tipo;
+		public String getDescricao() {
+			return descricao;
 		}
-
+		
 		public static TipoFita getTipoFita(String valor) {
 			Optional<TipoFita> result = Arrays.asList(values()).stream()
 					.filter(x -> {
 						return valor.equals(x.getTipo());
 					}).findFirst();
 			return result.get();
+		}
+		
+		@Override
+		public String toString() {
+			return this.descricao;
 		}
 
 	}
@@ -126,7 +133,7 @@ public class Fita extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return String.format("Fita %s num %d", tipoFita.getTipo(),
+		return String.format("Fita %s número %d", tipoFita.getDescricao(),
 				numeracao.getNumero());
 	}
 

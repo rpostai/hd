@@ -97,11 +97,12 @@ function HeaderController($scope, $http, store,$rootScope) {
 			}
 		}
 		store.set('atendimento', $scope.atendimentoSalvo);
+		$scope.marcarPessoa();
 	}
 
 	$scope.marcarPessoa = function() {
 		if ($scope.atendimento.estado) {
-			$http.post("http://localhost:8080/hd/servicos/atendimento/pessoa",
+			$http.post("http://localhost:8080/hd/servicos/atendimento/atualizar",
 					$scope.atendimentoSalvo).success(function(data) {
 
 			})

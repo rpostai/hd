@@ -48,7 +48,7 @@ public class OrcamentoRepository extends BaseRepository<Orcamento> {
 			}
 			
 			if (orcamento.getFita() != null) {
-				s.setFita(new Dado(orcamento.getFita().getId(), orcamento.getFita().getTipoFita().getTipo()));
+				s.setFita(new Dado(orcamento.getFita().getId(), orcamento.getFita().toString()));
 			}
 			
 			if (orcamento.getLaco() != null) {

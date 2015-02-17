@@ -22,6 +22,7 @@ public class SolicitacaoOrcamento implements Serializable {
 	private int quantidadeStrass;
 	private Dado ima;
 	private BigDecimal valor;
+	private BigDecimal valorTotal;
 
 	public int getQuantidade() {
 		return quantidade;
@@ -157,6 +158,10 @@ public class SolicitacaoOrcamento implements Serializable {
 
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;
+	}
+	
+	public BigDecimal getValorTotal() {
+		return valor.multiply(new BigDecimal(quantidade));
 	}
 
 	@Override
