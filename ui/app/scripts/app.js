@@ -29,6 +29,10 @@ angular
                 url: "/atendimento",
                 templateUrl: "views/atendimento.html"
             })
+            .state('atendimentoretorno', {
+                url: "/atendimento/{atendimentoOriginal}",
+                templateUrl: "views/atendimento.html"
+            })
             .state('modelos', {
                 url: "/modelos",
                 templateUrl: "views/modelos.html"

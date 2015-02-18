@@ -2,7 +2,7 @@
  * 
  */
 
-function HeaderController($scope, $http, store,$rootScope) {
+function HeaderController($scope, $http, store,$rootScope, $stateParams) {
 	
 	$scope.definirNovoAtendimento = function() {
 		$scope.atendimento = {
@@ -31,14 +31,32 @@ function HeaderController($scope, $http, store,$rootScope) {
 	}
 
 	$scope.iniciarAtendimento = function() {
+		
 		if (!$scope.atendimento.estado) {
-			$http.post("http://localhost:8080/hd/servicos/atendimento/iniciar")
+			
+			var atendimentoOriginal = $stateParams.atendimentoOriginal;
+			var url = "http://localhost:8080/hd/servicos/atendimento/iniciar";
+			url += atendimentoOriginal != undefined ? "/"+atendimentoOriginal : "";
+			
+			$http.post(url)
 					.success(function(data) {
 						$scope.atendimentoSalvo = data;
 						store.set('atendimento', data);
 						$scope.atendimento.numero = data.numero;
 						$scope.atendimento.dataInicio = moment(new Date(data.dataInicio)).format('DD/MM/YYYY HH:mm:ss');
 						$scope.atendimento.estado = true;
+						
+						if (atendimentoOriginal != undefined) {
+							$scope.atendimento.pessoa1 = data.cliente1.nome;
+							$scope.atendimento.pessoa2 = data.cliente2.nome;
+							$scope.atendimento.telefone1 = data.cliente1.telefone;
+							$scope.atendimento.telefone2 = data.cliente2.telefone;
+							$scope.atendimento.email1 = data.cliente1.email;
+							$scope.atendimento.email2 = data.cliente2.email;
+							
+						}
+						
+						
 						$scope.atendimento.label = 'Finalizar atendimento';
 					});
 		}

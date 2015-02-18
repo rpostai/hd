@@ -72,6 +72,21 @@ public class AtendimentoService {
 		atendimento = repository.salvar(atendimento);
 		return atendimento;
 	}
+	
+	@POST
+	@Path("iniciar/{atendimentoOriginal}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Atendimento iniciarAtendimentoVinculado(@PathParam("atendimentoOriginal") Long atendimentoOriginalId) {
+		Atendimento atendimentoOriginal = repository.get(atendimentoOriginalId);
+		Atendimento atendimento = new Atendimento();
+		atendimento.setAtendimentoPai(atendimentoOriginal);
+		atendimento.iniciar();
+		atendimento.setCliente1(atendimentoOriginal.getCliente1());
+		atendimento.setCliente2(atendimentoOriginal.getCliente2());
+		atendimento = repository.salvar(atendimento);
+		return atendimento;
+	}
 
 	@POST
 	@Path("atualizar")

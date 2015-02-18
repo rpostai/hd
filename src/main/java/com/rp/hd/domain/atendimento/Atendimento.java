@@ -11,15 +11,18 @@ import java.util.Locale;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.RandomStringUtils;
 
@@ -46,13 +49,20 @@ public class Atendimento implements Serializable {
 
 	private String numero;
 
-	@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "cliente1_id")
 	private Pessoa cliente1;
 
-	@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "cliente2_id")
 	private Pessoa cliente2;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ATENDIMENTO_PAI_ID")
+	private Atendimento atendimentoPai;
+
+	@Transient
+	private long tempoTotalAtendimento;
 
 	public Long getId() {
 		return id;
@@ -112,34 +122,46 @@ public class Atendimento implements Serializable {
 		this.dataFim = Calendar.getInstance();
 	}
 
+	public Atendimento getAtendimentoPai() {
+		return atendimentoPai;
+	}
+
+	public void setAtendimentoPai(Atendimento atendimentoPai) {
+		this.atendimentoPai = atendimentoPai;
+	}
+
+	public void setTempoTotalAtendimento(long tempoTotalAtendimento) {
+		this.tempoTotalAtendimento = tempoTotalAtendimento;
+	}
+
 	public long getTempoTotalAtendimento() {
-//		LocalDateTime d1 = LocalDateTime.of(dataInicio.get(Calendar.YEAR),
-//				dataInicio.get(Calendar.MONTH),
-//				dataInicio.get(Calendar.DAY_OF_MONTH),
-//				dataInicio.get(Calendar.HOUR), dataInicio.get(Calendar.MINUTE),
-//				dataInicio.get(Calendar.SECOND));
-//
-//		LocalDateTime d2 = LocalDateTime.of(dataFim.get(Calendar.YEAR),
-//				dataFim.get(Calendar.MONTH),
-//				dataFim.get(Calendar.DAY_OF_MONTH), dataFim.get(Calendar.HOUR),
-//				dataFim.get(Calendar.MINUTE), dataFim.get(Calendar.SECOND));
-//
-//		return ChronoUnit.MINUTES.between(d2, d1);
-		
+		// LocalDateTime d1 = LocalDateTime.of(dataInicio.get(Calendar.YEAR),
+		// dataInicio.get(Calendar.MONTH),
+		// dataInicio.get(Calendar.DAY_OF_MONTH),
+		// dataInicio.get(Calendar.HOUR), dataInicio.get(Calendar.MINUTE),
+		// dataInicio.get(Calendar.SECOND));
+		//
+		// LocalDateTime d2 = LocalDateTime.of(dataFim.get(Calendar.YEAR),
+		// dataFim.get(Calendar.MONTH),
+		// dataFim.get(Calendar.DAY_OF_MONTH), dataFim.get(Calendar.HOUR),
+		// dataFim.get(Calendar.MINUTE), dataFim.get(Calendar.SECOND));
+		//
+		// return ChronoUnit.MINUTES.between(d2, d1);
+
 		if (dataInicio != null && dataFim != null) {
-			long diff = dataFim.getTime().getTime() - dataInicio.getTime().getTime();
-			
+			long diff = dataFim.getTime().getTime()
+					- dataInicio.getTime().getTime();
+
 			long diffSeconds = diff / 1000 % 60;
 			long diffMinutes = diff / (60 * 1000) % 60;
 			long diffHours = diff / (60 * 60 * 1000) % 24;
 			long diffDays = diff / (24 * 60 * 60 * 1000);
-			
-			return diffMinutes;	
+
+			return diffMinutes;
 		}
-		
+
 		return -1l;
-		
-		
+
 	}
 
 }
