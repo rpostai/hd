@@ -112,7 +112,7 @@ public class Atendimento implements Serializable {
 		this.dataFim = Calendar.getInstance();
 	}
 
-	public long calcularTempoTotalAtendimento() {
+	public long getTempoTotalAtendimento() {
 //		LocalDateTime d1 = LocalDateTime.of(dataInicio.get(Calendar.YEAR),
 //				dataInicio.get(Calendar.MONTH),
 //				dataInicio.get(Calendar.DAY_OF_MONTH),
@@ -126,14 +126,20 @@ public class Atendimento implements Serializable {
 //
 //		return ChronoUnit.MINUTES.between(d2, d1);
 		
-		long diff = dataFim.getTime().getTime() - dataInicio.getTime().getTime();
+		if (dataInicio != null && dataFim != null) {
+			long diff = dataFim.getTime().getTime() - dataInicio.getTime().getTime();
+			
+			long diffSeconds = diff / 1000 % 60;
+			long diffMinutes = diff / (60 * 1000) % 60;
+			long diffHours = diff / (60 * 60 * 1000) % 24;
+			long diffDays = diff / (24 * 60 * 60 * 1000);
+			
+			return diffMinutes;	
+		}
 		
-		long diffSeconds = diff / 1000 % 60;
-		long diffMinutes = diff / (60 * 1000) % 60;
-		long diffHours = diff / (60 * 60 * 1000) % 24;
-		long diffDays = diff / (24 * 60 * 60 * 1000);
+		return -1l;
 		
-		return diffMinutes;
+		
 	}
 
 }

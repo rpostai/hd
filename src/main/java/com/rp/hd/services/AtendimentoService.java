@@ -89,7 +89,7 @@ public class AtendimentoService {
 	public long finalizarAtendimento(Atendimento atendimento) {
 		atendimento.finalizar();
 		atendimento = repository.salvar(atendimento);
-		return atendimento.calcularTempoTotalAtendimento();
+		return atendimento.getTempoTotalAtendimento();
 	}
 
 	@GET
@@ -166,6 +166,20 @@ public class AtendimentoService {
 	public List<SolicitacaoOrcamento> getOrcamentosAtendimento(
 			@PathParam("atendimento") Long atendimento) {
 		return orcamentoRepository.getOrcamentosPorAtendimento(atendimento);
+	}
+	
+	@POST
+	@Path("consulta")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Atendimento> consultaAtendimentos(ConsultaAtendimento consulta) {
+		Calendar c = Calendar.getInstance();
+		if (consulta.getData() != null) {
+			c.setTime(consulta.getData());
+		} else {
+			c = null;
+		}
+		return repository.consultar(consulta.getNumero(), consulta.getNome(), c);
 	}
 
 	@GET

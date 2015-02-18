@@ -13,7 +13,8 @@ angular
         'ngResource',
         'ui.router',
         'angular-storage',
-        'ui.bootstrap'
+        'ui.bootstrap',
+        'ui.grid'
     ])
     .config(function ($stateProvider,$urlRouterProvider) {
 
@@ -51,5 +52,9 @@ angular
             .state('orcamentos', {
             	url: '/orcamentos',
             	templateUrl: 'views/orcamentos.html'
+            })
+            .state('atendimentos', {
+            	url: '/consultaatendimentos',
+            	templateUrl: 'views/atendimentos.html'
             })
     });

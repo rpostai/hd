@@ -1,0 +1,65 @@
+<header class="margin20 nrm nlm">
+	<div class="clearfix">
+		<a class="place-left" href="#" title="">
+			<h1>Consulta de atendimentos realizados</h1>
+		</a>
+	</div>
+</header>
+
+<div class="grid fluid" ng-controller="ConsultaAtendimentoController">
+	<div class="row">
+		<div class="span3">
+			<label for="txtNumero">Número do atendimento</label>
+	    	<input id="txtNumero" type="text" ng-model="consulta.numero" class="input-control text"/>
+		</div>
+		<div class="span3">
+			<label for="txtData">Data</label>
+	    	<input id="txtData" type="text" ng-model="consulta.data" class="input-control text"/>
+		</div>
+		<div class="span3">
+			<label for="txtNomeCliente">Nome Cliente</label>
+	    	<input id="txtNomeCliente" type="text" ng-model="consulta.nome" class="input-control text"/>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span3"> 
+	      <button class="button default" ng-click="consultar()">Pesquisar</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span12">
+			<!-- 
+			<div class="gridStyle" ng-grid="gridOptions"></div>
+			 -->
+			 
+			<table class="table striped" style="width: 100%">
+				<thead>
+					<tr>
+						<th>Detalhe</th>
+						<th>Novo atendimento</th>
+						<th>Número</th>
+						<th>Cliente 1</th>
+						<th>Cliente 2</th>
+						<th>Data/hora atendimento</th>
+						<th>Data/hora fim</th>
+						<th>Duração</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="obj in dados">
+						<td><button class="button default" ng-click="detalhe()">Detalhe</button></td>
+						<td><button class="button default" ng-click="novo()">Novo atendimento</button></td>
+						<td>{{obj.numero}}</td>
+						<td>{{obj.cliente1.nome}}</td>
+						<td>{{obj.cliente2.nome}}</td>
+						<td>{{obj.dataInicio | date:'dd/MM/yyyy HH:mm'}}</td>
+						<td>{{obj.dataFim | date:'dd/MM/yyyy HH:mm'}}</td>
+						<td>{{obj.tempoTotalAtendimento}}</td>
+					</tr>
+				</tbody>	
+			</table>
+			<p ng-if="!dados.length">Nenhum registro foi encontrado</p>
+		</div>
+	</div>
+</div>
+
