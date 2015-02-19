@@ -43,4 +43,12 @@ public class DateUtils {
 	private static Date parse(String data) throws ParseException {
 		return DF.parse(data);
 	}
+	
+	public static String formatDate(Date date) {
+		return DF.format(date);
+	}
+	
+	public static String formatDate(Calendar date) {
+		return DF.format(date.getTime());
+	}
 }

@@ -1,0 +1,44 @@
+<div class="tile-group no-margin no-padding clearfix"
+	style="width: 100%">
+	
+	<a class="tile half bg-lightBlue" ui-sref="home">
+		<div class="tile-content icon">
+			<span class="icon-home" title="Página principal"></span>
+		</div>
+	</a>
+	
+	<a class="tile half bg-lightBlue" ui-sref="layout.atendimento">
+		<div class="tile-content icon">
+			<span class="icon-user" title="Novo Atendimento"></span>
+		</div>
+	</a> 
+	
+	<a class="tile half bg-orange ol-transparent" ui-sref="layout.modelos">
+		<div class="tile-content icon">
+			<span class="icon-camera" title="Modelos"></span>
+		</div>
+	</a> <a class="tile half bg-teal ol-transparent"
+		ui-sref="layout.atendimentos">
+		<div class="tile-content icon">
+			<span class="icon-search" title="Orcamentos realizados"></span>
+		</div>
+	</a> <a class="tile half ol-transparent bg-red">
+		<div class="tile-content icon">
+			<span class="icon-clock" title="Acompanhamento de pedidos"></span>
+		</div>
+	</a>
+	
+	<a ui-sref="layout.fotos" class="tile half ol-transparent">
+    	<div class="tile-content icon bg-green">
+           <span class=" icon-camera-3" title="Todas fotos"></span>
+       	</div>
+    </a>
+    
+    <a class="tile half ol-transparent bg-cyan">
+     	<div class="tile-content icon">
+            <span class="icon-newspaper" title="Quadro de avisos internos"></span>
+       	</div>
+     </a>
+</div>
+
+<div ui-view></div>

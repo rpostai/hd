@@ -2,9 +2,13 @@ package com.rp.hd.services;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
+
+import com.rp.hd.domain.utils.DateUtils;
 
 public class SolicitacaoOrcamento implements Serializable {
 
+	private Date dataAtendimento;
 	private int quantidade;
 	private Dado modelo;
 	private Dado papelEnvelope;
@@ -159,9 +163,17 @@ public class SolicitacaoOrcamento implements Serializable {
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;
 	}
-	
+
 	public BigDecimal getValorTotal() {
 		return valor.multiply(new BigDecimal(quantidade));
+	}
+
+	public String getDataAtendimento() {
+		return DateUtils.formatDate(dataAtendimento);
+	}
+
+	public void setDataAtendimento(Date dataAtendimento) {
+		this.dataAtendimento = dataAtendimento;
 	}
 
 	@Override

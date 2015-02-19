@@ -25,24 +25,28 @@ angular
                 url: "/home",
                 templateUrl: "views/main.html"
             })
-            .state('atendimento', {
+            .state('layout', {
+            	abstract: true,
+            	templateUrl: "views/layout.html"
+            })
+            .state('layout.atendimento', {
                 url: "/atendimento",
                 templateUrl: "views/atendimento.html"
             })
-            .state('atendimentoretorno', {
+            .state('layout.atendimentoretorno', {
                 url: "/atendimento/{atendimentoOriginal}",
                 templateUrl: "views/atendimento.html"
             })
-            .state('modelos', {
+            .state('layout.modelos', {
                 url: "/modelos",
                 templateUrl: "views/modelos.html"
             })
-            .state('modelo', {
+            .state('layout.modelo', {
                 url: "/modelo/{modelo}",
                 templateUrl: "views/modelo.html",
                 controller: 'ModeloController'
             })
-            .state('fotos', {
+            .state('layout.fotos', {
             	url: "/fotos",
             	templateUrl: "views/fotos.html",
             	controller: function($scope, $http) {
@@ -53,11 +57,11 @@ angular
             		})
             	}
             })
-            .state('orcamentos', {
+            .state('layout.orcamentos', {
             	url: '/orcamentos',
             	templateUrl: 'views/orcamentos.html'
             })
-            .state('atendimentos', {
+            .state('layout.atendimentos', {
             	url: '/consultaatendimentos',
             	templateUrl: 'views/atendimentos.html'
             })

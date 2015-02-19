@@ -31,6 +31,8 @@ public class AtendimentoRepository extends BaseRepository<Atendimento> {
 		if (data != null) {
 			sb.append(" and (:data = date_trunc('day',o).dataInicio)");
 		}
+		
+		sb.append(" order by o.dataInicio desc, o.cliente1.nome asc");
 
 		TypedQuery<Atendimento> tq = em.createQuery(sb.toString(),
 				Atendimento.class);

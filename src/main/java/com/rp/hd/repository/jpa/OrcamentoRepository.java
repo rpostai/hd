@@ -1,5 +1,6 @@
 package com.rp.hd.repository.jpa;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,17 +19,30 @@ public class OrcamentoRepository extends BaseRepository<Orcamento> {
 	}
 
 	public List<SolicitacaoOrcamento> getOrcamentosPorAtendimento(Long atendimento) {
-		TypedQuery<Orcamento> tq = em
-				.createQuery(
-						"select o from Orcamento o where o.atendimento.id = :atendimento",
-						Orcamento.class);
+		StringBuilder sb = new StringBuilder();
+		sb.append("select o from Orcamento o ");
+		sb.append("  join o.atendimento    a");
+		sb.append(" where (a.cliente1 in  ");
+		sb.append("  (select cliente1 from Atendimento at1 where at1.id = :atendimento) ");
+		sb.append("   or a.cliente2 in ");
+		sb.append("  (select cliente2 from Atendimento at2 where at2.id = :atendimento)");
+		sb.append(")");
+		sb.append("order by a.id desc");
+		
+//		TypedQuery<Orcamento> tq = em
+//				.createQuery(
+//						"select o from Orcamento o left join o.cliente1 c1 left join o.cliente2 c2 where o.atendimento.id = :atendimento",
+//						Orcamento.class);
+		
+		TypedQuery<Orcamento> tq = em.createQuery(sb.toString(),Orcamento.class);
+		
 		tq.setParameter("atendimento", atendimento);
 		List<Orcamento> resultList = tq.getResultList();
-		
-		
+
 		return resultList.stream().map(orcamento -> {
 			
 			SolicitacaoOrcamento s = new SolicitacaoOrcamento();
+			s.setDataAtendimento(orcamento.getAtendimento().getDataInicio().getTime());
 			s.setQuantidade(orcamento.getQuantidade());
 			s.setQuantidadeStrass(orcamento.getQuantidadeStrass());
 			
