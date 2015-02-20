@@ -168,7 +168,7 @@ public class CalculadoraService {
 
 		if (orcamento.getModelo() == null) {
 			throw new IllegalArgumentException(
-					"Modelo de convite é obrigatório");
+					"Modelo de convite ï¿½ obrigatï¿½rio");
 		}
 
 		ModeloConvite m = modeloConviteRepository.get(orcamento.getModelo().getId());
@@ -253,28 +253,34 @@ public class CalculadoraService {
 				.strass(strassAplicado, orcamento.getQuantidadeStrass()).renda(rendaAplicada)
 				.ima(imaAplicado).impressaoNome(impressaoNomeAplicado)
 				.serigrafiaEnvelope(serigrafiaAplicadaEnvelope)
-				.serigrafiaInterno(serigrafiaAplicadaInterno).build();
+				.serigrafiaInterno(serigrafiaAplicadaInterno).cliche(cliche).build();
 
 		
 		Orcamento resultado =  calc.calcular();
 		
-		adicionarOrcamento(atendimentoId, orcamento, resultado.getPrecoFinal());
+		adicionarOrcamento(atendimentoId, orcamento, resultado);
 		
 		return resultado;
 	}
 	
-	public void adicionarOrcamento(@PathParam("atendimento") Long atendimentoId, SolicitacaoOrcamento sol, BigDecimal precoCalculado) {
+	public void adicionarOrcamento(@PathParam("atendimento") Long atendimentoId, SolicitacaoOrcamento sol, Orcamento orcamentoCalculado) {
 		
 		Atendimento atendimento = repository.get(atendimentoId);
 		if (atendimento == null) {
-			throw new IllegalArgumentException("Para realizar um orçamento é obrigatório ter um atendimento iniciado");
+			throw new IllegalArgumentException("Para realizar um orÃ§amento Ã© obrigatÃ³rio ter um atendimento iniciado");
 		}
 		
 		com.rp.hd.domain.atendimento.Orcamento o = new com.rp.hd.domain.atendimento.Orcamento();
 		
 		o.setAtendimento(atendimento);
 		
-		o.setPrecoCalculado(precoCalculado);
+		o.setPrecoCalculado(orcamentoCalculado.getValorUnidade());
+		
+		o.setPrecoCalculadoItemsPedido(orcamentoCalculado.getValorItemsPorPedido());
+		
+		o.setPrecoCalculadoTotal(orcamentoCalculado.getValorTotal());
+		
+		o.setPrecoCalculadoConvites(orcamentoCalculado.getValorTotalConvites());
 		
 		o.setQuantidade(sol.getQuantidade());
 		
@@ -336,6 +342,10 @@ public class CalculadoraService {
 		
 		if (sol.getStrass() != null) {
 			o.setStrass(strassRepository.get(sol.getStrass().getId()));
+		}
+		
+		if (sol.getCliche() != null) {
+			o.setCliche(clicheRepository.get(sol.getCliche().getId()));
 		}
 		
 		orcamentoRepository.salvar(o);

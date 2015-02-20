@@ -79,6 +79,7 @@ public class OrcamentoRepository extends BaseRepository<Orcamento> {
 			
 			if (orcamento.getHotstamp() != null) {
 				s.setHotstamp(new Dado(orcamento.getHotstamp().getId(), orcamento.getHotstamp().getDescricao()));
+				s.getHotstamp().setValor(orcamento.getHotstamp().getPrecoVenda());
 			}
 			
 			if (orcamento.getIma() != null) {
@@ -97,7 +98,15 @@ public class OrcamentoRepository extends BaseRepository<Orcamento> {
 				s.setSerigrafiaInterno(new Dado(orcamento.getSerigrafiaInterno().getId(), orcamento.getSerigrafiaInterno().getDescricao()));
 			}
 			
-			s.setValor(orcamento.getPrecoCalculado());
+			if (orcamento.getCliche() != null) {
+				s.setCliche(new Dado(orcamento.getCliche().getId(), orcamento.getCliche().getDescricao()));
+				s.getCliche().setValor(orcamento.getCliche().getValorVenda());
+			}
+			
+			s.setPrecoCalculado(orcamento.getPrecoCalculado());
+			s.setPrecoCalculadoItemsPedido(orcamento.getPrecoCalculadoItemsPedido());
+			s.setPrecoCalculadoTotal(orcamento.getPrecoCalculadoTotal());
+			s.setPrecoCalculadoConvites(orcamento.getPrecoCalculadoConvites());
 			
 			return s;
 			

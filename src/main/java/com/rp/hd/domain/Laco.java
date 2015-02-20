@@ -17,7 +17,7 @@ public class Laco extends BaseEntity {
 	@Column(name = "qtd_centimetros_fita")
 	private int quantidadeFitaEmCentimetros;
 
-	private BigDecimal markup;
+	private BigDecimal markup = BigDecimal.ONE;
 
 	@ElementCollection
 	@CollectionTable(name = "laco_maoobra_preco")
@@ -58,5 +58,15 @@ public class Laco extends BaseEntity {
 	public void setCustoMaoDeObra(List<PrecoVigencia> custoMaoDeObra) {
 		this.custoMaoDeObra = custoMaoDeObra;
 	}
-
+	
+	public BigDecimal getCustoAtualMaoObra() {
+		return PrecoVigenciaService.getPrecoAtual(this.custoMaoDeObra).getValor();
+	}
+	
+	public BigDecimal getPrecoVenda(Fita fita) {
+		BigDecimal precoLacoComFita = fita.getCustoAtual().multiply(new BigDecimal(quantidadeFitaEmCentimetros));
+		precoLacoComFita = precoLacoComFita.add(getCustoAtualMaoObra());
+		precoLacoComFita = precoLacoComFita.multiply(markup).setScale(2, BigDecimal.ROUND_HALF_UP);
+		return precoLacoComFita;
+	}
 }

@@ -102,17 +102,31 @@
 		
 		<div class="span4">
 			<label for="cmbCliche">Clichê</label>
-		    <select id="cmbCliche" ng-model="orcamento.cliche" ng-options="cliche as cliche.descricao for cliche in cliches track by cliche.id" class="input-control text">
+		    <select id="cmbCliche" ng-model="orcamento.cliche" ng-options="c as c.nome for c in cliches track by c.id" class="input-control text">
 		      <option value="">-- Selecione o modelo do cliche --</option>
 		    </select>
 		</div>
 	</div>
 	
 	<div class="row">
-		<div class="span12">
-	      <p>R$ {{precoPorUnidade}} por unidade</p>
+		<div class="span3">
+	      <p>Valor da unidade: R$ {{precoPorUnidade}} por unidade</p>
 		</div>
+		
+		<div class="span3">
+	      <p>Valor total dos convites: R$ {{precoCalculadoConvites}}</p>
+		</div>
+		
+		<div class="span3">
+	      <p>Valor itens por pedido: R$ {{precoItensPorPedido}} por pedido</p>
+		</div>
+		
+		<div class="span3">
+	      <p>Valor total do pedido: R$ {{precoTotal}}</p>
+		</div>
+		
 	</div>
+	
 	<div class="row">
 		<div class="span3"> 
 	      <button class="button default" ng-click="calcular()">Calcular</button>

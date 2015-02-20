@@ -48,7 +48,7 @@
 				<tbody>
 					<tr ng-repeat="obj in dados">
 						<td><button class="button default" ng-click="detalhe()">Detalhe</button></td>
-						<td><button class="button default" ui-sref="atendimentoretorno({'atendimentoOriginal': obj.id})">Novo atendimento</button></td>
+						<td><button class="button default" ui-sref="layout.atendimentoretorno({'atendimentoOriginal': obj.id})">Novo atendimento</button></td>
 						<td>{{obj.numero}}</td>
 						<td>{{obj.cliente1.nome}}</td>
 						<td>{{obj.cliente2.nome}}</td>

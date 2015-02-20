@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.Column;
+
 import com.rp.hd.domain.utils.DateUtils;
 
 public class SolicitacaoOrcamento implements Serializable {
@@ -26,8 +28,11 @@ public class SolicitacaoOrcamento implements Serializable {
 	private int quantidadeStrass;
 	private Dado ima;
 	private Dado cliche;
-	private BigDecimal valor;
-	private BigDecimal valorTotal;
+
+	private BigDecimal precoCalculado;
+	private BigDecimal precoCalculadoConvites;
+	private BigDecimal precoCalculadoItemsPedido;
+	private BigDecimal precoCalculadoTotal;
 
 	public int getQuantidade() {
 		return quantidade;
@@ -157,20 +162,37 @@ public class SolicitacaoOrcamento implements Serializable {
 		this.quantidadeStrass = quantidadeStrass;
 	}
 
-	public BigDecimal getValor() {
-		return valor;
+	public BigDecimal getPrecoCalculado() {
+		return precoCalculado;
 	}
 
-	public void setValor(BigDecimal valor) {
-		this.valor = valor;
+	public void setPrecoCalculado(BigDecimal precoCalculado) {
+		this.precoCalculado = precoCalculado;
 	}
 
-	public BigDecimal getValorTotal() {
-		return valor.multiply(new BigDecimal(quantidade));
+	public BigDecimal getPrecoCalculadoConvites() {
+		return precoCalculadoConvites;
 	}
 
-	public String getDataAtendimento() {
-		return DateUtils.formatDate(dataAtendimento);
+	public void setPrecoCalculadoConvites(BigDecimal precoCalculadoConvites) {
+		this.precoCalculadoConvites = precoCalculadoConvites;
+	}
+
+	public BigDecimal getPrecoCalculadoItemsPedido() {
+		return precoCalculadoItemsPedido;
+	}
+
+	public void setPrecoCalculadoItemsPedido(
+			BigDecimal precoCalculadoItemsPedido) {
+		this.precoCalculadoItemsPedido = precoCalculadoItemsPedido;
+	}
+
+	public BigDecimal getPrecoCalculadoTotal() {
+		return precoCalculadoTotal;
+	}
+
+	public void setPrecoCalculadoTotal(BigDecimal precoCalculadoTotal) {
+		this.precoCalculadoTotal = precoCalculadoTotal;
 	}
 
 	public void setDataAtendimento(Date dataAtendimento) {

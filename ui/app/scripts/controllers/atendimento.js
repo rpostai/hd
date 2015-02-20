@@ -19,7 +19,8 @@ function AtendimentoController($scope, $http, store,$rootScope, $state) {
 			    serigrafiaEnvelope: null,
 			    hotstamp: null,
 			    strass: null,
-			    ima: null
+			    ima: null,
+			    cliche: null
 			  };
   }
   
@@ -42,6 +43,7 @@ function AtendimentoController($scope, $http, store,$rootScope, $state) {
 				  $scope.imas = data.imas;
 				  $scope.fitas = data.fitas;
 				  $scope.lacos = data.lacos;
+				  $scope.cliches = data.cliches;
 			  	}).error(
 			  			function (data, status, headers, config) {
 			  				alert("Erro ao recuperar informações para o atendimento");
@@ -53,7 +55,10 @@ function AtendimentoController($scope, $http, store,$rootScope, $state) {
 	  $scope.atendimento = store.get("atendimento").id;
 	  
 	  $http.post("http://localhost:8080/hd/servicos/calculadora/calcular/"+$scope.atendimento, $scope.orcamento).success(function(data) {
-		  $scope.precoPorUnidade = data.precoFinal;
+		  $scope.precoPorUnidade = data.valorUnidade;
+		  $scope.precoItensPorPedido = data.valorItemsPorPedido;
+		  $scope.precoTotal = data.valorTotal;
+		  $scope.precoCalculadoConvites = data.valorTotalConvites;
 	  }).error(function(data) {
 		 alert('Erro ao calcular preço. Procure o administrador do sistema'); 
 	  });
@@ -71,7 +76,7 @@ function AtendimentoController($scope, $http, store,$rootScope, $state) {
   $scope.verTodosOrcamentos = function() {
 	  var atendimento = store.get("atendimento");
 	  if (atendimento != null) {
-		  $state.go("orcamentos");  
+		  $state.go("layout.orcamentos");  
 	  }
   }
   

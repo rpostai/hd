@@ -1,11 +1,15 @@
 package com.rp.hd.services;
 
+import java.math.BigDecimal;
+
 public class Dado {
 
 	private long id;
 
 	private String nome;
-	
+
+	private BigDecimal valor;
+
 	public Dado() {
 	}
 
@@ -28,6 +32,14 @@ public class Dado {
 
 	public void setNome(String descricao) {
 		this.nome = descricao;
+	}
+
+	public BigDecimal getValor() {
+		return valor;
+	}
+
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
 	}
 
 }

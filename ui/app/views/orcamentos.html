@@ -1,7 +1,7 @@
 <header class="margin20 nrm nlm">
 	<div class="clearfix">
 		<a class="place-left" href="#" title="">
-			<h1>Orcamentos</h1>
+			<h1>Orçamentos</h1>
 		</a>
 	</div>
 </header>
@@ -75,17 +75,37 @@
 			 			<td>Serigrafia Envelope: </td>
 			 			<td>{{orc.serigrafiaEnvelope.nome}}</td>
 			 		</tr>
-			 		
-			 		<tr>
-			 			<td>Valor Individual: </td>
-			 			<td>{{orc.valor}}</td>
+			 	</tbody>
+			 	
+			 	<tfoot>
+			 		<tr ng-show="{{orc.hotstamp != null || orc.cliche != null}}">
+			 			<td colspan="2">Itens adicionais</td>
 			 		</tr>
 			 		
+			 		<tr ng-show="{{orc.hotstamp != null}}">
+			 			<td>Aplicação HotStamp</td>
+			 			<td>{{orc.hotstamp.nome}} - R$ {{orc.hotstamp.valor}}</td>
+			 		</tr>
+			 		
+			 		<tr ng-show="{{orc.cliche != null}}">
+			 			<td>Confecção clichê</td>
+			 			<td>{{orc.cliche.nome}} - R$ {{orc.cliche.valor}}</td>
+			 		</tr>
+			 	
+			 		<tr>
+			 			<td>Valor por unidade: </td>
+			 			<td>{{orc.precoCalculado}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Valores adicionais por pedido: </td>
+			 			<td>{{orc.precoCalculadoItemsPedido}}</td>
+			 		</tr>
 			 		<tr>
 			 			<td>Valor Total: </td>
-			 			<td>{{orc.valorTotal}}</td>
+			 			<td>{{orc.precoCalculadoTotal}}</td>
 			 		</tr>
-			 	</tbody>
+			 	</tfoot>
+			 	
 			 </table>
 		</tab> 
 	</tabset>
