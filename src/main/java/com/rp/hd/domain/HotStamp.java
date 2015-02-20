@@ -36,7 +36,7 @@ public class HotStamp extends BaseEntity {
 	}
 
 	public String toString() {
-		return "Aplicação Hot Stamping";
+		return "AplicaÃ§Ã£o Hot Stamping";
 	}
 
 	public String getDescricao() {
@@ -46,5 +46,4 @@ public class HotStamp extends BaseEntity {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
 }

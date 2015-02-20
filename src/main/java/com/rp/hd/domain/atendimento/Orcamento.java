@@ -97,9 +97,15 @@ public class Orcamento implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "ima_id")
 	private Ima ima;
-	
-	@Column(name="preco_calculado")
+
+	@Column(name = "preco_calculado")
 	private BigDecimal precoCalculado;
+
+	@Column(name = "preco_calculado_items_pedido")
+	private BigDecimal precoCalculadoItemsPedido;
+
+	@Column(name = "preco_calculado_total")
+	private BigDecimal precoCalculadoTotal;
 
 	public int getQuantidade() {
 		return quantidade;
@@ -252,7 +258,22 @@ public class Orcamento implements Serializable {
 	public void setPrecoCalculado(BigDecimal precoCalculado) {
 		this.precoCalculado = precoCalculado;
 	}
-	
-	
+
+	public BigDecimal getPrecoCalculadoItemsPedido() {
+		return precoCalculadoItemsPedido;
+	}
+
+	public void setPrecoCalculadoItemsPedido(
+			BigDecimal precoCalculadoItemsPedido) {
+		this.precoCalculadoItemsPedido = precoCalculadoItemsPedido;
+	}
+
+	public BigDecimal getPrecoCalculadoTotal() {
+		return precoCalculadoTotal;
+	}
+
+	public void setPrecoCalculadoTotal(BigDecimal precoCalculadoTotal) {
+		this.precoCalculadoTotal = precoCalculadoTotal;
+	}
 
 }

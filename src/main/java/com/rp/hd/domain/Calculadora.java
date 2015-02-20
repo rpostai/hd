@@ -65,6 +65,7 @@ public class Calculadora {
 		calcularValorImpressaoEnvelope(o);
 		calcularValorImpressaoInterno(o);
 		calcularValorFita(o);
+		calculaValorLaco(o);
 		calcularImpressaoNome(o);
 		calcularRenda(o);
 		calcularAplicacaoSerigrafiaInterno(o);
@@ -112,6 +113,12 @@ public class Calculadora {
 			o.addItem(o.new Item(fita.toString(), fita.getPrecoVenda(modelo)));
 		}
 	}
+	
+	public void calculaValorLaco(Orcamento o) {
+		if (laco != null) {
+			o.addItem(o.new Item(laco.toString(), laco.getPrecoVenda(fita)));
+		}
+	}
 
 	public void calcularImpressaoNome(Orcamento o) {
 		if (impressaoNome != null) {
@@ -142,7 +149,7 @@ public class Calculadora {
 
 	public void calcularHotStamping(Orcamento o) {
 		if (hotStamp != null) {
-			o.addItem(o.new Item(hotStamp.toString(), hotStamp.getPrecoVenda()));
+			o.addItemValortotal(o.new Item(hotStamp.toString(), hotStamp.getPrecoVenda()));
 		}
 	}
 
@@ -178,12 +185,15 @@ public class Calculadora {
 
 		private int quantidade;
 		
-		private BigDecimal precoFinal;
+		private BigDecimal valorUnidade;
+		private BigDecimal valorItemsPorPedido;
+		private BigDecimal valorTotal;
 
-		private List<Item> items = new ArrayList<>();
+		private List<Item> itemsCompoePrecoUnidade = new ArrayList<>();
+		private List<Item> itensCompoePrecoPorCompra = new ArrayList<Calculadora.Orcamento.Item>();
 
 		public List<Item> getItems() {
-			return items;
+			return itemsCompoePrecoUnidade;
 		}
 
 		public int getQuantidade() {
@@ -195,31 +205,46 @@ public class Calculadora {
 		}
 
 		public void addItem(Item item) {
-			this.items.add(item);
+			this.itemsCompoePrecoUnidade.add(item);
+		}
+		
+		public void addItemValortotal(Item item) {
+			this.itensCompoePrecoPorCompra.add(item);
 		}
 
-		public BigDecimal getPrecoFinal() {
-			return this.items.stream().parallel().map(item -> {
+		public BigDecimal getValorUnidade() {
+			return this.itemsCompoePrecoUnidade.stream().parallel().map(item -> {
 				return item.valor;
 			}).reduce((x, y) -> {
 				return x.add(y);
 			}).get();
 		}
 		
-
-		public void setPrecoFinal(BigDecimal precoFinal) {
-			this.precoFinal = precoFinal;
+		public BigDecimal getValorItemsPorPedido() {
+			BigDecimal valorTotal = BigDecimal.ZERO;
+			valorTotal = itensCompoePrecoPorCompra.stream().parallel().map(item -> {
+				return item.valor;
+			}).reduce((x,y) -> {
+				return x.add(y);
+			}).get();
+			return valorTotal;
 		}
-
+		
+		public BigDecimal getValorTotal() {
+			BigDecimal valorTotalUnidade = getValorUnidade().multiply(new BigDecimal(quantidade));
+			BigDecimal valorTotalItemsPorPedido = getValorItemsPorPedido();
+			return valorTotalUnidade.add(valorTotalItemsPorPedido);
+		}
+		
 		@Override
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
 
-			items.forEach(item -> {
+			itemsCompoePrecoUnidade.forEach(item -> {
 				sb.append(item.toString()).append(
 						System.getProperty("line.separator"));
 			});
-			sb.append("Preço final individual: " + getPrecoFinal());
+			sb.append("PreÃ§o final individual: " + getValorUnidade());
 			return sb.toString();
 		}
 
@@ -242,7 +267,7 @@ public class Calculadora {
 
 			@Override
 			public String toString() {
-				return String.format("Item orçado: %s - Valor: %s", item,
+				return String.format("Item orÃ§ado: %s - Valor: %s", item,
 						valor.toPlainString());
 			}
 
@@ -268,7 +293,6 @@ public class Calculadora {
 		private int quantidadeStrass;
 		private Strass strass;
 		private ImpressaoNome impressaoNome;
-		private Embalagem embalagem;
 		private Colagem colagem;
 		private CorteEnvelope corte;
 
@@ -356,11 +380,6 @@ public class Calculadora {
 			return this;
 		}
 
-		public CalculadoraBuilder embalagem(Embalagem embalagem) {
-			this.embalagem = embalagem;
-			return this;
-		}
-
 		public CalculadoraBuilder colagem(Colagem colagem) {
 			this.colagem = colagem;
 			return this;
@@ -370,7 +389,7 @@ public class Calculadora {
 			this.corte = corte;
 			return this;
 		}
-
+		
 		public Calculadora build() {
 
 			// if (corte == null) {

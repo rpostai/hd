@@ -53,7 +53,9 @@ function AtendimentoController($scope, $http, store,$rootScope, $state) {
 	  $scope.atendimento = store.get("atendimento").id;
 	  
 	  $http.post("http://localhost:8080/hd/servicos/calculadora/calcular/"+$scope.atendimento, $scope.orcamento).success(function(data) {
-		  $scope.precoPorUnidade = data.precoFinal;
+		  $scope.precoPorUnidade = data.valorUnidade;
+		  $scope.precoItensPorPedido = data.valorItemsPorPedido;
+		  $scope.precoTotal = data.valorTotal;
 	  }).error(function(data) {
 		 alert('Erro ao calcular preço. Procure o administrador do sistema'); 
 	  });

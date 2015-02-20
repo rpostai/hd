@@ -101,10 +101,20 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="span12">
-	      <p>R$ {{precoPorUnidade}} por unidade</p>
+		<div class="span4">
+	      <p>Valor da unidade: R$ {{precoPorUnidade}} por unidade</p>
 		</div>
+		
+		<div class="span4">
+	      <p>Valor itens por pedido: R$ {{precoItensPorPedido}} por pedido</p>
+		</div>
+		
+		<div class="span4">
+	      <p>Valor total do pedido: R$ {{precoTotal}}</p>
+		</div>
+		
 	</div>
+	
 	<div class="row">
 		<div class="span3"> 
 	      <button class="button default" ng-click="calcular()">Calcular</button>
