@@ -8,7 +8,7 @@
  *
  * Main module of the application.
  */
-angular
+var app = angular
     .module('hdApp', [
         'ngResource',
         'ui.router',

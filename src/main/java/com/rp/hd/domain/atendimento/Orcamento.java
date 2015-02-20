@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.rp.hd.domain.Cliche;
 import com.rp.hd.domain.Fita;
 import com.rp.hd.domain.HotStamp;
 import com.rp.hd.domain.Ima;
@@ -97,8 +98,12 @@ public class Orcamento implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "ima_id")
 	private Ima ima;
-	
-	@Column(name="preco_calculado")
+
+	@ManyToOne
+	@JoinColumn(name = "ima_id")
+	private Cliche cliche;
+
+	@Column(name = "preco_calculado")
 	private BigDecimal precoCalculado;
 
 	public int getQuantidade() {
@@ -252,7 +257,13 @@ public class Orcamento implements Serializable {
 	public void setPrecoCalculado(BigDecimal precoCalculado) {
 		this.precoCalculado = precoCalculado;
 	}
-	
-	
+
+	public Cliche getCliche() {
+		return cliche;
+	}
+
+	public void setCliche(Cliche cliche) {
+		this.cliche = cliche;
+	}
 
 }

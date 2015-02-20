@@ -15,6 +15,6 @@ angular.module('hdApp')
         "../images/img2.jpg"
       ]
     }
-
+    
     $scope.init();
   });

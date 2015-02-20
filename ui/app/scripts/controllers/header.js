@@ -56,7 +56,6 @@ function HeaderController($scope, $http, store,$rootScope, $stateParams) {
 							
 						}
 						
-						
 						$scope.atendimento.label = 'Finalizar atendimento';
 					});
 		}

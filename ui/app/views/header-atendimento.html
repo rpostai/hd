@@ -1,12 +1,25 @@
 <div class="grid" ng-controller="HeaderController">
 	<div class="row">
-		<div class="span2">
+		<div class="span2 form_cliente">
 			<button ng-click="realizarAtendimento()">
 				{{atendimento.label}}
 			</button>
 		</div>
 		
-		<div class="span8 form_cliente">
+		<div class="span10">
+			<div class="panel">
+				<div class="panel-header">Dados do atendimento</div>
+				<div class="panel-content">
+					<p>Número: {{atendimento.numero}}</p>
+					<p>Data/Hora Início: {{atendimento.dataInicio}}</p>
+					<div class="relogio"></div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	<div class="row">	
+		<div class="span12 form_cliente">
 			<div class="panel">
 				<input type="text" id="pessoa1" ng-model="atendimento.pessoa1" placeholder="Cliente" ng-change="atualizarCliente()" class="input-control text">
 		    	<input type="text" id="email1" ng-model="atendimento.email1" placeholder="Email" ng-change="atualizarCliente()" class="input-control text">
@@ -14,17 +27,6 @@
 				<input id="pessoa2" ng-model="atendimento.pessoa2" type="text" placeholder="Cliente" ng-change="atualizarCliente()" class="input-control text">
 				<input id="email2" ng-model="atendimento.email2" type="text" placeholder="Email" ng-change="atualizarCliente()" class="input-control text">
 				<input id="fone2" ng-model="atendimento.fone2" type="text" placeholder="Telefone" ng-change="atualizarCliente()" class="input-control text">
-			</div>
-		</div>
-	    	
-		<div class="span4">
-			<div class="panel">
-				<div class="panel-header">Dados do atendimento</div>
-				<div class="panel-content">
-					<p>Número: {{atendimento.numero}}</p>
-					<p>Data/Hora Início: {{atendimento.dataInicio}}</p>
-					<p ng-show="{{tempoUltimoAtendimento != undefined}}">Tempo total de atendimento: {{tempoUltimoAtendimento}} minuto(s)
-				</div>
 			</div>
 		</div>
 	</div>

@@ -25,6 +25,7 @@ public class SolicitacaoOrcamento implements Serializable {
 	private Dado strass;
 	private int quantidadeStrass;
 	private Dado ima;
+	private Dado cliche;
 	private BigDecimal valor;
 	private BigDecimal valorTotal;
 
@@ -174,6 +175,14 @@ public class SolicitacaoOrcamento implements Serializable {
 
 	public void setDataAtendimento(Date dataAtendimento) {
 		this.dataAtendimento = dataAtendimento;
+	}
+
+	public Dado getCliche() {
+		return cliche;
+	}
+
+	public void setCliche(Dado cliche) {
+		this.cliche = cliche;
 	}
 
 	@Override

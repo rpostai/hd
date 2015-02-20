@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.rp.hd.domain.Cliche;
 import com.rp.hd.domain.Fita;
 import com.rp.hd.domain.HotStamp;
 import com.rp.hd.domain.Ima;
@@ -44,6 +45,8 @@ public class CalculadoraDados implements Serializable {
 	private List<Dado> serigrafia= new ArrayList<>();
 	
 	private List<Dado> hotstamps= new ArrayList<>();
+	
+	private List<Dado> cliches = new ArrayList<>();
 	
 	public List<Dado> getPapeis() {
 		return papeis;
@@ -88,6 +91,10 @@ public class CalculadoraDados implements Serializable {
 	public List<Dado> getHotstamps() {
 		return hotstamps;
 	}
+	
+	public List<Dado> getCliches() {
+		return cliches;
+	}
 
 	private void add(List<Dado> list, Dado dado) {
 		list.add(dado);
@@ -98,6 +105,10 @@ public class CalculadoraDados implements Serializable {
 		dado.setId(id);
 		dado.setNome(descricao);
 		return dado;
+	}
+	
+	public void addCliche(Cliche cliche) {
+		this.add(cliches, novoDado(cliche.getId(), cliche.getDescricao()));
 	}
 	
 	public void addPapel(Papel papel) {

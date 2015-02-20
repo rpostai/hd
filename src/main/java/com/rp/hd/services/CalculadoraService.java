@@ -1,7 +1,6 @@
 package com.rp.hd.services;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -15,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.rp.hd.domain.Calculadora;
 import com.rp.hd.domain.Calculadora.Orcamento;
+import com.rp.hd.domain.Cliche;
 import com.rp.hd.domain.Colagem;
 import com.rp.hd.domain.CorteEnvelope;
 import com.rp.hd.domain.Fita;
@@ -29,6 +29,7 @@ import com.rp.hd.domain.Renda;
 import com.rp.hd.domain.Serigrafia;
 import com.rp.hd.domain.Strass;
 import com.rp.hd.domain.atendimento.Atendimento;
+import com.rp.hd.repository.jpa.ClicheRepository;
 import com.rp.hd.repository.jpa.ColagemRepository;
 import com.rp.hd.repository.jpa.CorteEnvelopeRepository;
 import com.rp.hd.repository.jpa.FitaRepository;
@@ -91,7 +92,10 @@ public class CalculadoraService {
 	private CorteEnvelopeRepository corteEnvelopeRepository;
 
 	@Inject
-	ColagemRepository colagemRepository;
+	private ColagemRepository colagemRepository;
+	
+	@Inject
+	private ClicheRepository clicheRepository;
 	
 
 	@GET
@@ -142,6 +146,10 @@ public class CalculadoraService {
 
 		impressaoNomeRepository.getTodos().forEach(imp -> {
 			dados.addImpressaoNome(imp);
+		});
+		
+		clicheRepository.getTodos().forEach(c -> {
+			dados.addCliche(c);
 		});
 
 		return dados;
@@ -227,6 +235,11 @@ public class CalculadoraService {
 
 		CorteEnvelope corte = corteEnvelopeRepository.getTodos().get(0);
 		Colagem colagem = colagemRepository.getTodos().get(0);
+		
+		Cliche cliche = null;
+		if (orcamento.getCliche() != null) {
+			cliche = clicheRepository.get(orcamento.getCliche().getId());
+		}
 
 		Calculadora.CalculadoraBuilder builder = Calculadora.CalculadoraBuilder
 				.getInstance();

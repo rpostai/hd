@@ -29,6 +29,7 @@ public class Calculadora {
 	private final ImpressaoNome impressaoNome;
 	private final Embalagem embalagem;
 	private final CorteEnvelope corte;
+	private final Cliche cliche;
 
 	private Calculadora(int quantidadeConvites, ModeloConvite modelo,
 			Colagem colagem, Papel papelEnvelope, Papel papelInterno,
@@ -36,7 +37,7 @@ public class Calculadora {
 			Laco laco, HotStamp hotStamp, Serigrafia serigrafiaEnvelope,
 			Serigrafia serigrafiaInterno, Renda renda, Ima ima,
 			int quantidadeStrass, Strass strass, ImpressaoNome impressaoNome,
-			CorteEnvelope corte) {
+			CorteEnvelope corte, Cliche cliche) {
 		this.quantidadeConvites = quantidadeConvites;
 		this.modelo = modelo;
 		this.colagem = colagem;
@@ -56,6 +57,7 @@ public class Calculadora {
 		this.impressaoNome = impressaoNome;
 		this.embalagem = modelo.getEmbalagem();
 		this.corte = corte;
+		this.cliche = cliche;
 	}
 
 	public Orcamento calcular() {
@@ -73,7 +75,13 @@ public class Calculadora {
 		calcularAplicacaoStrass(o);
 		calcularPrecoCorte(o);
 		calcularEmbalagem(o);
+		calcularCliche(o);
 		return o;
+	}
+	
+	public void calcularCliche(Orcamento o) {
+		BigDecimal valor = this.cliche.getValorVenda();
+		o.addItem(o.new Item(this.cliche.toString(), valor));
 	}
 
 	public void calcularPrecoModeloConvite(Orcamento o) {
@@ -271,6 +279,7 @@ public class Calculadora {
 		private Embalagem embalagem;
 		private Colagem colagem;
 		private CorteEnvelope corte;
+		private Cliche cliche;
 
 		private CalculadoraBuilder() {
 
@@ -370,6 +379,11 @@ public class Calculadora {
 			this.corte = corte;
 			return this;
 		}
+		
+		public CalculadoraBuilder cliche(Cliche cliche) {
+			this.cliche = cliche;
+			return this;
+		}
 
 		public Calculadora build() {
 
@@ -389,7 +403,7 @@ public class Calculadora {
 					papelEnvelope, papelInterno, impressaoEnvelope,
 					impressaoInterno, fita, laco, hotStamp, serigrafiaEnvelope,
 					serigrafiaInterno, renda, ima, quantidadeStrass, strass,
-					impressaoNome, corte);
+					impressaoNome, corte, cliche);
 
 		}
 	}

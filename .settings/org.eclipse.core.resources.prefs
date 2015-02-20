@@ -2,5 +2,5 @@ eclipse.preferences.version=1
 encoding//src/main/resources/templates/orcamento.html=UTF-8
 encoding//ui/app/views/atendimento.html=UTF-8
 encoding//ui/app/views/atendimentos.html=UTF-8
-encoding//ui/app/views/header.html=UTF-8
+encoding//ui/app/views/header-atendimento.html=UTF-8
 encoding//ui/app/views/orcamentos.html=UTF-8
