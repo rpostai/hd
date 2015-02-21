@@ -179,7 +179,7 @@ public class CalculadoraService {
 		}
 		Papel papelInternoAplicado = null;
 		if (orcamento.getPapelEnvelope() != null) {
-			papelInternoAplicado = papelRepository.get(orcamento.getPapelEnvelope().getId());
+			papelInternoAplicado = papelRepository.get(orcamento.getPapelInterno().getId());
 		}
 		Impressao impressaoEnvelopeAplicado = null;
 		if (orcamento.getImpressaoEnvelope() != null) {
