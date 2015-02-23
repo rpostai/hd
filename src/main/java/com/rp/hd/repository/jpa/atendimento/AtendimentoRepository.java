@@ -48,5 +48,4 @@ public class AtendimentoRepository extends BaseRepository<Atendimento> {
 		}
 		return tq.getResultList();
 	}
-
 }

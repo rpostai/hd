@@ -2,6 +2,7 @@ package com.rp.hd.services;
 
 import java.io.FileInputStream;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,6 +29,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
@@ -35,17 +37,22 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
 import com.google.common.io.ByteStreams;
+import com.rp.hd.domain.Complemento;
 import com.rp.hd.domain.ModeloConvite;
 import com.rp.hd.domain.atendimento.Atendimento;
+import com.rp.hd.domain.atendimento.OrcamentoComplemento;
 import com.rp.hd.repository.jpa.ColagemRepository;
+import com.rp.hd.repository.jpa.ComplementoRepository;
 import com.rp.hd.repository.jpa.ModeloConviteRepository;
+import com.rp.hd.repository.jpa.OrcamentoComplementoRepository;
 import com.rp.hd.repository.jpa.OrcamentoRepository;
 import com.rp.hd.repository.jpa.atendimento.AtendimentoRepository;
 
 @Path("atendimento")
 public class AtendimentoService {
-	
-	private static final SimpleDateFormat SD = new SimpleDateFormat("dd/MM/yyyy");
+
+	private static final SimpleDateFormat SD = new SimpleDateFormat(
+			"dd/MM/yyyy");
 
 	@Inject
 	private AtendimentoRepository repository;
@@ -55,6 +62,12 @@ public class AtendimentoService {
 
 	@Inject
 	private ModeloConviteRepository modeloConviteRepository;
+
+	@Inject
+	private ComplementoRepository complementoRepository;
+
+	@Inject
+	private OrcamentoComplementoRepository orcamentoComplementoRepository;
 
 	@Inject
 	ColagemRepository colagemRepository;
@@ -72,12 +85,13 @@ public class AtendimentoService {
 		atendimento = repository.salvar(atendimento);
 		return atendimento;
 	}
-	
+
 	@POST
 	@Path("iniciar/{atendimentoOriginal}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Atendimento iniciarAtendimentoVinculado(@PathParam("atendimentoOriginal") Long atendimentoOriginalId) {
+	public Atendimento iniciarAtendimentoVinculado(
+			@PathParam("atendimentoOriginal") Long atendimentoOriginalId) {
 		Atendimento atendimentoOriginal = repository.get(atendimentoOriginalId);
 		Atendimento atendimento = new Atendimento();
 		atendimento.setAtendimentoPai(atendimentoOriginal);
@@ -95,6 +109,17 @@ public class AtendimentoService {
 	public Atendimento atualizar(Atendimento atendimento) {
 		atendimento = repository.salvar(atendimento);
 		return atendimento;
+	}
+
+	@POST
+	@Path("fechar/{atendimento}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void fecharVenda(@PathParam("atendimento") Long atendimentoId) {
+		Atendimento t = repository.get(atendimentoId);
+		t.setDataFechamentoVenda(Calendar.getInstance().getTime());
+		t.finalizar();
+		repository.salvar(t);
 	}
 
 	@POST
@@ -182,7 +207,43 @@ public class AtendimentoService {
 			@PathParam("atendimento") Long atendimento) {
 		return orcamentoRepository.getOrcamentosPorAtendimento(atendimento);
 	}
-	
+
+	@POST
+	@Path("complementossalvar/{atendimento}/{item}/{quantidade}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public BigDecimal incluirComplemento(
+			@PathParam("atendimento") Long atendimento,
+			@PathParam("item") Long item,
+			@PathParam("quantidade") Integer quantidade) {
+
+		List<OrcamentoComplemento> list = orcamentoComplementoRepository
+				.getComplementos(atendimento);
+
+		Optional<OrcamentoComplemento> orc = list.stream().filter(x -> {
+			return x.getComplemento().getId().equals(item);
+		}).findFirst();
+		if (orc.isPresent()) {
+			orc.get().setQuantidade(quantidade);
+			orcamentoComplementoRepository.salvar(orc.get());
+		} else {
+			Atendimento at = repository.get(atendimento);
+			Complemento c = complementoRepository.get(item);
+			OrcamentoComplemento o = new OrcamentoComplemento();
+			o.setAtendimento(at);
+			o.setComplemento(c);
+			o.setQuantidade(quantidade);
+			o.setValor(c.getValorVenda());
+			orcamentoComplementoRepository.salvar(o);
+		}
+
+		list = orcamentoComplementoRepository.getComplementos(atendimento);
+		return list.stream().map(x -> {
+			return x.getValor().multiply(new BigDecimal(x.getQuantidade()));
+		}).reduce((x, y) -> {
+			return x.add(y);
+		}).get();
+	}
+
 	@POST
 	@Path("consulta")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -194,7 +255,24 @@ public class AtendimentoService {
 		} else {
 			c = null;
 		}
-		return repository.consultar(consulta.getNumero(), consulta.getNome(), c);
+		return repository
+				.consultar(consulta.getNumero(), consulta.getNome(), c);
+	}
+
+	@GET
+	@Path("complementos/{atendimento}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Dado> getComplementos(
+			@PathParam("atendimento") Long atendimentoId) throws Exception {
+		return complementoRepository.getComplementoAtivos();
+	}
+
+	@GET
+	@Path("complementosatendimento/{atendimento}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<OrcamentoComplemento> getComplementosAtendimento(
+			@PathParam("atendimento") Long atendimentoId) throws Exception {
+		return orcamentoComplementoRepository.getComplementos(atendimentoId);
 	}
 
 	@GET
@@ -204,19 +282,23 @@ public class AtendimentoService {
 			throws Exception {
 
 		Atendimento atendimento = repository.get(atendimentoId);
-		
+
 		try {
 			Message msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(
 					"fernanda@happydayconviteria.com.br",
 					"Happy Day Conviteria"));
-			if (atendimento.getCliente1() != null && StringUtils.isNotBlank(atendimento.getCliente1().getEmail())) {
+			if (atendimento.getCliente1() != null
+					&& StringUtils.isNotBlank(atendimento.getCliente1()
+							.getEmail())) {
 				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 						atendimento.getCliente1().getEmail(), atendimento
 								.getCliente1().getNome()));
 			}
 
-			if (atendimento.getCliente2() != null && StringUtils.isNotBlank(atendimento.getCliente2().getEmail())) {
+			if (atendimento.getCliente2() != null
+					&& StringUtils.isNotBlank(atendimento.getCliente2()
+							.getEmail())) {
 				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 						atendimento.getCliente2().getEmail(), atendimento
 								.getCliente2().getNome()));
@@ -224,53 +306,78 @@ public class AtendimentoService {
 
 			msg.setSubject(String.format("Orçamento %s",
 					atendimento.getNumero()));
-			
+
 			List<SolicitacaoOrcamento> orcamentos = getOrcamentosAtendimento(atendimento
 					.getId());
 
 			Multipart mp = new MimeMultipart();
 
-			MimeBodyPart htmlPart = new MimeBodyPart();
-			htmlPart.setContent(criarEmail(atendimento,orcamentos), "text/html");
-			mp.addBodyPart(htmlPart);
-			
-			orcamentos.forEach(orc -> {
-				if (orc.getModelo() != null) {
-					Optional<ModeloConvite> ultimasFotosModelo = modeloConviteRepository.getUltimasFotosModelo(orc.getModelo().getId());	
-					ultimasFotosModelo.ifPresent(modelo -> {
-						modelo.getFotos().forEach(foto -> {
-							FileInputStream file;
-							try {
-								file = new FileInputStream("/images/img1.jpg");
-								byte[] bytes = ByteStreams.toByteArray(file);
-								MimeBodyPart attachment = new MimeBodyPart();
-								attachment.setFileName(modelo.getNome() +"_" +  RandomStringUtils.randomAlphabetic(4) + ".jpg");
-								attachment.setContent(bytes, "image/jpeg");
-								mp.addBodyPart(attachment);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-							
-						});
+			boolean[] temImagens = new boolean[] { false };
+
+			orcamentos
+					.forEach(orc -> {
+						if (orc.getModelo() != null) {
+							Optional<ModeloConvite> ultimasFotosModelo = modeloConviteRepository
+									.getUltimasFotosModelo(orc.getModelo()
+											.getId());
+							ultimasFotosModelo
+									.ifPresent(modelo -> {
+										modelo.getFotos()
+												.forEach(
+														foto -> {
+															FileInputStream file;
+															try {
+																file = new FileInputStream(
+																		"/images/img1.jpg");
+																byte[] bytes = ByteStreams
+																		.toByteArray(file);
+																MimeBodyPart attachment = new MimeBodyPart();
+																attachment
+																		.setFileName(modelo
+																				.getNome()
+																				+ "_"
+																				+ RandomStringUtils
+																						.randomAlphabetic(4)
+																				+ ".jpg");
+																attachment
+																		.setContent(
+																				bytes,
+																				"image/jpeg");
+																mp.addBodyPart(attachment);
+
+																temImagens[0] = true;
+															} catch (Exception e) {
+																e.printStackTrace();
+															}
+
+														});
+									});
+						}
 					});
-				}
-			});
 
 			// MimeBodyPart attachment = new MimeBodyPart();
 			// attachment.setFileName("manual.pdf");
 			// attachment.setContent(attachmentData, "application/pdf");
 			// mp.addBodyPart(attachment);
 
+			MimeBodyPart htmlPart = new MimeBodyPart();
+			htmlPart.setContent(
+					criarEmail(atendimento, orcamentos, temImagens[0]),
+					"text/html");
+			mp.addBodyPart(htmlPart);
+
 			msg.setContent(mp);
 
 			Transport.send(msg);
 		} catch (Exception e) {
 			throw new Exception(
-					"O email não pode ser enviado com sucesso. Por favor imprima o orçamento",e);
+					"O email não pode ser enviado com sucesso. Por favor imprima o orçamento",
+					e);
 		}
 	}
 
-	private String criarEmail(Atendimento atendimento, List<SolicitacaoOrcamento> orcamentos) {
+	private String criarEmail(Atendimento atendimento,
+			List<SolicitacaoOrcamento> orcamentos, boolean temImagens) {
 
 		Properties p = new Properties();
 		p.setProperty("resource.loader", "file");
@@ -284,18 +391,24 @@ public class AtendimentoService {
 		VelocityContext context = new VelocityContext();
 		context.put("cliente1", atendimento.getCliente1().getNome());
 		context.put("cliente2", atendimento.getCliente2().getNome());
-		
+
 		Calendar c = Calendar.getInstance();
 		c.setTime(atendimento.getDataInicio().getTime());
 		c.add(Calendar.DAY_OF_MONTH, 15);
 		context.put("validade", SD.format(c.getTime()));
 
-		
-
-		context.put("orcamentos", orcamentos);
+		if (CollectionUtils.isNotEmpty(orcamentos)) {
+			context.put("orcamentos", orcamentos);			
+		}
+		context.put("temImagens", temImagens);
+		List<OrcamentoComplemento> complementos =  orcamentoComplementoRepository
+				.getComplementos(atendimento.getId());
+		if (CollectionUtils.isNotEmpty(complementos)) {
+			context.put("complementos",complementos);			
+		}
 
 		Template template = null;
-		template = Velocity.getTemplate("orcamento.html","UTF-8");
+		template = Velocity.getTemplate("orcamento.html", "UTF-8");
 
 		StringWriter sw = new StringWriter();
 

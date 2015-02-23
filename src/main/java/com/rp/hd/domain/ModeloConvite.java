@@ -1,6 +1,7 @@
 package com.rp.hd.domain;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -157,7 +158,7 @@ public class ModeloConvite extends BaseEntity {
 			valorColagem = colagem !=null ? colagem.getPrecoAtual() : BigDecimal.ZERO;
 		}
 		
-		return valorPapel.divide(new BigDecimal(this.getModeloFaca().getValor())).add(valorColagem).setScale(2,BigDecimal.ROUND_HALF_UP);
+		return valorPapel.divide(new BigDecimal(this.getModeloFaca().getValor()),4, RoundingMode.HALF_UP).add(valorColagem).setScale(2,BigDecimal.ROUND_HALF_UP);
 	}
 	
 	@Override

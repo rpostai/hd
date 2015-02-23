@@ -65,4 +65,8 @@ var app = angular
             	url: '/consultaatendimentos',
             	templateUrl: 'views/atendimentos.html'
             })
+            .state('layout.complementos', {
+            	url: '/complementos/{atendimento}',
+            	templateUrl: 'views/complementos.html'
+            })
     });

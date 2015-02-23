@@ -2,10 +2,8 @@ package com.rp.hd.domain.atendimento;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.persistence.CascadeType;
@@ -17,8 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -61,9 +57,12 @@ public class Atendimento implements Serializable {
 	@JoinColumn(name = "ATENDIMENTO_PAI_ID")
 	private Atendimento atendimentoPai;
 
+	@Column(name = "data_fechamento_venda")
+	private Date dataFechamentoVenda;
+
 	@Transient
 	private long tempoTotalAtendimento;
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -164,4 +163,11 @@ public class Atendimento implements Serializable {
 
 	}
 
+	public Date getDataFechamentoVenda() {
+		return dataFechamentoVenda;
+	}
+
+	public void setDataFechamentoVenda(Date dataFechamentoVenda) {
+		this.dataFechamentoVenda = dataFechamentoVenda;
+	}
 }

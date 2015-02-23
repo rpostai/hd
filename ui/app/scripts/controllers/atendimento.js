@@ -50,6 +50,16 @@ function AtendimentoController($scope, $http, store,$rootScope, $state) {
 			  	})
   }
   
+  $scope.fechar = function() {
+	  $scope.atendimento = store.get("atendimento").id;
+	  
+	  $http.post("http://localhost:8080/hd/servicos/atendimento/fechar/"+$scope.atendimento).success(function(data) {
+		  alert("Venda fechada com sucesso");
+	  }).error(function(data) {
+		 alert('Erro ao calcular preço. Procure o administrador do sistema'); 
+	  });
+  }
+  
   $scope.calcular = function() {
 	  
 	  $scope.atendimento = store.get("atendimento").id;

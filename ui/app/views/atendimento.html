@@ -131,11 +131,18 @@
 		<div class="span3"> 
 	      <button class="button default" ng-click="calcular()">Calcular</button>
 		</div>
-		<div class="span3">
+		<div class="span2">
+	      <button class="button default" ui-sref="layout.complementos({'atendimento':atendimentoId})">Complementos</button>
+		</div>
+		<div class="span2">
 	      <button class="button default" ng-click="verTodosOrcamentos()">Ver orçamentos</button>
 		</div>
-		<div class="span3">
+		<div class="span2">
 	      <button class="button default" ng-click="enviarPorEmail()">Enviar por email</button>
+		</div>
+		
+		<div class="span2">
+	      <button class="button default" ng-click="fechar()">Fechar venda</button>
 		</div>
 	</div>
 	

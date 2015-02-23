@@ -165,9 +165,50 @@
 		 </br>
 		#end
 		
+		<br/>
+		
+		
+		#if($complementos)
+		<p>Você também orçou alguns itens complementares. Lembre-se de que os valores dos itens complementares presentes neste orçamento são válidos apenas para a compra conjunta com os convites. Não produzimos complementos caso não sejam adquiridos junto aos convites.</p>
+		<table>
+			<thead>
+				<tr>
+					<td>Item</td>
+					<td>Quantidade orçada</td>
+					<td>Valor individual</td>
+					<td>Valor total</td>
+				</tr>
+			</thead>
+			<tbody>
+				#set($valorTotal = 0)
+				#foreach($comp in $complementos)
+				<tr>
+					<td>$comp.complemento.descricao</td>
+					<td>$comp.quantidade</td>
+					<td>$comp.valor</td>
+					#set($valorFinal = $comp.valor * $comp.quantidade)
+					<td>R$ $valorFinal</td>
+					#set($valorTotal = $valorTotal + $valorFinal)
+				</tr>
+				#end
+			<tbody>
+			<tfoot>
+				<tr>
+					<td>Valor Total dos Complementos</td>	
+					<td><b>$valorTotal</b></td>
+				</tr>
+			</tfoot>
+		</table>
+		#end
+		
+		<br/>
+		
+		
+		#if($temImagens)
 		<p>
 		Anexo neste email seguem algumas fotos referente aos modelos orçados por vocês que a Happy Day Conviteria já confeccionou em outras ocasiões.
 		</p>
+		#end
 		
 		<p>
 		Lembramos que este orçamento é válido até $validade. </br>

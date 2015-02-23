@@ -1,0 +1,36 @@
+<header class="margin20 nrm nlm">
+	<div class="clearfix">
+		<a class="place-left" href="#" title="">
+			<h1>Complementos</h1>
+		</a>
+	</div>
+</header>
+
+<div class="main-content clearfix" ng-controller="ComplementosController">
+	
+	<table class="table striped">
+	 	<thead>
+	 		<tr>
+	 			<th width="40%">Descrição</th>
+	 			<th width="20%">Valor R$</th>
+	 			<th width="20%">Quantidade</th>
+	 			<th width="20%">Adicionar</th>
+	 		</tr>
+	 	</thead>
+	 	<tbody>
+	 		<tr ng-repeat="obj in dados">
+	 			<td>{{obj.nome}}</td>
+	 			<td>{{obj.valor}}</td>
+	 			<td><input type="text" ng-model="quantidade[obj.id]"></td>
+	 			<td><button ng-click="adicionar(obj.id,obj.valor)" class="button default">Adicionar</button></td>
+	 		</tr>
+	 	</tbody>
+	 	<tfoot>
+	 		<tr>
+	 			<td>Valor total</td>
+	 			<td><b>{{valorTotal}}</b></td>
+	 		</tr>
+	 	</tfoot>
+	</table>
+	<p ng-if="!dados.length">Nenhum registro encontrado</p>
+</div>
