@@ -65,8 +65,11 @@ public class Laco extends BaseEntity {
 	
 	public BigDecimal getPrecoVenda(Fita fita) {
 		BigDecimal precoLacoComFita = fita.getCustoAtual().multiply(new BigDecimal(quantidadeFitaEmCentimetros));
-		precoLacoComFita = precoLacoComFita.add(getCustoAtualMaoObra());
+		
 		precoLacoComFita = precoLacoComFita.multiply(markup).setScale(2, BigDecimal.ROUND_HALF_UP);
+		
+		precoLacoComFita = precoLacoComFita.add(getCustoAtualMaoObra());
+		
 		return precoLacoComFita;
 	}
 }

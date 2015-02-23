@@ -267,7 +267,7 @@ public class CalculadoraService {
 		
 		Atendimento atendimento = repository.get(atendimentoId);
 		if (atendimento == null) {
-			throw new IllegalArgumentException("Para realizar um orÃ§amento Ã© obrigatÃ³rio ter um atendimento iniciado");
+			throw new IllegalArgumentException("Para realizar um orçamento é obrigatório ter um atendimento iniciado");
 		}
 		
 		com.rp.hd.domain.atendimento.Orcamento o = new com.rp.hd.domain.atendimento.Orcamento();
