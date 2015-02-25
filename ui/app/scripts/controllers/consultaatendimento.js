@@ -4,7 +4,7 @@
 function ConsultaAtendimentoController($scope, $http, store, $rootScope, $state) {
 
 	$scope.consultar = function() {
-		$http.post("http://localhost:8080/hd/servicos/atendimento/consulta",$scope.consulta).success(
+		$http.post("/servicos/atendimento/consulta",$scope.consulta).success(
 			function(data, status, headers, config) {
 				$scope.dados = data;
 

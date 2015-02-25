@@ -43,7 +43,7 @@ module.exports = function (grunt) {
         tasks: ['newer:jshint:test', 'karma']
       },
       styles: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
+        files: ['<%= yeoman.app %>/styles/{,*/}*.css','<%= yeoman.app %>/styles/fonts{,*/}*.*'],
         tasks: ['newer:copy:styles', 'autoprefixer']
       },
       gruntfile: {
@@ -263,6 +263,20 @@ module.exports = function (grunt) {
         }]
       }
     },
+    
+    ngAnnotate: {
+    	options: {
+            singleQuotes: true,
+        },
+        app1: {
+            files: {
+            	expand: true,
+                src: ['scripts/*.js'],
+                ext: '.annotated.js', // Dest filepaths will have this extension.
+                extDot: 'last',       // Extensions in filenames begin after the last dot
+            }
+        }
+    },
 
     // Replace Google CDN references
     cdnify: {
@@ -285,7 +299,8 @@ module.exports = function (grunt) {
             '*.html',
             'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
-            'fonts/*'
+            'fonts/*',
+            'styles/fonts/*'
           ]
         }, {
           expand: true,
@@ -391,7 +406,7 @@ module.exports = function (grunt) {
     'concurrent:dist',
     'autoprefixer',
     'concat',
-    'ngmin',
+    'ngAnnotate',
     'copy:dist',
     'cdnify',
     'cssmin',
@@ -408,5 +423,7 @@ module.exports = function (grunt) {
   ]);
   
   grunt.loadNpmTasks('grunt-connect-proxy');
+  grunt.loadNpmTasks('grunt-ngmin');
+  grunt.loadNpmTasks('grunt-ng-annotate');
   
 };

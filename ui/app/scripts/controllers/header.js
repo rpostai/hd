@@ -35,7 +35,7 @@ function HeaderController($scope, $http, store,$rootScope, $stateParams) {
 		if (!$scope.atendimento.estado) {
 			
 			var atendimentoOriginal = $stateParams.atendimentoOriginal;
-			var url = "http://localhost:8080/hd/servicos/atendimento/iniciar";
+			var url = "/servicos/atendimento/iniciar";
 			url += atendimentoOriginal != undefined ? "/"+atendimentoOriginal : "";
 			
 			$http.post(url)
@@ -64,7 +64,7 @@ function HeaderController($scope, $http, store,$rootScope, $stateParams) {
 	$scope.finalizarAtendimento = function() {
 		if ($scope.atendimento.estado) {
 			$http.post(
-					"http://localhost:8080/hd/servicos/atendimento/finalizar",
+					"/servicos/atendimento/finalizar",
 					$scope.atendimentoSalvo).success(function(data) {
 				store.remove('atendimento');
 				store.set('tempoUltimoAtendimento', data);
@@ -119,7 +119,7 @@ function HeaderController($scope, $http, store,$rootScope, $stateParams) {
 
 	$scope.marcarPessoa = function() {
 		if ($scope.atendimento.estado) {
-			$http.post("http://localhost:8080/hd/servicos/atendimento/atualizar",
+			$http.post("/servicos/atendimento/atualizar",
 					$scope.atendimentoSalvo).success(function(data) {
 
 			})

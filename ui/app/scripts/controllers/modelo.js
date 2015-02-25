@@ -6,7 +6,7 @@ function ModeloController($scope, $http, $stateParams) {
     $scope.carouselIndex = 0;
 
   $scope.getModelo = function() {
-	  $http.get("http://localhost:8080/hd/servicos/atendimento/modelos/"+$stateParams.modelo).success(
+	  $http.get("/servicos/atendimento/modelos/"+$stateParams.modelo).success(
 			  function(data, status, headers, config) {
 				  $scope.modelo = data;
 			  	}).error(

@@ -99,7 +99,7 @@ public class Calculadora {
 			BigDecimal valorPapel = this.papelInterno.getPrecoAtual();
 			valorPapel = valorPapel.divide(
 					new BigDecimal(quantidadeFolhasParaPapelInterno)).setScale(
-					2, RoundingMode.HALF_UP);
+					4, RoundingMode.HALF_UP);
 			o.addItem(o.new Item(String.format("Papel Interno %s",
 					papelInterno.toString()), valorPapel));
 		}
@@ -229,7 +229,7 @@ public class Calculadora {
 				return item.valor;
 			}).reduce((x, y) -> {
 				return x.add(y);
-			}).get();
+			}).get().multiply(new BigDecimal("1.1"));
 		}
 		
 		public BigDecimal getValorTotalConvites() {

@@ -1,6 +1,7 @@
 package com.rp.hd.domain;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,7 +44,7 @@ public class Impressao extends BaseEntity {
 	public BigDecimal getPrecoVenda() {
 		// Divide por 2 por que geralmente fazemos 2 impressões por folha
 		return getCustoAtual().multiply(
-				markup != null ? markup : BigDecimal.ONE).divide(new BigDecimal(2)).setScale(2, BigDecimal.ROUND_HALF_UP);
+				markup != null ? markup : BigDecimal.ONE).divide(new BigDecimal(2), 4, RoundingMode.HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 
 	public BigDecimal getMarkup() {

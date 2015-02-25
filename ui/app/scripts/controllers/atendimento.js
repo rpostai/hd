@@ -30,7 +30,7 @@ function AtendimentoController($scope, $http, store,$rootScope, $state) {
   
 
   $scope.getDadosAtendimento = function() {
-	  $http.get("http://localhost:8080/hd/servicos/calculadora/atendimento").success(
+	  $http.get("/servicos/calculadora/atendimento").success(
 			  function(data, status, headers, config) {
 				  $scope.modelos = data.modelos;
 				  $scope.papeis = data.papeis;
@@ -53,7 +53,7 @@ function AtendimentoController($scope, $http, store,$rootScope, $state) {
   $scope.fechar = function() {
 	  $scope.atendimento = store.get("atendimento").id;
 	  
-	  $http.post("http://localhost:8080/hd/servicos/atendimento/fechar/"+$scope.atendimento).success(function(data) {
+	  $http.post("/servicos/atendimento/fechar/"+$scope.atendimento).success(function(data) {
 		  alert("Venda fechada com sucesso");
 	  }).error(function(data) {
 		 alert('Erro ao calcular preço. Procure o administrador do sistema'); 
@@ -64,7 +64,7 @@ function AtendimentoController($scope, $http, store,$rootScope, $state) {
 	  
 	  $scope.atendimento = store.get("atendimento").id;
 	  
-	  $http.post("http://localhost:8080/hd/servicos/calculadora/calcular/"+$scope.atendimento, $scope.orcamento).success(function(data) {
+	  $http.post("/servicos/calculadora/calcular/"+$scope.atendimento, $scope.orcamento).success(function(data) {
 		  $scope.precoPorUnidade = data.valorUnidade;
 		  $scope.precoItensPorPedido = data.valorItemsPorPedido;
 		  $scope.precoTotal = data.valorTotal;
@@ -75,7 +75,7 @@ function AtendimentoController($scope, $http, store,$rootScope, $state) {
   }
   
   $scope.adicionarOrcamento = function() {
-	  $http.post("http://localhost:8080/hd/servicos/calculadora/calcular", $scope.orcamento).success(function(data) {
+	  $http.post("/servicos/calculadora/calcular", $scope.orcamento).success(function(data) {
 		  $scope.precoPorUnidade = data.precoFinal;
 	  }).error(function(data) {
 		 alert('Erro ao calcular preço. Procure o administrador do sistema'); 
@@ -93,7 +93,7 @@ function AtendimentoController($scope, $http, store,$rootScope, $state) {
   $scope.enviarPorEmail = function() {
 	  var atendimento = store.get("atendimento");
 	  if (atendimento != null) {
-		  $http.get("http://localhost:8080/hd/servicos/atendimento/enviaremail/"+atendimento.id).success(function(data) {
+		  $http.get("/servicos/atendimento/enviaremail/"+atendimento.id).success(function(data) {
 			  alert('Email enviado com sucesso!')
 		  }).error(function(data) {
 			  alert('Erro ao enviar email!')

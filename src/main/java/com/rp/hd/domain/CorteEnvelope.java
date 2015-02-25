@@ -34,7 +34,7 @@ public class CorteEnvelope extends BaseEntity {
 	}
 
 	public BigDecimal getPrecoVenda(int quantidadeConvites) {
-		return PrecoVigenciaService.getPrecoAtual(precos).getValor().divide(new BigDecimal(quantidadeConvites)).multiply(markup).setScale(2, BigDecimal.ROUND_HALF_UP);
+		return PrecoVigenciaService.getPrecoAtual(precos).getValor().divide(new BigDecimal(quantidadeConvites), 4, RoundingMode.HALF_UP).multiply(markup).setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 
 }
