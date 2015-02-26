@@ -14,7 +14,10 @@
 		</div>
 		<div class="span3">
 			<label for="txtData">Data</label>
-	    	<input id="txtData" type="text" ng-model="consulta.data" class="input-control text"/>
+	    	<div class="input-control text" data-role="datepicker" id="datepicker" ng-model="consulta.data">
+			    <input id="data" type="text" ng-model="consulta.data">
+			    <button class="btn-date"></button>
+			</div>
 		</div>
 		<div class="span3">
 			<label for="txtNomeCliente">Nome Cliente</label>
@@ -63,3 +66,7 @@
 	</div>
 </div>
 
+
+<script>
+	$("#datepicker").datepicker();
+</script>

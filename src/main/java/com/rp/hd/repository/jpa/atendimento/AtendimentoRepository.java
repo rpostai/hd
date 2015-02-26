@@ -26,10 +26,10 @@ public class AtendimentoRepository extends BaseRepository<Atendimento> {
 			sb.append(" and o.numero = :numero");
 		}
 		if (StringUtils.isNotBlank(nome)) {
-			sb.append(" and (o.cliente1.nome like :nome or o.cliente2.nome like :nome)");
+			sb.append(" and (upper(o.cliente1.nome) like :nome or upper(o.cliente2.nome) like :nome)");
 		}
 		if (data != null) {
-			sb.append(" and (:data = date_trunc('day',o).dataInicio)");
+			sb.append(" and (o.dataInicio >= :data1 and o.dataInicio <= :data2)");
 		}
 		
 		sb.append(" order by o.dataInicio desc, o.cliente1.nome asc");
@@ -41,10 +41,24 @@ public class AtendimentoRepository extends BaseRepository<Atendimento> {
 			tq.setParameter("numero", numero);
 		}
 		if (StringUtils.isNotBlank(nome)) {
-			tq.setParameter("nome", "%"+nome+"%");
+			tq.setParameter("nome", "%"+StringUtils.upperCase(nome)+"%");
 		}
 		if (data != null) {
-			tq.setParameter("data", data, TemporalType.DATE);
+			
+			Calendar c = Calendar.getInstance();
+			c.setTime(data.getTime());
+			c.set(Calendar.HOUR, 0);
+			c.set(Calendar.MINUTE, 0);
+			c.set(Calendar.SECOND, 0);
+			
+			Calendar c1 = Calendar.getInstance();
+			c1.setTime(data.getTime());
+			c1.set(Calendar.HOUR, 23);
+			c1.set(Calendar.MINUTE, 59);
+			c1.set(Calendar.SECOND, 59);
+			
+			tq.setParameter("data1", c.getTime(), TemporalType.TIMESTAMP);
+			tq.setParameter("data2", c1.getTime(), TemporalType.TIMESTAMP);
 		}
 		return tq.getResultList();
 	}

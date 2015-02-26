@@ -2,8 +2,9 @@
  * Created by rodrigo.postai on 06/02/2015.
  */
 function ConsultaAtendimentoController($scope, $http, store, $rootScope, $state) {
-
 	$scope.consultar = function() {
+	
+		$scope.consulta.data = $('#data').val();
 		$http.post("/servicos/atendimento/consulta",$scope.consulta).success(
 			function(data, status, headers, config) {
 				$scope.dados = data;

@@ -7,7 +7,7 @@ public class ConsultaAtendimento implements Serializable {
 
 	private String nome;
 	private String numero;
-	private Date data;
+	private String data;
 
 	public String getNome() {
 		return nome;
@@ -25,11 +25,11 @@ public class ConsultaAtendimento implements Serializable {
 		this.numero = numero;
 	}
 
-	public Date getData() {
+	public String getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 

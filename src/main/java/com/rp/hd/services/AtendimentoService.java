@@ -3,6 +3,7 @@ package com.rp.hd.services;
 import java.io.FileInputStream;
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -251,7 +252,11 @@ public class AtendimentoService {
 	public List<Atendimento> consultaAtendimentos(ConsultaAtendimento consulta) {
 		Calendar c = Calendar.getInstance();
 		if (consulta.getData() != null) {
-			c.setTime(consulta.getData());
+			try {
+				c.setTime(SD.parse(consulta.getData()));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		} else {
 			c = null;
 		}
