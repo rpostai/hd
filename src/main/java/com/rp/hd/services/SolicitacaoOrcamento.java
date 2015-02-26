@@ -198,6 +198,10 @@ public class SolicitacaoOrcamento implements Serializable {
 	public void setDataAtendimento(Date dataAtendimento) {
 		this.dataAtendimento = dataAtendimento;
 	}
+	
+	public Date getDataAtendimento() {
+		return dataAtendimento;
+	}
 
 	public Dado getCliche() {
 		return cliche;

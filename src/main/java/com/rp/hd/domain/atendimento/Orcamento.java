@@ -115,6 +115,12 @@ public class Orcamento implements Serializable {
 	@Column(name = "preco_calculado_total")
 	private BigDecimal precoCalculadoTotal;
 
+	@Column(name = "custo_unidade")
+	private BigDecimal custoUnidade;
+
+	@Column(name = "custo_outros")
+	private BigDecimal custoOutros;
+
 	public int getQuantidade() {
 		return quantidade;
 	}
@@ -298,6 +304,22 @@ public class Orcamento implements Serializable {
 
 	public void setPrecoCalculadoConvites(BigDecimal precoCalculadoConvites) {
 		this.precoCalculadoConvites = precoCalculadoConvites;
+	}
+
+	public BigDecimal getCustoUnidade() {
+		return custoUnidade;
+	}
+
+	public void setCustoUnidade(BigDecimal custoUnidade) {
+		this.custoUnidade = custoUnidade;
+	}
+
+	public BigDecimal getCustoOutros() {
+		return custoOutros;
+	}
+
+	public void setCustoOutros(BigDecimal custoOutros) {
+		this.custoOutros = custoOutros;
 	}
 
 }

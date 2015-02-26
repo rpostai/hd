@@ -55,6 +55,11 @@ public class Serigrafia extends BaseEntity {
 	public void addPreco(PrecoVigencia p) {
 		this.precos.add(p);
 	}
+	
+	public BigDecimal getCusto() {
+		PrecoVigencia p = PrecoVigenciaService.getPrecoAtual(precos);
+		return p.getValor();
+	}
 
 	public BigDecimal getPrecoVenda() {
 		PrecoVigencia p = PrecoVigenciaService.getPrecoAtual(precos);

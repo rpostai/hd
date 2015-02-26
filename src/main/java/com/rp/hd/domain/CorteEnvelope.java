@@ -32,6 +32,10 @@ public class CorteEnvelope extends BaseEntity {
 	public void setMarkup(BigDecimal markup) {
 		this.markup = markup;
 	}
+	
+	public BigDecimal getCusto(int quantidadeConvites) {
+		return PrecoVigenciaService.getPrecoAtual(precos).getValor().divide(new BigDecimal(quantidadeConvites), 4, RoundingMode.HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);
+	}
 
 	public BigDecimal getPrecoVenda(int quantidadeConvites) {
 		return PrecoVigenciaService.getPrecoAtual(precos).getValor().divide(new BigDecimal(quantidadeConvites), 4, RoundingMode.HALF_UP).multiply(markup).setScale(2, BigDecimal.ROUND_HALF_UP);

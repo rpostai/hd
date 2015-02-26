@@ -35,6 +35,10 @@ public class Ima extends BaseEntity {
 		this.precos.add(preco);
 	}
 	
+	public BigDecimal getCusto() {
+		return PrecoVigenciaService.getPrecoAtual(precos).getValor().setScale(2, BigDecimal.ROUND_HALF_UP);
+	}
+	
 	public BigDecimal getPrecoVenda() {
 		return PrecoVigenciaService.getPrecoAtual(precos).getValor().multiply(markup).setScale(2, BigDecimal.ROUND_HALF_UP);
 	}

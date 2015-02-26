@@ -31,6 +31,9 @@ public class Calculadora {
 	private final CorteEnvelope corte;
 	private final Cliche cliche;
 
+	private BigDecimal custoUnidade = BigDecimal.ZERO;
+	private BigDecimal custoOutros = BigDecimal.ZERO;
+
 	private Calculadora(int quantidadeConvites, ModeloConvite modelo,
 			Colagem colagem, Papel papelEnvelope, Papel papelInterno,
 			Impressao impressaoEnvelope, Impressao impressaoInterno, Fita fita,
@@ -81,14 +84,29 @@ public class Calculadora {
 		return o;
 	}
 	
+	private void atualizaCustoUnidade(Orcamento o, BigDecimal valor) {
+		o.setCustoUnidade(valor);
+	}
+	
+	private void atualizaCustoOutros(Orcamento o, BigDecimal valor) {
+		o.setCustoOutros(valor);
+	}
+
 	public void calcularCliche(Orcamento o) {
 		if (this.cliche != null) {
+			
+			custoOutros = custoOutros.add(this.cliche.getCusto());
+			atualizaCustoOutros(o, custoOutros);
+			
 			BigDecimal valor = this.cliche.getValorVenda();
 			o.addItemValortotal(o.new Item(this.cliche.toString(), valor));	
 		}
 	}
 
 	public void calcularPrecoModeloConvite(Orcamento o) {
+		custoUnidade = custoUnidade.add(this.modelo.getCustoAtual(
+				papelEnvelope, colagem));
+		atualizaCustoUnidade(o, custoUnidade);
 		BigDecimal valor = this.modelo.getPrecoVenda(papelEnvelope, colagem);
 		o.addItem(o.new Item(this.modelo.toString(), valor));
 	}
@@ -96,6 +114,12 @@ public class Calculadora {
 	public void calcularPapelInterno(Orcamento o) {
 		int quantidadeFolhasParaPapelInterno = modelo.getTamanhoItemInterno();
 		if (papelInterno != null && quantidadeFolhasParaPapelInterno > 0) {
+
+			custoUnidade = custoUnidade.add(this.papelInterno.getCustoAtual()
+					.divide(new BigDecimal(quantidadeFolhasParaPapelInterno))
+					.setScale(4, RoundingMode.HALF_UP));
+			atualizaCustoUnidade(o, custoUnidade);
+
 			BigDecimal valorPapel = this.papelInterno.getPrecoAtual();
 			valorPapel = valorPapel.divide(
 					new BigDecimal(quantidadeFolhasParaPapelInterno)).setScale(
@@ -107,6 +131,9 @@ public class Calculadora {
 
 	public void calcularValorImpressaoEnvelope(Orcamento o) {
 		if (impressaoEnvelope != null) {
+			custoUnidade = custoUnidade.add(impressaoEnvelope.getCustoAtual());
+			atualizaCustoUnidade(o, custoUnidade);
+
 			BigDecimal precoVenda = impressaoEnvelope.getPrecoVenda();
 			o.addItem(o.new Item(impressaoEnvelope.toString(), precoVenda));
 		}
@@ -114,6 +141,10 @@ public class Calculadora {
 
 	public void calcularValorImpressaoInterno(Orcamento o) {
 		if (impressaoInterno != null) {
+
+			custoUnidade = custoUnidade.add(impressaoInterno.getCustoAtual());
+			atualizaCustoUnidade(o, custoUnidade);
+
 			BigDecimal precoVenda = impressaoInterno.getPrecoVenda();
 			o.addItem(o.new Item(impressaoInterno.toString(), precoVenda));
 		}
@@ -121,18 +152,24 @@ public class Calculadora {
 
 	public void calcularValorFita(Orcamento o) {
 		if (fita != null) {
+			custoUnidade = custoUnidade.add(fita.getPrecoCusto(modelo));
+			atualizaCustoUnidade(o, custoUnidade);
 			o.addItem(o.new Item(fita.toString(), fita.getPrecoVenda(modelo)));
 		}
 	}
-	
+
 	public void calculaValorLaco(Orcamento o) {
 		if (laco != null) {
+			custoUnidade = custoUnidade.add(laco.getCusto(fita));
+			atualizaCustoUnidade(o, custoUnidade);
 			o.addItem(o.new Item(laco.toString(), laco.getPrecoVenda(fita)));
 		}
 	}
 
 	public void calcularImpressaoNome(Orcamento o) {
 		if (impressaoNome != null) {
+			custoUnidade = custoUnidade.add(impressaoNome.getPrecoCusto());
+			atualizaCustoUnidade(o, custoUnidade);
 			o.addItem(o.new Item(impressaoNome.toString(), impressaoNome
 					.getPrecoVenda()));
 		}
@@ -140,12 +177,16 @@ public class Calculadora {
 
 	public void calcularRenda(Orcamento o) {
 		if (renda != null) {
+			custoUnidade = custoUnidade.add(renda.getPrecoCusto(modelo));
+			atualizaCustoUnidade(o, custoUnidade);
 			o.addItem(o.new Item(renda.toString(), renda.getPrecoVenda(modelo)));
 		}
 	}
 
 	public void calcularAplicacaoSerigrafiaInterno(Orcamento o) {
 		if (serigrafiaInterno != null) {
+			custoUnidade = custoUnidade.add(serigrafiaInterno.getCusto());
+			atualizaCustoUnidade(o, custoUnidade);
 			o.addItem(o.new Item(serigrafiaInterno.toString(),
 					serigrafiaInterno.getPrecoVenda()));
 		}
@@ -153,6 +194,8 @@ public class Calculadora {
 
 	public void calcularAplicacaoSerigrafiaEnvelope(Orcamento o) {
 		if (serigrafiaEnvelope != null) {
+			custoUnidade = custoUnidade.add(serigrafiaEnvelope.getCusto());
+			atualizaCustoUnidade(o, custoUnidade);
 			o.addItem(o.new Item(serigrafiaEnvelope.toString(),
 					serigrafiaEnvelope.getPrecoVenda()));
 		}
@@ -160,12 +203,19 @@ public class Calculadora {
 
 	public void calcularHotStamping(Orcamento o) {
 		if (hotStamp != null) {
-			o.addItemValortotal(o.new Item(hotStamp.toString(), hotStamp.getPrecoVenda()));
+
+			custoOutros = custoOutros.add(hotStamp.getPrecoCusto());
+			atualizaCustoOutros(o, custoOutros);
+			o.addItemValortotal(o.new Item(hotStamp.toString(), hotStamp
+					.getPrecoVenda()));
 		}
 	}
 
 	public void calcularAplicacaoStrass(Orcamento o) {
 		if (quantidadeStrass > 0) {
+			custoUnidade = custoUnidade.add(strass
+					.getPrecoCusto(quantidadeStrass));
+			atualizaCustoUnidade(o, custoUnidade);
 			o.addItem(o.new Item(strass.toString(), strass
 					.getPrecoVenda(quantidadeStrass)));
 		}
@@ -173,12 +223,20 @@ public class Calculadora {
 
 	public void calcularFechamentoIma(Orcamento o) {
 		if (ima != null) {
+
+			custoUnidade = custoUnidade.add(ima.getCusto());
+			atualizaCustoUnidade(o, custoUnidade);
+			
 			o.addItem(o.new Item(ima.toString(), ima.getPrecoVenda()));
 		}
 	}
 
 	public void calcularPrecoCorte(Orcamento o) {
 		if (corte != null) {
+
+			custoUnidade = custoUnidade.add(corte.getCusto(quantidadeConvites));
+			atualizaCustoUnidade(o, custoUnidade);
+
 			o.addItem(o.new Item(corte.toString(), corte
 					.getPrecoVenda(quantidadeConvites)));
 		}
@@ -186,6 +244,9 @@ public class Calculadora {
 
 	public void calcularEmbalagem(Orcamento o) {
 		if (this.embalagem != null) {
+
+			custoUnidade = custoUnidade.add(embalagem.getCustoAtual());
+			atualizaCustoUnidade(o, custoUnidade);
 			o.addItem(o.new Item(embalagem.toString(), embalagem
 					.getPrecoVenda()));
 			;
@@ -195,11 +256,14 @@ public class Calculadora {
 	public class Orcamento {
 
 		private int quantidade;
-		
+
 		private BigDecimal valorUnidade;
 		private BigDecimal valorTotalConvites;
 		private BigDecimal valorItemsPorPedido;
 		private BigDecimal valorTotal;
+
+		private BigDecimal custoUnidade;
+		private BigDecimal custoOutros;
 
 		private List<Item> itemsCompoePrecoUnidade = new ArrayList<>();
 		private List<Item> itensCompoePrecoPorCompra = new ArrayList<Calculadora.Orcamento.Item>();
@@ -219,19 +283,20 @@ public class Calculadora {
 		public void addItem(Item item) {
 			this.itemsCompoePrecoUnidade.add(item);
 		}
-		
+
 		public void addItemValortotal(Item item) {
 			this.itensCompoePrecoPorCompra.add(item);
 		}
 
 		public BigDecimal getValorUnidade() {
-			return this.itemsCompoePrecoUnidade.stream().parallel().map(item -> {
-				return item.valor;
-			}).reduce((x, y) -> {
-				return x.add(y);
-			}).get().multiply(new BigDecimal("1.1"));
+			return this.itemsCompoePrecoUnidade.stream().parallel()
+					.map(item -> {
+						return item.valor;
+					}).reduce((x, y) -> {
+						return x.add(y);
+					}).get().multiply(new BigDecimal("1.1")).setScale(2, RoundingMode.HALF_UP);
 		}
-		
+
 		public BigDecimal getValorTotalConvites() {
 			return getValorUnidade().multiply(new BigDecimal(quantidade));
 		}
@@ -239,21 +304,23 @@ public class Calculadora {
 		public BigDecimal getValorItemsPorPedido() {
 			BigDecimal valorTotal = BigDecimal.ZERO;
 			if (!itensCompoePrecoPorCompra.isEmpty()) {
-				valorTotal = itensCompoePrecoPorCompra.stream().parallel().map(item -> {
-					return item.valor;
-				}).reduce((x,y) -> {
-					return x.add(y);
-				}).get();	
+				valorTotal = itensCompoePrecoPorCompra.stream().parallel()
+						.map(item -> {
+							return item.valor;
+						}).reduce((x, y) -> {
+							return x.add(y);
+						}).get().setScale(2, RoundingMode.HALF_UP);
 			}
 			return valorTotal;
 		}
-		
+
 		public BigDecimal getValorTotal() {
-			BigDecimal valorTotalUnidade = getValorUnidade().multiply(new BigDecimal(quantidadeConvites));
+			BigDecimal valorTotalUnidade = getValorUnidade().multiply(
+					new BigDecimal(quantidadeConvites));
 			BigDecimal valorTotalItemsPorPedido = getValorItemsPorPedido();
-			return valorTotalUnidade.add(valorTotalItemsPorPedido);
+			return valorTotalUnidade.add(valorTotalItemsPorPedido).setScale(2, RoundingMode.HALF_UP);
 		}
-		
+
 		@Override
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
@@ -264,6 +331,22 @@ public class Calculadora {
 			});
 			sb.append("Preço final individual: " + getValorUnidade());
 			return sb.toString();
+		}
+
+		public BigDecimal getCustoUnidade() {
+			return custoUnidade;
+		}
+
+		public void setCustoUnidade(BigDecimal custoUnidade) {
+			this.custoUnidade = custoUnidade;
+		}
+
+		public BigDecimal getCustoOutros() {
+			return custoOutros;
+		}
+
+		public void setCustoOutros(BigDecimal custoOutros) {
+			this.custoOutros = custoOutros;
 		}
 
 		public class Item {
@@ -408,7 +491,7 @@ public class Calculadora {
 			this.corte = corte;
 			return this;
 		}
-		
+
 		public CalculadoraBuilder cliche(Cliche cliche) {
 			this.cliche = cliche;
 			return this;

@@ -124,6 +124,12 @@ public class Fita extends BaseEntity {
 	public BigDecimal getCustoAtual() {
 		return PrecoVigenciaService.getPrecoAtual(this.precos).getValor();
 	}
+	
+	public BigDecimal getPrecoCusto(ModeloConvite modelo) {
+		return getCustoAtual()
+				.multiply(new BigDecimal(modelo.getQuantidadeFitaContorno()))
+				.setScale(2, BigDecimal.ROUND_HALF_UP);
+	}
 
 	public BigDecimal getPrecoVenda(ModeloConvite modelo) {
 		return getCustoAtual()

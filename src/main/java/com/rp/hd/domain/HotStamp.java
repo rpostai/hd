@@ -30,6 +30,10 @@ public class HotStamp extends BaseEntity {
 		this.precos.add(preco);
 	}
 
+	public BigDecimal getPrecoCusto() {
+		return PrecoVigenciaService.getPrecoAtual(precos).getValor();
+	}
+	
 	public BigDecimal getPrecoVenda() {
 		return PrecoVigenciaService.getPrecoAtual(precos).getValor()
 				.multiply(markup);

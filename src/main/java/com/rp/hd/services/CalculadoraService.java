@@ -260,6 +260,9 @@ public class CalculadoraService {
 		
 		adicionarOrcamento(atendimentoId, orcamento, resultado);
 		
+		resultado.setCustoOutros(null);
+		resultado.setCustoUnidade(null);
+		
 		return resultado;
 	}
 	
@@ -283,6 +286,10 @@ public class CalculadoraService {
 		o.setPrecoCalculadoConvites(orcamentoCalculado.getValorTotalConvites());
 		
 		o.setQuantidade(sol.getQuantidade());
+		
+		o.setCustoUnidade(orcamentoCalculado.getCustoUnidade());
+		
+		o.setCustoOutros(orcamentoCalculado.getCustoOutros());
 		
 		if (sol.getModelo() != null) {
 			o.setModelo(modeloConviteRepository.get(sol.getModelo().getId()));	

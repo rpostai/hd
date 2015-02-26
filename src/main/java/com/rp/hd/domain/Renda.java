@@ -42,6 +42,15 @@ public class Renda extends BaseEntity {
 	public void setMarkup(BigDecimal markup) {
 		this.markup = markup;
 	}
+	
+	public BigDecimal getPrecoCusto(ModeloConvite modelo) {
+		return PrecoVigenciaService
+				.getPrecoAtual(precos)
+				.getValor()
+				.multiply(
+						new BigDecimal(modelo.getQuantidadeRendaEmCentimetros()))
+				.setScale(2, BigDecimal.ROUND_HALF_UP);
+	}
 
 	public BigDecimal getPrecoVenda(ModeloConvite modelo) {
 		return PrecoVigenciaService

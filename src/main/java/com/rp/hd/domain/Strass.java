@@ -40,6 +40,12 @@ public class Strass extends BaseEntity {
 	public void addPreco(PrecoVigencia preco) {
 		this.precos.add(preco);
 	}
+	
+	public BigDecimal getPrecoCusto(int quantidade) {
+		PrecoVigencia p = PrecoVigenciaService.getPrecoAtual(precos);
+		return p.getValor().multiply(new BigDecimal(quantidade))
+				.setScale(2, BigDecimal.ROUND_HALF_UP);
+	}
 
 	public BigDecimal getPrecoVenda(int quantidade) {
 		PrecoVigencia p = PrecoVigenciaService.getPrecoAtual(precos);

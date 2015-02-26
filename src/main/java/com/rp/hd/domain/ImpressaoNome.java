@@ -50,6 +50,11 @@ public class ImpressaoNome extends BaseEntity {
 		return PrecoVigenciaService.getPrecoAtual(precos).getValor()
 				.multiply(getMarkup()).setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
+	
+	public BigDecimal getPrecoCusto() {
+		return PrecoVigenciaService.getPrecoAtual(precos).getValor()
+				.setScale(2, BigDecimal.ROUND_HALF_UP);
+	}
 
 	@Override
 	public String toString() {

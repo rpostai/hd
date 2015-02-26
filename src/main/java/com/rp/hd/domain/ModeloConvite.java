@@ -150,6 +150,15 @@ public class ModeloConvite extends BaseEntity {
 		this.embalagem = embalagem;
 	}
 	
+	public BigDecimal getCustoAtual(Papel papel, Colagem colagem) {
+		BigDecimal valorPapel = papel.getCustoAtual();
+		BigDecimal valorColagem = BigDecimal.ZERO;
+		if (temColagem) {
+			valorColagem = colagem !=null ? colagem.getPrecoAtual() : BigDecimal.ZERO;
+		}
+		return valorPapel.divide(new BigDecimal(this.getModeloFaca().getValor()),4, RoundingMode.HALF_UP).add(valorColagem);
+	}
+	
 	public BigDecimal getPrecoVenda(Papel papel, Colagem colagem) {
 		this.papel = papel;
 		BigDecimal valorPapel = papel.getPrecoAtual();
