@@ -81,6 +81,7 @@ public class Calculadora {
 		calcularPrecoCorte(o);
 		calcularEmbalagem(o);
 		calcularCliche(o);
+		calcularFechamentoIma(o);
 		return o;
 	}
 	
@@ -116,13 +117,13 @@ public class Calculadora {
 		if (papelInterno != null && quantidadeFolhasParaPapelInterno > 0) {
 
 			custoUnidade = custoUnidade.add(this.papelInterno.getCustoAtual()
-					.divide(new BigDecimal(quantidadeFolhasParaPapelInterno))
-					.setScale(4, RoundingMode.HALF_UP));
+					.divide(new BigDecimal(quantidadeFolhasParaPapelInterno),4, RoundingMode.HALF_UP)
+					.setScale(2, RoundingMode.HALF_UP));
 			atualizaCustoUnidade(o, custoUnidade);
 
 			BigDecimal valorPapel = this.papelInterno.getPrecoAtual();
 			valorPapel = valorPapel.divide(
-					new BigDecimal(quantidadeFolhasParaPapelInterno)).setScale(
+					new BigDecimal(quantidadeFolhasParaPapelInterno),4, RoundingMode.HALF_UP).setScale(
 					4, RoundingMode.HALF_UP);
 			o.addItem(o.new Item(String.format("Papel Interno %s",
 					papelInterno.toString()), valorPapel));
