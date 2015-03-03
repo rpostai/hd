@@ -256,7 +256,7 @@ public class AtendimentoService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Atendimento> consultaAtendimentos(ConsultaAtendimento consulta) {
 		Calendar c = Calendar.getInstance();
-		if (consulta.getData() != null) {
+		if (consulta.getData() != null && StringUtils.isNotBlank(consulta.getData())) {
 			try {
 				c.setTime(SD.parse(consulta.getData()));
 			} catch (ParseException e) {

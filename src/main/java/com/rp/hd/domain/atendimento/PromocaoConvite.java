@@ -15,7 +15,7 @@ import com.rp.hd.domain.BooleaToIntConverter;
 @Entity
 @Table(name = "promocao")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@NamedQueries({ @NamedQuery(name = "PromocaoConvite.PromocoesAtivas", query = "select o from PromocaoConvite o where o.ativo = 1") })
+@NamedQueries({ @NamedQuery(name = "PromocaoConvite.PromocoesAtivas", query = "select o from PromocaoConvite o where o.ativo = 1 order by valor asc") })
 public class PromocaoConvite extends BaseConvite {
 
 	private BigDecimal valor;

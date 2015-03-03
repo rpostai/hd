@@ -10,7 +10,7 @@
 	ng-init="getTodasPromocoes">
 
 	<tabset> 
-		<tab ng-repeat="orc in orcamentos" heading="{{ orc.modelo.nome}}-{{$index}}">
+		<tab ng-repeat="orc in orcamentos" heading="{{$index}} - {{ orc.modelo.nome}}">
 			 <table class="table striped">
 			 	<thead>
 			 		<tr>
