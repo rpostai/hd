@@ -2,11 +2,9 @@ package com.rp.hd.services;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
-
-import javax.persistence.Column;
-
-import com.rp.hd.domain.utils.DateUtils;
+import java.util.List;
 
 public class SolicitacaoOrcamento implements Serializable {
 
@@ -33,6 +31,8 @@ public class SolicitacaoOrcamento implements Serializable {
 	private BigDecimal precoCalculadoConvites;
 	private BigDecimal precoCalculadoItemsPedido;
 	private BigDecimal precoCalculadoTotal;
+
+	private List<String> fotos = new ArrayList<String>();
 
 	public int getQuantidade() {
 		return quantidade;
@@ -198,7 +198,7 @@ public class SolicitacaoOrcamento implements Serializable {
 	public void setDataAtendimento(Date dataAtendimento) {
 		this.dataAtendimento = dataAtendimento;
 	}
-	
+
 	public Date getDataAtendimento() {
 		return dataAtendimento;
 	}
@@ -209,6 +209,14 @@ public class SolicitacaoOrcamento implements Serializable {
 
 	public void setCliche(Dado cliche) {
 		this.cliche = cliche;
+	}
+
+	public void addFoto(String foto) {
+		this.fotos.add(foto);
+	}
+
+	public List<String> getFotos() {
+		return fotos;
 	}
 
 	@Override

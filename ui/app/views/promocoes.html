@@ -75,18 +75,24 @@
 			 		</tr>
 			 		
 			 		<tr ng-show="{{orc.hotstamp != null}}">
-			 			<td>Aplica��o HotStamp</td>
+			 			<td>Aplicação HotStamp</td>
 			 			<td>{{orc.hotstamp.nome}} - R$ {{orc.hotstamp.valor}}</td>
 			 		</tr>
 			 		
 			 		<tr ng-show="{{orc.cliche != null}}">
-			 			<td>Confec��o clich�</td>
+			 			<td>Confecção clichê</td>
 			 			<td>{{orc.cliche.nome}} - R$ {{orc.cliche.valor}}</td>
 			 		</tr>
 			 	
 			 		<tr>
 			 			<td>Valor por unidade: </td>
 			 			<td>{{orc.precoCalculado}}</td>
+			 		</tr>
+			 		
+			 		<tr ng-repeat="foto in orc.fotos">
+			 			<td colspan="2">
+			 				<img src="{{foto}}"/>
+			 			</td>
 			 		</tr>
 			 	</tfoot>
 			 	

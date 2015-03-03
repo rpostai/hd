@@ -53,6 +53,8 @@ import com.rp.hd.repository.jpa.atendimento.AtendimentoRepository;
 
 @Path("atendimento")
 public class AtendimentoService {
+	
+	private static final String caminhoFotos = "/imagem/";
 
 	private static final SimpleDateFormat SD = new SimpleDateFormat(
 			"dd/MM/yyyy");
@@ -355,6 +357,14 @@ public class AtendimentoService {
 			}
 			
 			s.setPrecoCalculado(orcamento.getValor());
+			
+			if (CollectionUtils.isNotEmpty(orcamento.getFotos())) {
+				orcamento.getFotos().stream().sorted((a,b) -> {
+					return a.getOrdem() - b.getOrdem();
+				}).forEach(foto -> {
+					s.addFoto(caminhoFotos+ foto.getCaminho());
+				});
+			}
 			
 			return s;
 		}).collect(Collectors.toList());
