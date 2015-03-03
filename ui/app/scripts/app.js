@@ -69,4 +69,8 @@ var app = angular
             	url: '/complementos/{atendimento}',
             	templateUrl: 'views/complementos.html'
             })
+            .state('layout.promocoes', {
+            	url: '/promocoes',
+            	templateUrl: 'views/promocoes.html'
+            })
     });

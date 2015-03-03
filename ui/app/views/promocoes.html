@@ -1,0 +1,97 @@
+<header class="margin20 nrm nlm">
+	<div class="clearfix">
+		<a class="place-left" href="#" title="">
+			<h1>Promoções</h1>
+		</a>
+	</div>
+</header>
+
+<div class="main-content clearfix" ng-controller="PromocoesController"
+	ng-init="getTodasPromocoes">
+
+	<tabset> 
+		<tab ng-repeat="orc in orcamentos" heading="{{ orc.modelo.nome}}-{{$index}}">
+			 <table class="table striped">
+			 	<thead>
+			 		<tr>
+			 			<th width="30%">Item</th>
+			 			<th width="70%">Descrição</th>
+			 		</tr>
+			 	</thead>
+			 	<tbody>
+			 		<tr>
+			 			<td>Modelo: </td>
+			 			<td>{{orc.modelo.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Papel Envelope: </td>
+			 			<td>{{orc.papelEnvelope.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Papel Interno: </td>
+			 			<td>{{orc.papelInterno.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Impressão Envelope: </td>
+			 			<td>{{orc.impressaoEnvelope.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Impressão Interno: </td>
+			 			<td>{{orc.impressaoInterno.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Fita: </td>
+			 			<td>{{orc.fita.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Laço: </td>
+			 			<td>{{orc.laco.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Impressão nome dos convidados: </td>
+			 			<td>{{orc.impressaoNome.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Strass/Meia Pérola: </td>
+			 			<td>{{orc.strass.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Fechamento com imã: </td>
+			 			<td>{{orc.ima.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Serigrafia Papel Interno: </td>
+			 			<td>{{orc.serigrafiaInterno.nome}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Serigrafia Envelope: </td>
+			 			<td>{{orc.serigrafiaEnvelope.nome}}</td>
+			 		</tr>
+			 	</tbody>
+			 	
+			 	<tfoot>
+			 		<tr ng-show="{{orc.hotstamp != null || orc.cliche != null}}">
+			 			<td colspan="2">Itens adicionais</td>
+			 		</tr>
+			 		
+			 		<tr ng-show="{{orc.hotstamp != null}}">
+			 			<td>Aplica��o HotStamp</td>
+			 			<td>{{orc.hotstamp.nome}} - R$ {{orc.hotstamp.valor}}</td>
+			 		</tr>
+			 		
+			 		<tr ng-show="{{orc.cliche != null}}">
+			 			<td>Confec��o clich�</td>
+			 			<td>{{orc.cliche.nome}} - R$ {{orc.cliche.valor}}</td>
+			 		</tr>
+			 	
+			 		<tr>
+			 			<td>Valor por unidade: </td>
+			 			<td>{{orc.precoCalculado}}</td>
+			 		</tr>
+			 	</tfoot>
+			 	
+			 </table>
+		</tab> 
+	</tabset>
+
+</div>

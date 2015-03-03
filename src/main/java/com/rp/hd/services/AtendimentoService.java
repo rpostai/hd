@@ -42,11 +42,13 @@ import com.rp.hd.domain.Complemento;
 import com.rp.hd.domain.ModeloConvite;
 import com.rp.hd.domain.atendimento.Atendimento;
 import com.rp.hd.domain.atendimento.OrcamentoComplemento;
+import com.rp.hd.domain.atendimento.PromocaoConvite;
 import com.rp.hd.repository.jpa.ColagemRepository;
 import com.rp.hd.repository.jpa.ComplementoRepository;
 import com.rp.hd.repository.jpa.ModeloConviteRepository;
 import com.rp.hd.repository.jpa.OrcamentoComplementoRepository;
 import com.rp.hd.repository.jpa.OrcamentoRepository;
+import com.rp.hd.repository.jpa.PromocaoConviteRepository;
 import com.rp.hd.repository.jpa.atendimento.AtendimentoRepository;
 
 @Path("atendimento")
@@ -72,6 +74,9 @@ public class AtendimentoService {
 
 	@Inject
 	ColagemRepository colagemRepository;
+
+	@Inject
+	private PromocaoConviteRepository promocaoConviteRepository;
 
 	@Resource(name = "java:jboss/mail/Default")
 	private Session session;
@@ -281,6 +286,81 @@ public class AtendimentoService {
 	}
 
 	@GET
+	@Path("promocoes")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<SolicitacaoOrcamento> getPromocoesAtivas() {
+		List<PromocaoConvite> promocoes = promocaoConviteRepository
+				.getPromocoesAtivas();
+
+		return promocoes.stream().map(orcamento -> {
+			
+			SolicitacaoOrcamento s = new SolicitacaoOrcamento();
+			s.setQuantidadeStrass(orcamento.getQuantidadeStrass());
+			
+			s.setModelo(new Dado(orcamento.getModelo().getId(), orcamento.getModelo().getNome()));
+			s.setPapelEnvelope(new Dado(orcamento.getPapelEnvelope().getId(), orcamento.getPapelEnvelope().getNome()));
+			
+			if (orcamento.getPapelInterno() != null) {
+				s.setPapelInterno(new Dado(orcamento.getPapelInterno().getId(), orcamento.getPapelInterno().getNome()));	
+			}
+			
+			if (orcamento.getImpressaoEnvelope() != null) {
+				s.setImpressaoEnvelope(new Dado(orcamento.getImpressaoEnvelope().getId(), orcamento.getImpressaoEnvelope().getDescricao()));
+			}
+			
+			if (orcamento.getImpressaoInterno() != null) {
+				s.setImpressaoInterno(new Dado(orcamento.getImpressaoInterno().getId(), orcamento.getImpressaoInterno().getDescricao()));
+			}
+			
+			if (orcamento.getFita() != null) {
+				s.setFita(new Dado(orcamento.getFita().getId(), orcamento.getFita().toString()));
+			}
+			
+			if (orcamento.getLaco() != null) {
+				s.setLaco(new Dado(orcamento.getLaco().getId(), orcamento.getLaco().getDescricao()));
+			}
+			
+			if (orcamento.getRenda() != null) {
+				s.setRenda(new Dado(orcamento.getRenda().getId(), orcamento.getRenda().getDescricao()));
+			}
+			
+			if (orcamento.getImpressaoNome() != null) {
+				s.setImpressaoNome(new Dado(orcamento.getImpressaoNome().getId(), orcamento.getImpressaoNome().getDescricao()));
+			}
+			
+			if (orcamento.getHotstamp() != null) {
+				s.setHotstamp(new Dado(orcamento.getHotstamp().getId(), orcamento.getHotstamp().getDescricao()));
+				s.getHotstamp().setValor(orcamento.getHotstamp().getPrecoVenda());
+			}
+			
+			if (orcamento.getIma() != null) {
+				s.setIma(new Dado(orcamento.getIma().getId(), Integer.toString(orcamento.getIma().getTamanho())));
+			}
+			
+			if (orcamento.getStrass() != null) {
+				s.setStrass(new Dado(orcamento.getStrass().getId(), orcamento.getStrass().getDescricao()));
+			}
+			
+			if (orcamento.getSerigrafiaEnvelope() != null) {
+				s.setSerigrafiaEnvelope(new Dado(orcamento.getSerigrafiaEnvelope().getId(), orcamento.getSerigrafiaEnvelope().getDescricao()));
+			}
+			
+			if (orcamento.getSerigrafiaInterno() != null) {
+				s.setSerigrafiaInterno(new Dado(orcamento.getSerigrafiaInterno().getId(), orcamento.getSerigrafiaInterno().getDescricao()));
+			}
+			
+			if (orcamento.getCliche() != null) {
+				s.setCliche(new Dado(orcamento.getCliche().getId(), orcamento.getCliche().getDescricao()));
+				s.getCliche().setValor(orcamento.getCliche().getValorVenda());
+			}
+			
+			s.setPrecoCalculado(orcamento.getValor());
+			
+			return s;
+		}).collect(Collectors.toList());
+	}
+
+	@GET
 	@Path("enviaremail/{atendimento}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public void enviarEmail(@PathParam("atendimento") Long atendimentoId)
@@ -403,13 +483,13 @@ public class AtendimentoService {
 		context.put("validade", SD.format(c.getTime()));
 
 		if (CollectionUtils.isNotEmpty(orcamentos)) {
-			context.put("orcamentos", orcamentos);			
+			context.put("orcamentos", orcamentos);
 		}
 		context.put("temImagens", temImagens);
-		List<OrcamentoComplemento> complementos =  orcamentoComplementoRepository
+		List<OrcamentoComplemento> complementos = orcamentoComplementoRepository
 				.getComplementos(atendimento.getId());
 		if (CollectionUtils.isNotEmpty(complementos)) {
-			context.put("complementos",complementos);			
+			context.put("complementos", complementos);
 		}
 
 		Template template = null;
