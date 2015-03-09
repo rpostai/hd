@@ -20,7 +20,8 @@ function AtendimentoController($scope, $http, store,$rootScope, $state) {
 			    hotstamp: null,
 			    strass: null,
 			    ima: null,
-			    cliche: null
+			    cliche: null,
+			    quantidadeStrass: 0
 			  };
   }
   

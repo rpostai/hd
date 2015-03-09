@@ -73,24 +73,42 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="span4">
+		<div class="span3">
 		    <label for="cmbSerigrafiaEnvelope">Impressão em Serigrafia Envelope</label>
 		    <select id="cmbSerigrafiaEnvelope" ng-model="orcamento.serigrafiaEnvelope" ng-options="ser as ser.nome for ser in serigrafias track by ser.id" class="input-control text">
 		      <option value="">-- Selecione aplicação de serigrafia-</option>
 		    </select>
 		</div>
-		<div class="span4">
+		<div class="span3">
 			 <label for="cmbHotStamp">Aplicação Hot Stamp</label>
 		    <select id="cmbHotStamp" ng-model="orcamento.hotstamp" ng-options="hot as hot.nome for hot in hotstamp track by hot.id" class="input-control text">
 		      <option value="">-- Selecione aplicação de hotstamp-</option>
 		    </select>
 		</div>
-		<div class="span4">
+		<div class="span3">
 		    <label for="cmbStrass">Aplicação de Strass/Meia Pérola</label>
 		    <select id="cmbStrass" ng-model="orcamento.strass" ng-options="st as st.nome for st in strass track by st.id" class="input-control text">
 		      <option value="">-- Selecione strass/pérola-</option>
 		    </select>
 		</div>
+		
+		<div class="span3">
+		    <label for="cmbStrass">Quantidade de Strass/Meia Pérola</label>
+		    <select id="cmbStrass" ng-model="orcamento.quantidadeStrass" class="input-control text">
+		      <option value="0">-- Selecione strass/pérola-</option>
+		      <option value="1">1</option>
+		      <option value="2">2</option>
+		      <option value="3">3</option>
+		      <option value="4">4</option>
+		      <option value="5">5</option>
+		      <option value="6">6</option>
+		      <option value="7">7</option>
+		      <option value="8">8</option>
+		      <option value="9">9</option>
+		      <option value="10">10</option>
+		    </select>
+		</div>
+		
 	</div>
 	<div class="row">
 		<div class="span4">

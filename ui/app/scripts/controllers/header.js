@@ -14,6 +14,9 @@ function HeaderController($scope, $http, store,$rootScope, $stateParams) {
 			pessoa2 : '',
 			telefone2 : '',
 			email2 : '',
+			origemContato: null,
+			observacao: null,
+			dataEvento: null,
 			label : !this.estado ? 'Iniciar atendimento'
 					: 'Finalizar atendimento'
 		}
@@ -53,8 +56,14 @@ function HeaderController($scope, $http, store,$rootScope, $stateParams) {
 							$scope.atendimento.telefone2 = data.cliente2.telefone;
 							$scope.atendimento.email1 = data.cliente1.email;
 							$scope.atendimento.email2 = data.cliente2.email;
+							$scope.atendimento.observacao = data.observacao;
+							$scope.atendimento.dataEvento = data.dataEvento;
 							
 						}
+						
+						$http.get('/servicos/atendimento/origem').success(function(data) {
+							$scope.origensContato = data;
+						});
 						
 						$scope.atendimento.label = 'Finalizar atendimento';
 					});
@@ -63,6 +72,7 @@ function HeaderController($scope, $http, store,$rootScope, $stateParams) {
 
 	$scope.finalizarAtendimento = function() {
 		if ($scope.atendimento.estado) {
+			$scope.atendimentoSalvo.origemContato=$scope.atendimento.origemContato;
 			$http.post(
 					"/servicos/atendimento/finalizar",
 					$scope.atendimentoSalvo).success(function(data) {
@@ -113,6 +123,16 @@ function HeaderController($scope, $http, store,$rootScope, $stateParams) {
 				}
 			}
 		}
+		$scope.atendimentoSalvo.observacao = $scope.atendimento.observacao;
+		
+		if ($('#data').val() != null && $('#data').val() != "") {
+			var split = $('#data').val().split('/');
+			novadata = split[1] + "/" +split[0]+"/"+split[2];
+			data = new Date(novadata);
+			$scope.atendimentoSalvo.dataEvento = data;
+		}
+		
+		$scope.atendimentoSalvo.origemContato = $scope.atendimento.origemContato;
 		store.set('atendimento', $scope.atendimentoSalvo);
 		$scope.marcarPessoa();
 	}

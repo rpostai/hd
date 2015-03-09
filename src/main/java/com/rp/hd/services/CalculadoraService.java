@@ -1,7 +1,5 @@
 package com.rp.hd.services;
 
-import java.math.BigDecimal;
-
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;

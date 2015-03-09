@@ -12,6 +12,7 @@ import com.rp.hd.domain.Impressao;
 import com.rp.hd.domain.ImpressaoNome;
 import com.rp.hd.domain.Laco;
 import com.rp.hd.domain.ModeloConvite;
+import com.rp.hd.domain.OrigemContato;
 import com.rp.hd.domain.Papel;
 import com.rp.hd.domain.Renda;
 import com.rp.hd.domain.Serigrafia;
@@ -23,6 +24,8 @@ public class CalculadoraDados implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -495454109364243671L;
+	
+	private List<Dado> origemContato = new ArrayList<Dado>();
 
 	private List<Dado> papeis = new ArrayList<>();
 	
@@ -154,4 +157,13 @@ public class CalculadoraDados implements Serializable {
 	public void addImpressaoNome(ImpressaoNome imp) {
 		this.add(this.impressoesNome, novoDado(imp.getId(),imp.getDescricao()));
 	}
+	
+	public void addOrigemContato(OrigemContato origem) {
+		origemContato.add(novoDado(origem.getId(), origem.getDescricao()));
+	}
+
+	public List<Dado> getOrigemContato() {
+		return origemContato;
+	}
+	
 }

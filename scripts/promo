@@ -1,0 +1,225 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.4.1
+-- Dumped by pg_dump version 9.4.1
+-- Started on 2015-03-03 16:42:10
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 208 (class 1259 OID 24799)
+-- Name: promocao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE promocao (
+    id bigint NOT NULL,
+    quantidadestrass integer NOT NULL,
+    ativo integer NOT NULL,
+    custo numeric(19,2),
+    valor numeric(19,2),
+    atendimento_id bigint,
+    cliche_id bigint,
+    fita_id bigint,
+    hot_stamp_id bigint,
+    ima_id bigint,
+    impressao_envelope_id bigint,
+    impressao_interno bigint,
+    impressao_nome_id bigint,
+    laco_id bigint,
+    modelo_convite_id bigint NOT NULL,
+    papel_envelope_id bigint,
+    papel_interno_id bigint,
+    renda_id bigint,
+    serigrafia_envelope_id bigint,
+    serigrafia_interno_id bigint,
+    strass_id bigint
+);
+
+
+ALTER TABLE promocao OWNER TO postgres;
+
+--
+-- TOC entry 2143 (class 0 OID 24799)
+-- Dependencies: 208
+-- Data for Name: promocao; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY promocao (id, quantidadestrass, ativo, custo, valor, atendimento_id, cliche_id, fita_id, hot_stamp_id, ima_id, impressao_envelope_id, impressao_interno, impressao_nome_id, laco_id, modelo_convite_id, papel_envelope_id, papel_interno_id, renda_id, serigrafia_envelope_id, serigrafia_interno_id, strass_id) FROM stdin;
+1	0	1	1.18	2.99	\N	\N	2	\N	\N	1	\N	1	2	5	27	\N	1	\N	\N	\N
+2	0	1	1.93	4.50	\N	\N	2	\N	\N	\N	1	1	2	24	36	6	\N	\N	\N	\N
+3	0	1	1.27	2.90	\N	\N	2	\N	\N	\N	1	1	2	19	27	24	\N	\N	\N	\N
+\.
+
+
+--
+-- TOC entry 2017 (class 2606 OID 24803)
+-- Name: promocao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY promocao
+    ADD CONSTRAINT promocao_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2019 (class 2606 OID 24809)
+-- Name: fk_2rinn5snxxcbwvmy00987rdlf; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY promocao
+    ADD CONSTRAINT fk_2rinn5snxxcbwvmy00987rdlf FOREIGN KEY (cliche_id) REFERENCES cliche(id);
+
+
+--
+-- TOC entry 2023 (class 2606 OID 24829)
+-- Name: fk_3dkoxxotcp9wet1adicph1ag; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY promocao
+    ADD CONSTRAINT fk_3dkoxxotcp9wet1adicph1ag FOREIGN KEY (impressao_envelope_id) REFERENCES impressao(id);
+
+
+--
+-- TOC entry 2018 (class 2606 OID 24804)
+-- Name: fk_3s0psdnoujh5396fcs3p5942o; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY promocao
+    ADD CONSTRAINT fk_3s0psdnoujh5396fcs3p5942o FOREIGN KEY (atendimento_id) REFERENCES atendimento(id);
+
+
+--
+-- TOC entry 2032 (class 2606 OID 24874)
+-- Name: fk_4uoasljxun5o19fe33qbv8r0l; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY promocao
+    ADD CONSTRAINT fk_4uoasljxun5o19fe33qbv8r0l FOREIGN KEY (serigrafia_interno_id) REFERENCES serigrafia(id);
+
+
+--
+-- TOC entry 2031 (class 2606 OID 24869)
+-- Name: fk_56jretse608dqyyij6m7jogix; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY promocao
+    ADD CONSTRAINT fk_56jretse608dqyyij6m7jogix FOREIGN KEY (serigrafia_envelope_id) REFERENCES serigrafia(id);
+
+
+--
+-- TOC entry 2021 (class 2606 OID 24819)
+-- Name: fk_5nn81g27xamhdb3wdainw5wtf; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY promocao
+    ADD CONSTRAINT fk_5nn81g27xamhdb3wdainw5wtf FOREIGN KEY (hot_stamp_id) REFERENCES hot_stamp(id);
+
+
+--
+-- TOC entry 2026 (class 2606 OID 24844)
+-- Name: fk_6sl133u0ca98f0en24e3i16g8; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY promocao
+    ADD CONSTRAINT fk_6sl133u0ca98f0en24e3i16g8 FOREIGN KEY (laco_id) REFERENCES laco(id);
+
+
+--
+-- TOC entry 2030 (class 2606 OID 24864)
+-- Name: fk_834lnhm6ero559xrbjveyl341; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY promocao
+    ADD CONSTRAINT fk_834lnhm6ero559xrbjveyl341 FOREIGN KEY (renda_id) REFERENCES renda(id);
+
+
+--
+-- TOC entry 2022 (class 2606 OID 24824)
+-- Name: fk_98xwxhhxf9wwtdnp15tcyp5kv; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY promocao
+    ADD CONSTRAINT fk_98xwxhhxf9wwtdnp15tcyp5kv FOREIGN KEY (ima_id) REFERENCES ima(id);
+
+
+--
+-- TOC entry 2033 (class 2606 OID 24879)
+-- Name: fk_bkvhw9siqe27cmf1dy3knyeie; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY promocao
+    ADD CONSTRAINT fk_bkvhw9siqe27cmf1dy3knyeie FOREIGN KEY (strass_id) REFERENCES strass(id);
+
+
+--
+-- TOC entry 2024 (class 2606 OID 24834)
+-- Name: fk_hdy2f29jnh0m55xt1lst5edh1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY promocao
+    ADD CONSTRAINT fk_hdy2f29jnh0m55xt1lst5edh1 FOREIGN KEY (impressao_interno) REFERENCES impressao(id);
+
+
+--
+-- TOC entry 2029 (class 2606 OID 24859)
+-- Name: fk_hyv2s3wwufnih6j49uc2okci3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY promocao
+    ADD CONSTRAINT fk_hyv2s3wwufnih6j49uc2okci3 FOREIGN KEY (papel_interno_id) REFERENCES papel(id);
+
+
+--
+-- TOC entry 2027 (class 2606 OID 24849)
+-- Name: fk_kcleoglpsclm8spnevcjb7s54; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY promocao
+    ADD CONSTRAINT fk_kcleoglpsclm8spnevcjb7s54 FOREIGN KEY (modelo_convite_id) REFERENCES modelo_convite(id);
+
+
+--
+-- TOC entry 2028 (class 2606 OID 24854)
+-- Name: fk_m489dklbmrrvi1f195pda4dlp; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY promocao
+    ADD CONSTRAINT fk_m489dklbmrrvi1f195pda4dlp FOREIGN KEY (papel_envelope_id) REFERENCES papel(id);
+
+
+--
+-- TOC entry 2020 (class 2606 OID 24814)
+-- Name: fk_qht4ym0i0im3j5mnclxnwkd2o; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY promocao
+    ADD CONSTRAINT fk_qht4ym0i0im3j5mnclxnwkd2o FOREIGN KEY (fita_id) REFERENCES fita(id);
+
+
+--
+-- TOC entry 2025 (class 2606 OID 24839)
+-- Name: fk_sk6x3rvmgwk2wfp6i9ep95cbr; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY promocao
+    ADD CONSTRAINT fk_sk6x3rvmgwk2wfp6i9ep95cbr FOREIGN KEY (impressao_nome_id) REFERENCES impressao_nome(id);
+
+
+-- Completed on 2015-03-03 16:42:11
+
+--
+-- PostgreSQL database dump complete
+--
+

@@ -27,8 +27,24 @@
 				<input id="pessoa2" ng-model="atendimento.pessoa2" type="text" placeholder="Cliente" ng-change="atualizarCliente()" class="input-control text">
 				<input id="email2" ng-model="atendimento.email2" type="text" placeholder="Email" ng-change="atualizarCliente()" class="input-control text">
 				<input id="fone2" ng-model="atendimento.fone2" type="text" placeholder="Telefone" ng-change="atualizarCliente()" class="input-control text">
+
+				<label for="txtData">Data do evento</label>
+		    	<div class="input-control text" data-role="datepicker" id="datepicker" ng-model="atendimento.dataEvento" ng-change="atualizarCliente()" data-format="dd/mm/yyyy">
+				    <input id="data" type="text" ng-model="atendimento.dataEvento">
+				    <button class="btn-date"></button>
+				</div>
+				
+				<input id="fone2" ng-model="atendimento.observacao" type="text" placeholder="Obervações" ng-change="atualizarCliente()" class="input-control text">
+				
+		    	<select data-role="input-control" id="cmbOrigemContato" ng-model="atendimento.origemContato" ng-options="origem as origem.descricao for origem in origensContato track by origem.id" class="input-control text" ng-change="atualizarCliente()">
+		      		<option value="">Como ficou sabendo de nossa empresa?</option>
+		    	</select>
 			</div>
 		</div>
 	</div>
 </div>
+
+<script>
+	$("#datepicker").datepicker();
+</script>
 

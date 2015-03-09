@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -21,6 +22,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.RandomStringUtils;
+
+import com.rp.hd.domain.OrigemContato;
 
 @Entity
 @Table(name = "atendimento")
@@ -62,7 +65,16 @@ public class Atendimento implements Serializable {
 
 	@Transient
 	private long tempoTotalAtendimento;
-	
+
+	@ManyToOne
+	@JoinColumn(name = "origem_contato_id")
+	private OrigemContato origemContato;
+
+	@Column(name = "data_evento")
+	private Date dataEvento;
+
+	private String observacao;
+
 	public Long getId() {
 		return id;
 	}
@@ -170,4 +182,29 @@ public class Atendimento implements Serializable {
 	public void setDataFechamentoVenda(Date dataFechamentoVenda) {
 		this.dataFechamentoVenda = dataFechamentoVenda;
 	}
+
+	public OrigemContato getOrigemContato() {
+		return origemContato;
+	}
+
+	public void setOrigemContato(OrigemContato origemContato) {
+		this.origemContato = origemContato;
+	}
+
+	public Date getDataEvento() {
+		return dataEvento;
+	}
+
+	public void setDataEvento(Date dataEvento) {
+		this.dataEvento = dataEvento;
+	}
+
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
+	}
+
 }

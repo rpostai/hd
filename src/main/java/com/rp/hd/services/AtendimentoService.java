@@ -40,6 +40,7 @@ import org.apache.velocity.app.Velocity;
 import com.google.common.io.ByteStreams;
 import com.rp.hd.domain.Complemento;
 import com.rp.hd.domain.ModeloConvite;
+import com.rp.hd.domain.OrigemContato;
 import com.rp.hd.domain.atendimento.Atendimento;
 import com.rp.hd.domain.atendimento.OrcamentoComplemento;
 import com.rp.hd.domain.atendimento.PromocaoConvite;
@@ -48,6 +49,7 @@ import com.rp.hd.repository.jpa.ComplementoRepository;
 import com.rp.hd.repository.jpa.ModeloConviteRepository;
 import com.rp.hd.repository.jpa.OrcamentoComplementoRepository;
 import com.rp.hd.repository.jpa.OrcamentoRepository;
+import com.rp.hd.repository.jpa.OrigemContatoRepository;
 import com.rp.hd.repository.jpa.PromocaoConviteRepository;
 import com.rp.hd.repository.jpa.atendimento.AtendimentoRepository;
 
@@ -82,6 +84,16 @@ public class AtendimentoService {
 
 	@Resource(name = "java:jboss/mail/Default")
 	private Session session;
+	
+	@Inject
+	private OrigemContatoRepository origemContatoRepository;
+	
+	@GET
+	@Path("origem")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<OrigemContato> getOrigemContato() {
+		return origemContatoRepository.getTodos();
+	}
 
 	@POST
 	@Path("iniciar")
