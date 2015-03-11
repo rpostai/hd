@@ -127,23 +127,66 @@
 	</div>
 	
 	<div class="row">
-		<div class="span3">
-	      <p>Valor da unidade: R$ {{precoPorUnidade}} por unidade</p>
-		</div>
-		
-		<div class="span3">
-	      <p>Valor total dos convites: R$ {{precoCalculadoConvites}}</p>
-		</div>
-		
-		<div class="span3">
-	      <p>Valor itens por pedido: R$ {{precoItensPorPedido}} por pedido</p>
-		</div>
-		
-		<div class="span3">
-	      <p>Valor total do pedido: R$ {{precoTotal}}</p>
-		</div>
+		<fieldset>
+			<legend>VALORES PARA PAGAMENTO À EM ATÉ <b>6X</b> NO CARTÃO DE CRÉDITO</legend>
+			<div class="span3">
+		      <p>Valor da unidade: <b> R$ {{precoPorUnidadePrazo}} </b> por unidade</p>
+			</div>
+			
+			<div class="span3">
+		      <p>Valor total dos convites:<b> R$ {{precoCalculadoConvitesPrazo}} </b></p>
+			</div>
+			
+			<div class="span3">
+		      <p>Valor itens por pedido: <b> R$ {{precoItensPorPedidoPrazo}} </b> por pedido</p>
+			</div>
+			
+			<div class="span3">
+		      <p>Valor total do pedido: <b> R$ {{precoTotalPrazo}} </b></p>
+			</div>
+		</fieldset>
+	</div>
+	
+	<div class="row">
+		<table>
+				<thead>
+					<tr>
+						<td>Núm.Parcelas</td>
+						<td>Valor da parcela</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="parcela in opcoesParcelamento">
+						<td>{{parcela.quantidadeParcelas}}</td>
+						<td>{{parcela.valorParcelaMoeda}}</td>
+					</tr>
+				</tbody>
+			</table>
+	</div>
+	
+	<div class="row">
+		<fieldset>
+			<legend>VALORES PARA PAGAMENTO À VISTA</legend>
+			<div class="span3">
+		      <p>Valor da unidade: <b> R$ {{precoPorUnidade}} </b> por unidade</p>
+			</div>
+			
+			<div class="span3">
+		      <p>Valor total dos convites: <b> R$ {{precoCalculadoConvites}} </b></p>
+			</div>
+			
+			<div class="span3">
+		      <p>Valor itens por pedido: <b>R$ {{precoItensPorPedido}} </b> por pedido</p>
+			</div>
+			
+			<div class="span3">
+		      <p>Valor total do pedido: <b> R$ {{precoTotal}} </b></p>
+			</div>
+		</fieldset>
 		
 	</div>
+	
+	
 	
 	<div class="row">
 		<div class="span3"> 

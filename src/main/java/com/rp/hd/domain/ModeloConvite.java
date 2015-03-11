@@ -191,7 +191,7 @@ public class ModeloConvite extends BaseEntity {
 
 
 	public static enum ModeloFaca {
-		FORMATO1(1), FORMATO2(2), FORMATO4(4), FORMATO6(6), FORMATO8(8), FORMATO9(9), FORMATO16(12);
+		FORMATO1(1), FORMATO2(2), FORMATO3(3), FORMATO4(4), FORMATO6(6), FORMATO8(8), FORMATO9(9), FORMATO16(12);
 
 		private int valor;
 

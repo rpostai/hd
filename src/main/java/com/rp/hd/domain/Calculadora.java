@@ -2,13 +2,20 @@ package com.rp.hd.domain;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.rp.hd.domain.exceptions.ModeloInvalidoException;
 import com.rp.hd.domain.exceptions.PapelInvalidoException;
 
 public class Calculadora {
+
+	private static final int PRAZO_MAXIMO_PARCELAMENTO = 6;
+	private static final BigDecimal CEM = new BigDecimal(100);
+	private static final Locale BR = new Locale("pt","BR");
+	private static final NumberFormat NF = NumberFormat.getCurrencyInstance(BR);
 
 	private final int quantidadeConvites;
 	private final ModeloConvite modelo;
@@ -30,6 +37,9 @@ public class Calculadora {
 	private final Embalagem embalagem;
 	private final CorteEnvelope corte;
 	private final Cliche cliche;
+	private BigDecimal taxaAdministracaoCartaoCredito;
+	private BigDecimal taxaAdministracaoCartaoDebito;
+	private BigDecimal taxaJurosMensal;
 
 	private BigDecimal custoUnidade = BigDecimal.ZERO;
 	private BigDecimal custoOutros = BigDecimal.ZERO;
@@ -40,7 +50,9 @@ public class Calculadora {
 			Laco laco, HotStamp hotStamp, Serigrafia serigrafiaEnvelope,
 			Serigrafia serigrafiaInterno, Renda renda, Ima ima,
 			int quantidadeStrass, Strass strass, ImpressaoNome impressaoNome,
-			CorteEnvelope corte, Cliche cliche) {
+			CorteEnvelope corte, Cliche cliche,
+			BigDecimal taxaAdministracaoCartaoCredito,
+			BigDecimal taxaAdministracaoCartaoDebito, BigDecimal taxaJurosMensal) {
 		this.quantidadeConvites = quantidadeConvites;
 		this.modelo = modelo;
 		this.colagem = colagem;
@@ -61,10 +73,14 @@ public class Calculadora {
 		this.embalagem = modelo.getEmbalagem();
 		this.corte = corte;
 		this.cliche = cliche;
+		this.taxaAdministracaoCartaoCredito = taxaAdministracaoCartaoCredito;
+		this.taxaAdministracaoCartaoDebito = taxaAdministracaoCartaoDebito;
+		this.taxaJurosMensal = taxaJurosMensal;
 	}
 
 	public Orcamento calcular() {
-		Orcamento o = new Orcamento();
+		Orcamento o = new Orcamento(taxaAdministracaoCartaoCredito,
+				taxaAdministracaoCartaoDebito, taxaJurosMensal);
 		o.setQuantidade(this.quantidadeConvites);
 		calcularPrecoModeloConvite(o);
 		calcularPapelInterno(o);
@@ -84,23 +100,23 @@ public class Calculadora {
 		calcularFechamentoIma(o);
 		return o;
 	}
-	
+
 	private void atualizaCustoUnidade(Orcamento o, BigDecimal valor) {
 		o.setCustoUnidade(valor);
 	}
-	
+
 	private void atualizaCustoOutros(Orcamento o, BigDecimal valor) {
 		o.setCustoOutros(valor);
 	}
 
 	public void calcularCliche(Orcamento o) {
 		if (this.cliche != null) {
-			
+
 			custoOutros = custoOutros.add(this.cliche.getCusto());
 			atualizaCustoOutros(o, custoOutros);
-			
+
 			BigDecimal valor = this.cliche.getValorVenda();
-			o.addItemValortotal(o.new Item(this.cliche.toString(), valor));	
+			o.addItemValortotal(o.new Item(this.cliche.toString(), valor));
 		}
 	}
 
@@ -116,15 +132,17 @@ public class Calculadora {
 		int quantidadeFolhasParaPapelInterno = modelo.getTamanhoItemInterno();
 		if (papelInterno != null && quantidadeFolhasParaPapelInterno > 0) {
 
-			custoUnidade = custoUnidade.add(this.papelInterno.getCustoAtual()
-					.divide(new BigDecimal(quantidadeFolhasParaPapelInterno),4, RoundingMode.HALF_UP)
+			custoUnidade = custoUnidade.add(this.papelInterno
+					.getCustoAtual()
+					.divide(new BigDecimal(quantidadeFolhasParaPapelInterno),
+							4, RoundingMode.HALF_UP)
 					.setScale(2, RoundingMode.HALF_UP));
 			atualizaCustoUnidade(o, custoUnidade);
 
 			BigDecimal valorPapel = this.papelInterno.getPrecoAtual();
 			valorPapel = valorPapel.divide(
-					new BigDecimal(quantidadeFolhasParaPapelInterno),4, RoundingMode.HALF_UP).setScale(
-					4, RoundingMode.HALF_UP);
+					new BigDecimal(quantidadeFolhasParaPapelInterno), 4,
+					RoundingMode.HALF_UP).setScale(4, RoundingMode.HALF_UP);
 			o.addItem(o.new Item(String.format("Papel Interno %s",
 					papelInterno.toString()), valorPapel));
 		}
@@ -227,7 +245,7 @@ public class Calculadora {
 
 			custoUnidade = custoUnidade.add(ima.getCusto());
 			atualizaCustoUnidade(o, custoUnidade);
-			
+
 			o.addItem(o.new Item(ima.toString(), ima.getPrecoVenda()));
 		}
 	}
@@ -256,6 +274,10 @@ public class Calculadora {
 
 	public class Orcamento {
 
+		private final BigDecimal taxaAdministracaoCartaoCredito;
+		private final BigDecimal taxaAdministracaoCartaoDebito;
+		private final BigDecimal taxaJurosMensal;
+
 		private int quantidade;
 
 		private BigDecimal valorUnidade;
@@ -263,11 +285,24 @@ public class Calculadora {
 		private BigDecimal valorItemsPorPedido;
 		private BigDecimal valorTotal;
 
+		private BigDecimal valorUnidadePrazo;
+		private BigDecimal valorTotalConvitesPrazo;
+		private BigDecimal valorItemsPorPedidoPrazo;
+		private BigDecimal valorTotalPrazo;
+
 		private BigDecimal custoUnidade;
 		private BigDecimal custoOutros;
 
 		private List<Item> itemsCompoePrecoUnidade = new ArrayList<>();
 		private List<Item> itensCompoePrecoPorCompra = new ArrayList<Calculadora.Orcamento.Item>();
+
+		public Orcamento(BigDecimal taxaAdministracaoCartaoCredito,
+				BigDecimal taxaAdministracaoCartaoDebito,
+				BigDecimal taxaJurosMensal) {
+			this.taxaAdministracaoCartaoCredito = taxaAdministracaoCartaoCredito;
+			this.taxaAdministracaoCartaoDebito = taxaAdministracaoCartaoDebito;
+			this.taxaJurosMensal = taxaJurosMensal;
+		}
 
 		public List<Item> getItems() {
 			return itemsCompoePrecoUnidade;
@@ -290,12 +325,27 @@ public class Calculadora {
 		}
 
 		public BigDecimal getValorUnidade() {
-			return this.itemsCompoePrecoUnidade.stream().parallel()
-					.map(item -> {
+			BigDecimal valorParcial = this.itemsCompoePrecoUnidade.stream()
+					.parallel().map(item -> {
 						return item.valor;
 					}).reduce((x, y) -> {
 						return x.add(y);
-					}).get().multiply(new BigDecimal("1.1")).setScale(2, RoundingMode.HALF_UP);
+					}).get().multiply(new BigDecimal("1.1"))
+					.setScale(2, RoundingMode.HALF_UP);
+
+			valorParcial = adicionaTaxaCartaoCredito(valorParcial);
+
+			return arredondaValorUnidadeParaCima(valorParcial);
+		}
+
+		private BigDecimal adicionaTaxaCartaoCredito(BigDecimal valor) {
+			BigDecimal taxa = BigDecimal.ONE.add(taxaAdministracaoCartaoCredito
+					.divide(CEM));
+			return valor.multiply(taxa);
+		}
+
+		private BigDecimal arredondaValorUnidadeParaCima(BigDecimal valor) {
+			return valor.setScale(1, RoundingMode.UP);
 		}
 
 		public BigDecimal getValorTotalConvites() {
@@ -312,6 +362,11 @@ public class Calculadora {
 							return x.add(y);
 						}).get().setScale(2, RoundingMode.HALF_UP);
 			}
+
+			valorTotal = adicionaTaxaCartaoCredito(valorTotal);
+
+			valorTotal = arredondaValorUnidadeParaCima(valorTotal);
+
 			return valorTotal;
 		}
 
@@ -319,7 +374,40 @@ public class Calculadora {
 			BigDecimal valorTotalUnidade = getValorUnidade().multiply(
 					new BigDecimal(quantidadeConvites));
 			BigDecimal valorTotalItemsPorPedido = getValorItemsPorPedido();
-			return valorTotalUnidade.add(valorTotalItemsPorPedido).setScale(2, RoundingMode.HALF_UP);
+			return valorTotalUnidade.add(valorTotalItemsPorPedido).setScale(2,
+					RoundingMode.HALF_UP);
+		}
+
+		public BigDecimal getValorUnidadePrazo() {
+			BigDecimal valor = getValorUnidade();
+			if (taxaJurosMensal != null) {
+				BigDecimal juros = BigDecimal.ONE.add(
+						taxaJurosMensal.divide(CEM)).pow(
+						PRAZO_MAXIMO_PARCELAMENTO);
+				valor = valor.multiply(juros);
+			}
+			return arredondaValorUnidadeParaCima(valor);
+		}
+
+		public BigDecimal getValorTotalConvitesPrazo() {
+			return getValorUnidadePrazo().multiply(
+					new BigDecimal(quantidadeConvites));
+		}
+
+		public BigDecimal getValorTotalPrazo() {
+			return getValorTotalConvitesPrazo().add(
+					getValorItemsPorPedidoPrazo());
+		}
+
+		public BigDecimal getValorItemsPorPedidoPrazo() {
+			BigDecimal valor = getValorItemsPorPedido();
+			if (taxaJurosMensal != null) {
+				BigDecimal juros = BigDecimal.ONE.add(
+						taxaJurosMensal.divide(CEM)).pow(
+						PRAZO_MAXIMO_PARCELAMENTO);
+				valor = valor.multiply(juros);
+			}
+			return arredondaValorUnidadeParaCima(valor);
 		}
 
 		@Override
@@ -330,7 +418,7 @@ public class Calculadora {
 				sb.append(item.toString()).append(
 						System.getProperty("line.separator"));
 			});
-			sb.append("PreÃ§o final individual: " + getValorUnidade());
+			sb.append("Preço final individual: " + getValorUnidade());
 			return sb.toString();
 		}
 
@@ -348,6 +436,40 @@ public class Calculadora {
 
 		public void setCustoOutros(BigDecimal custoOutros) {
 			this.custoOutros = custoOutros;
+		}
+
+		public List<OpcaoParcelamento> getOpcoesParcelamento() {
+			BigDecimal valorTotal = getValorTotalPrazo();
+			List<OpcaoParcelamento> resultado = new ArrayList<>();
+			for (int i = 2; i <= PRAZO_MAXIMO_PARCELAMENTO; i++) {
+				BigDecimal valorParcela = valorTotal.divide(new BigDecimal(i), 2, RoundingMode.HALF_UP);
+				resultado.add(new OpcaoParcelamento(i, valorParcela));
+			}
+			return resultado;
+		}
+
+		public class OpcaoParcelamento {
+			private final int quantidadeParcelas;
+			private final BigDecimal valorParcela;
+
+			public OpcaoParcelamento(int quantidadeParcelas,
+					BigDecimal valorParcela) {
+				this.quantidadeParcelas = quantidadeParcelas;
+				this.valorParcela = valorParcela;
+			}
+
+			public int getQuantidadeParcelas() {
+				return quantidadeParcelas;
+			}
+
+			public BigDecimal getValorParcela() {
+				return valorParcela;
+			}
+			
+			public String getValorParcelaMoeda() {
+				return NF.format(getValorParcela());
+			}
+
 		}
 
 		public class Item {
@@ -369,7 +491,7 @@ public class Calculadora {
 
 			@Override
 			public String toString() {
-				return String.format("Item orÃ§ado: %s - Valor: %s", item,
+				return String.format("Item orçado: %s - Valor: %s", item,
 						valor.toPlainString());
 			}
 
@@ -398,6 +520,9 @@ public class Calculadora {
 		private Colagem colagem;
 		private CorteEnvelope corte;
 		private Cliche cliche;
+		private BigDecimal taxaAdministracaoCartaoCredito;
+		private BigDecimal taxaAdministracaoCartaoDebito;
+		private BigDecimal taxaJurosMensal;
 
 		private CalculadoraBuilder() {
 
@@ -498,6 +623,23 @@ public class Calculadora {
 			return this;
 		}
 
+		public CalculadoraBuilder taxaAdministracaoCartaoCredito(
+				BigDecimal taxaAdministracaoCartaoCredito) {
+			this.taxaAdministracaoCartaoCredito = taxaAdministracaoCartaoCredito;
+			return this;
+		}
+
+		public CalculadoraBuilder taxaAdministracaoCartaoDebito(
+				BigDecimal taxaAdministracaoCartaoDebito) {
+			this.taxaAdministracaoCartaoDebito = taxaAdministracaoCartaoDebito;
+			return this;
+		}
+
+		public CalculadoraBuilder taxaJurosMensal(BigDecimal taxaJurosMensal) {
+			this.taxaJurosMensal = taxaJurosMensal;
+			return this;
+		}
+
 		public Calculadora build() {
 
 			// if (corte == null) {
@@ -516,7 +658,9 @@ public class Calculadora {
 					papelEnvelope, papelInterno, impressaoEnvelope,
 					impressaoInterno, fita, laco, hotStamp, serigrafiaEnvelope,
 					serigrafiaInterno, renda, ima, quantidadeStrass, strass,
-					impressaoNome, corte, cliche);
+					impressaoNome, corte, cliche,
+					taxaAdministracaoCartaoCredito,
+					taxaAdministracaoCartaoDebito, taxaJurosMensal);
 
 		}
 	}

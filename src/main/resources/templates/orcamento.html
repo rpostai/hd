@@ -124,19 +124,19 @@
 					#if($orc.hotstamp) 
 					<tr>
 						<td>Aplicação HotStamp</td>
-						<td>$orc.hotstamp.nome - R$ $orc.hotstamp.valor</td>
+						<td>$orc.hotstamp.nome</td>
 					</tr>
 					#end
 					
 					#if ($orc.cliche)
 					<tr ng-show="{{orc.cliche != null}}">
 						<td>Confecção clichê</td>
-						<td>$orc.cliche.nome - R$ $orc.cliche.valor</td>
+						<td>$orc.cliche.nome</td>
 					</tr>
 					#end
 					
 					<tr>
-						<td colspan="2"><b>Totais</b></td>
+						<td colspan="2"><b>TOTAIS PARA PAGAMENTO À VISTA NO FECHAMENTO DO CONTRATO</b></td>
 					</tr>
 				
 					<tr>
@@ -157,6 +157,30 @@
 					<tr>
 						<td>Valor Total: </td>
 						<td><b>R$ $orc.precoCalculadoTotal</b></td>
+					</tr>
+					
+					<tr>
+						<td colspan="2"><b>TOTAIS PARA PAGAMENTO EM ATÉ 6X NO CARTÃO DE CRÉDITO</b></td>
+					</tr>
+				
+					<tr>
+						<td>Valor por unidade: </td>
+						<td><b>R$ $orc.precoCalculadoPrazo</b></td>
+					</tr>
+					
+					<tr>
+						<td>Valor total dos convites: </td>
+						#set($total = $orc.precoCalculadoPrazo * $orc.quantidade)
+						<td><b>R$ $total</b></td>
+					</tr>
+					
+					<tr>
+						<td>Valores adicionais por pedido: </td>
+						<td><b>R$ $orc.precoCalculadoItemsPedidoPrazo</b></td>
+					</tr>
+					<tr>
+						<td>Valor Total: </td>
+						<td><b>R$ $orc.precoCalculadoTotalPrazo</b></td>
 					</tr>
 
 			</tbody>
@@ -212,7 +236,7 @@
 		
 		<p>
 		Lembramos que este orçamento é válido até $validade. </br>
-		Ao retornar, por favor anote o número do orçamento e traga com você para facilitar nosso atendimento.
+		Ao retornar, e ficaremos muito felizes com seu retorno, por favor anote o número do orçamento e traga com você para facilitar nosso atendimento.
 		</br>
 		</br>
 		Obrigada,

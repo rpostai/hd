@@ -104,9 +104,17 @@ public class OrcamentoRepository extends BaseRepository<Orcamento> {
 			}
 			
 			s.setPrecoCalculado(orcamento.getPrecoCalculado());
+			s.setPrecoCalculadoPrazo(orcamento.getPrecoCalculadoPrazo());
+			
 			s.setPrecoCalculadoItemsPedido(orcamento.getPrecoCalculadoItemsPedido());
+			s.setPrecoCalculadoItemsPedidoPrazo(orcamento.getPrecoCalculadoItemsPedidoPrazo());
+			
 			s.setPrecoCalculadoTotal(orcamento.getPrecoCalculadoTotal());
+			s.setPrecoCalculadoTotalPrazo(orcamento.getPrecoCalculadoTotalPrazo());
+			
 			s.setPrecoCalculadoConvites(orcamento.getPrecoCalculadoConvites());
+			s.setPrecoCalculadoConvitesPrazo(orcamento.getPrecoCalculadoConvitesPrazo());
+			
 			
 			return s;
 			

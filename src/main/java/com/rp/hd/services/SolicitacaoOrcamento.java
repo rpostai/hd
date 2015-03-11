@@ -32,6 +32,11 @@ public class SolicitacaoOrcamento implements Serializable {
 	private BigDecimal precoCalculadoItemsPedido;
 	private BigDecimal precoCalculadoTotal;
 
+	private BigDecimal precoCalculadoPrazo;
+	private BigDecimal precoCalculadoConvitesPrazo;
+	private BigDecimal precoCalculadoItemsPedidoPrazo;
+	private BigDecimal precoCalculadoTotalPrazo;
+
 	private List<String> fotos = new ArrayList<String>();
 
 	public int getQuantidade() {
@@ -217,6 +222,40 @@ public class SolicitacaoOrcamento implements Serializable {
 
 	public List<String> getFotos() {
 		return fotos;
+	}
+
+	public BigDecimal getPrecoCalculadoPrazo() {
+		return precoCalculadoPrazo;
+	}
+
+	public void setPrecoCalculadoPrazo(BigDecimal precoCalculadoPrazo) {
+		this.precoCalculadoPrazo = precoCalculadoPrazo;
+	}
+
+	public BigDecimal getPrecoCalculadoConvitesPrazo() {
+		return precoCalculadoConvitesPrazo;
+	}
+
+	public void setPrecoCalculadoConvitesPrazo(
+			BigDecimal precoCalculadoConvitesPrazo) {
+		this.precoCalculadoConvitesPrazo = precoCalculadoConvitesPrazo;
+	}
+
+	public BigDecimal getPrecoCalculadoItemsPedidoPrazo() {
+		return precoCalculadoItemsPedidoPrazo;
+	}
+
+	public void setPrecoCalculadoItemsPedidoPrazo(
+			BigDecimal precoCalculadoItemsPedidoPrazo) {
+		this.precoCalculadoItemsPedidoPrazo = precoCalculadoItemsPedidoPrazo;
+	}
+
+	public BigDecimal getPrecoCalculadoTotalPrazo() {
+		return precoCalculadoTotalPrazo;
+	}
+
+	public void setPrecoCalculadoTotalPrazo(BigDecimal precoCalculadoTotalPrazo) {
+		this.precoCalculadoTotalPrazo = precoCalculadoTotalPrazo;
 	}
 
 	@Override

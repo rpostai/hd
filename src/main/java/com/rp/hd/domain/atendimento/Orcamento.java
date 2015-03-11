@@ -24,6 +24,18 @@ public class Orcamento extends BaseConvite {
 	@Column(name = "preco_calculado_items_pedido")
 	private BigDecimal precoCalculadoItemsPedido;
 
+	@Column(name = "preco_calculado_total_prazo")
+	private BigDecimal precoCalculadoTotalPrazo;
+
+	@Column(name = "preco_calculado_prazo")
+	private BigDecimal precoCalculadoPrazo;
+
+	@Column(name = "preco_calculado_convites_prazo")
+	private BigDecimal precoCalculadoConvitesPrazo;
+
+	@Column(name = "preco_calculado_items_pedido_prazo")
+	private BigDecimal precoCalculadoItemsPedidoPrazo;
+
 	@Column(name = "preco_calculado_total")
 	private BigDecimal precoCalculadoTotal;
 
@@ -88,6 +100,40 @@ public class Orcamento extends BaseConvite {
 
 	public void setCustoOutros(BigDecimal custoOutros) {
 		this.custoOutros = custoOutros;
+	}
+
+	public BigDecimal getPrecoCalculadoTotalPrazo() {
+		return precoCalculadoTotalPrazo;
+	}
+
+	public void setPrecoCalculadoTotalPrazo(BigDecimal precoCalculadoTotalPrazo) {
+		this.precoCalculadoTotalPrazo = precoCalculadoTotalPrazo;
+	}
+
+	public BigDecimal getPrecoCalculadoPrazo() {
+		return precoCalculadoPrazo;
+	}
+
+	public void setPrecoCalculadoPrazo(BigDecimal precoCalculadoPrazo) {
+		this.precoCalculadoPrazo = precoCalculadoPrazo;
+	}
+
+	public BigDecimal getPrecoCalculadoConvitesPrazo() {
+		return precoCalculadoConvitesPrazo;
+	}
+
+	public void setPrecoCalculadoConvitesPrazo(
+			BigDecimal precoCalculadoConvitesPrazo) {
+		this.precoCalculadoConvitesPrazo = precoCalculadoConvitesPrazo;
+	}
+
+	public BigDecimal getPrecoCalculadoItemsPedidoPrazo() {
+		return precoCalculadoItemsPedidoPrazo;
+	}
+
+	public void setPrecoCalculadoItemsPedidoPrazo(
+			BigDecimal precoCalculadoItemsPedidoPrazo) {
+		this.precoCalculadoItemsPedidoPrazo = precoCalculadoItemsPedidoPrazo;
 	}
 
 }

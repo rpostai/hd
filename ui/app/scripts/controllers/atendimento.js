@@ -70,6 +70,14 @@ function AtendimentoController($scope, $http, store,$rootScope, $state) {
 		  $scope.precoItensPorPedido = data.valorItemsPorPedido;
 		  $scope.precoTotal = data.valorTotal;
 		  $scope.precoCalculadoConvites = data.valorTotalConvites;
+		  
+		  $scope.precoPorUnidadePrazo = data.valorUnidadePrazo;
+		  $scope.precoItensPorPedidoPrazo = data.valorItemsPorPedidoPrazo;
+		  $scope.precoTotalPrazo = data.valorTotalPrazo;
+		  $scope.precoCalculadoConvitesPrazo = data.valorTotalConvitesPrazo;
+		  
+		  $scope.opcoesParcelamento = data.opcoesParcelamento;
+		  
 	  }).error(function(data) {
 		 alert('Erro ao calcular preço. Procure o administrador do sistema'); 
 	  });

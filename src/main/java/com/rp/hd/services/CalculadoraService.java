@@ -1,5 +1,8 @@
 package com.rp.hd.services;
 
+import java.math.BigDecimal;
+import java.util.Optional;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -14,6 +17,8 @@ import com.rp.hd.domain.Calculadora;
 import com.rp.hd.domain.Calculadora.Orcamento;
 import com.rp.hd.domain.Cliche;
 import com.rp.hd.domain.Colagem;
+import com.rp.hd.domain.Configuracao;
+import com.rp.hd.domain.Constants;
 import com.rp.hd.domain.CorteEnvelope;
 import com.rp.hd.domain.Fita;
 import com.rp.hd.domain.HotStamp;
@@ -29,6 +34,7 @@ import com.rp.hd.domain.Strass;
 import com.rp.hd.domain.atendimento.Atendimento;
 import com.rp.hd.repository.jpa.ClicheRepository;
 import com.rp.hd.repository.jpa.ColagemRepository;
+import com.rp.hd.repository.jpa.ConfiguracaoRepository;
 import com.rp.hd.repository.jpa.CorteEnvelopeRepository;
 import com.rp.hd.repository.jpa.FitaRepository;
 import com.rp.hd.repository.jpa.HotStampRepository;
@@ -94,6 +100,9 @@ public class CalculadoraService {
 	
 	@Inject
 	private ClicheRepository clicheRepository;
+	
+	@Inject
+	private ConfiguracaoRepository configuracaoRepository;
 	
 
 	@GET
@@ -238,11 +247,15 @@ public class CalculadoraService {
 		if (orcamento.getCliche() != null) {
 			cliche = clicheRepository.get(orcamento.getCliche().getId());
 		}
+		
+		Optional<Configuracao> taxaJurosMensal = configuracaoRepository.getConfiguracao(Constants.TAXA_JUROS_MENSAL.toString());
+		Optional<Configuracao> taxaAdministracaoCartaoCredito = configuracaoRepository.getConfiguracao(Constants.TAXA_ADMINISTRACAO_CARTAO_CREDITO.toString());
+		Optional<Configuracao> taxaAdministraaoCartaoDebito = configuracaoRepository.getConfiguracao(Constants.TAXA_ADMINISTRACAO_CARTAO_DEBITO.toString());
 
 		Calculadora.CalculadoraBuilder builder = Calculadora.CalculadoraBuilder
 				.getInstance();
 
-		Calculadora calc = builder.quantidadeConvites(orcamento.getQuantidade())
+		builder.quantidadeConvites(orcamento.getQuantidade())
 				.modeloConvite(m).papelEnvelope(papelEnvelopeAplicado)
 				.papelInterno(papelInternoAplicado).colagem(colagem)
 				.corte(corte).impressaoEnvelope(impressaoEnvelopeAplicado)
@@ -251,8 +264,21 @@ public class CalculadoraService {
 				.strass(strassAplicado, orcamento.getQuantidadeStrass()).renda(rendaAplicada)
 				.ima(imaAplicado).impressaoNome(impressaoNomeAplicado)
 				.serigrafiaEnvelope(serigrafiaAplicadaEnvelope)
-				.serigrafiaInterno(serigrafiaAplicadaInterno).cliche(cliche).build();
-
+				.serigrafiaInterno(serigrafiaAplicadaInterno).cliche(cliche);
+		
+		if (taxaAdministraaoCartaoDebito.isPresent()) {
+			builder.taxaAdministracaoCartaoDebito(new BigDecimal(taxaAdministraaoCartaoDebito.get().getValor()));
+		}
+		
+		if (taxaAdministracaoCartaoCredito.isPresent()) {
+			builder.taxaAdministracaoCartaoCredito(new BigDecimal(taxaAdministracaoCartaoCredito.get().getValor()));
+		}
+		
+		if (taxaJurosMensal.isPresent()) {
+			builder.taxaJurosMensal(new BigDecimal(taxaJurosMensal.get().getValor()));
+		}
+		
+		Calculadora calc = builder.build();
 		
 		Orcamento resultado =  calc.calcular();
 		
@@ -276,18 +302,23 @@ public class CalculadoraService {
 		o.setAtendimento(atendimento);
 		
 		o.setPrecoCalculado(orcamentoCalculado.getValorUnidade());
+		o.setPrecoCalculadoPrazo(orcamentoCalculado.getValorUnidadePrazo());
 		
 		o.setPrecoCalculadoItemsPedido(orcamentoCalculado.getValorItemsPorPedido());
+		o.setPrecoCalculadoItemsPedidoPrazo(orcamentoCalculado.getValorItemsPorPedidoPrazo());
 		
 		o.setPrecoCalculadoTotal(orcamentoCalculado.getValorTotal());
+		o.setPrecoCalculadoTotalPrazo(orcamentoCalculado.getValorTotalPrazo());
 		
 		o.setPrecoCalculadoConvites(orcamentoCalculado.getValorTotalConvites());
+		o.setPrecoCalculadoConvitesPrazo(orcamentoCalculado.getValorTotalConvitesPrazo());
 		
 		o.setQuantidade(sol.getQuantidade());
 		
 		o.setCustoUnidade(orcamentoCalculado.getCustoUnidade());
 		
 		o.setCustoOutros(orcamentoCalculado.getCustoOutros());
+		
 		
 		if (sol.getModelo() != null) {
 			o.setModelo(modeloConviteRepository.get(sol.getModelo().getId()));	
