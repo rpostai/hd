@@ -12,7 +12,7 @@ import com.rp.hd.domain.exceptions.PapelInvalidoException;
 
 public class Calculadora {
 
-	private static final int PRAZO_MAXIMO_PARCELAMENTO = 6;
+	private static final int PRAZO_MAXIMO_PARCELAMENTO = 3;
 	private static final BigDecimal CEM = new BigDecimal(100);
 	private static final Locale BR = new Locale("pt","BR");
 	private static final NumberFormat NF = NumberFormat.getCurrencyInstance(BR);
