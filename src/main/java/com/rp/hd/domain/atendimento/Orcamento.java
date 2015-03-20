@@ -45,6 +45,9 @@ public class Orcamento extends BaseConvite {
 	@Column(name = "custo_outros")
 	private BigDecimal custoOutros;
 
+	@Column(name = "enviar_email")
+	private Boolean enviarEmail = true;
+
 	public int getQuantidade() {
 		return quantidade;
 	}
@@ -136,4 +139,11 @@ public class Orcamento extends BaseConvite {
 		this.precoCalculadoItemsPedidoPrazo = precoCalculadoItemsPedidoPrazo;
 	}
 
+	public Boolean getEnviarEmail() {
+		return enviarEmail;
+	}
+
+	public void setEnviarEmail(Boolean enviarEmail) {
+		this.enviarEmail = enviarEmail;
+	}
 }

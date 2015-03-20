@@ -42,6 +42,7 @@ import com.rp.hd.domain.Complemento;
 import com.rp.hd.domain.ModeloConvite;
 import com.rp.hd.domain.OrigemContato;
 import com.rp.hd.domain.atendimento.Atendimento;
+import com.rp.hd.domain.atendimento.Orcamento;
 import com.rp.hd.domain.atendimento.OrcamentoComplemento;
 import com.rp.hd.domain.atendimento.PromocaoConvite;
 import com.rp.hd.repository.jpa.ColagemRepository;
@@ -93,6 +94,13 @@ public class AtendimentoService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<OrigemContato> getOrigemContato() {
 		return origemContatoRepository.getTodos();
+	}
+	
+	@GET
+	@Path("detalhe/{atendimento}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Atendimento getDetalheAtendimento(@PathParam("atendimento") Long atendimentoId) {
+		return repository.get(atendimentoId);
 	}
 
 	@POST
@@ -381,11 +389,20 @@ public class AtendimentoService {
 			return s;
 		}).collect(Collectors.toList());
 	}
+	
+	@POST
+	@Path("atualizarenviaremail/{id}/{enviar}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void enviarEmail(@PathParam("id") Long orcamentoId, @PathParam("enviar") Boolean enviarEmail) {
+		Orcamento o = orcamentoRepository.get(orcamentoId);
+		o.setEnviarEmail(enviarEmail);
+		orcamentoRepository.salvar(o);
+	}
 
 	@GET
-	@Path("enviaremail/{atendimento}")
+	@Path("enviaremail/{atendimento}/{email}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public void enviarEmail(@PathParam("atendimento") Long atendimentoId)
+	public void enviarEmail(@PathParam("atendimento") Long atendimentoId, @PathParam("email") String email)
 			throws Exception {
 
 		Atendimento atendimento = repository.get(atendimentoId);
@@ -395,26 +412,38 @@ public class AtendimentoService {
 			msg.setFrom(new InternetAddress(
 					"fernanda@happydayconviteria.com.br",
 					"Happy Day Conviteria"));
-			if (atendimento.getCliente1() != null
-					&& StringUtils.isNotBlank(atendimento.getCliente1()
-							.getEmail())) {
-				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-						atendimento.getCliente1().getEmail(), atendimento
-								.getCliente1().getNome()));
-			}
+			
+			if (StringUtils.isNotBlank(email)) {
+				String[] emails = email.split("\\s");
+				if (emails != null && emails.length > 0) {
+					for (String enviarEmail: emails) {
+						enviarEmail = StringUtils.trim(enviarEmail);
+						msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+								enviarEmail, atendimento
+										.getCliente1().getNome()));
+					}
+				}
+			} else {
+				if (atendimento.getCliente1() != null
+						&& StringUtils.isNotBlank(atendimento.getCliente1()
+								.getEmail())) {
+					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+							atendimento.getCliente1().getEmail(), atendimento
+									.getCliente1().getNome()));
+				}
 
-			if (atendimento.getCliente2() != null
-					&& StringUtils.isNotBlank(atendimento.getCliente2()
-							.getEmail())) {
-				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-						atendimento.getCliente2().getEmail(), atendimento
-								.getCliente2().getNome()));
+				if (atendimento.getCliente2() != null
+						&& StringUtils.isNotBlank(atendimento.getCliente2()
+								.getEmail())) {
+					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+							atendimento.getCliente2().getEmail(), atendimento
+									.getCliente2().getNome()));
+				}				
 			}
-
 			msg.setSubject(String.format("Orçamento %s",
 					atendimento.getNumero()));
 
-			List<SolicitacaoOrcamento> orcamentos = getOrcamentosAtendimento(atendimento
+			List<SolicitacaoOrcamento> orcamentos = orcamentoRepository.getOrcamentosPorAtendimentoParaEnvioEmail(atendimento
 					.getId());
 
 			Multipart mp = new MimeMultipart();

@@ -8,6 +8,7 @@ import java.util.List;
 
 public class SolicitacaoOrcamento implements Serializable {
 
+	private Long id;
 	private Date dataAtendimento;
 	private int quantidade;
 	private Dado modelo;
@@ -36,6 +37,8 @@ public class SolicitacaoOrcamento implements Serializable {
 	private BigDecimal precoCalculadoConvitesPrazo;
 	private BigDecimal precoCalculadoItemsPedidoPrazo;
 	private BigDecimal precoCalculadoTotalPrazo;
+
+	private Boolean enviarEmail;
 
 	private List<String> fotos = new ArrayList<String>();
 
@@ -256,6 +259,22 @@ public class SolicitacaoOrcamento implements Serializable {
 
 	public void setPrecoCalculadoTotalPrazo(BigDecimal precoCalculadoTotalPrazo) {
 		this.precoCalculadoTotalPrazo = precoCalculadoTotalPrazo;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Boolean getEnviarEmail() {
+		return enviarEmail;
+	}
+
+	public void setEnviarEmail(Boolean enviarEmail) {
+		this.enviarEmail = enviarEmail;
 	}
 
 	@Override

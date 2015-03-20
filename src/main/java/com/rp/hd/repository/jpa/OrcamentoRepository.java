@@ -18,7 +18,7 @@ public class OrcamentoRepository extends BaseRepository<Orcamento> {
 		super(Orcamento.class);
 	}
 
-	public List<SolicitacaoOrcamento> getOrcamentosPorAtendimento(Long atendimento) {
+	private List<SolicitacaoOrcamento> getOrcamentosPorAtendimento(Long atendimento, Boolean somenteEnviarEmail) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("select o from Orcamento o ");
 		sb.append("  join o.atendimento    a");
@@ -26,7 +26,10 @@ public class OrcamentoRepository extends BaseRepository<Orcamento> {
 		sb.append("  (select cliente1 from Atendimento at1 where at1.id = :atendimento) ");
 		sb.append("   or a.cliente2 in ");
 		sb.append("  (select cliente2 from Atendimento at2 where at2.id = :atendimento)");
-		sb.append(")");
+		sb.append(") ");
+		if (somenteEnviarEmail != null) {
+			sb.append(" and o.enviarEmail = :enviarEmail ");
+		}
 		sb.append("order by a.id desc");
 		
 //		TypedQuery<Orcamento> tq = em
@@ -37,11 +40,16 @@ public class OrcamentoRepository extends BaseRepository<Orcamento> {
 		TypedQuery<Orcamento> tq = em.createQuery(sb.toString(),Orcamento.class);
 		
 		tq.setParameter("atendimento", atendimento);
+		if (somenteEnviarEmail != null) {
+			tq.setParameter("enviarEmail", somenteEnviarEmail);
+		}
 		List<Orcamento> resultList = tq.getResultList();
 
 		return resultList.stream().map(orcamento -> {
 			
 			SolicitacaoOrcamento s = new SolicitacaoOrcamento();
+			s.setId(orcamento.getId());
+			s.setEnviarEmail(orcamento.getEnviarEmail());
 			s.setDataAtendimento(orcamento.getAtendimento().getDataInicio().getTime());
 			s.setQuantidade(orcamento.getQuantidade());
 			s.setQuantidadeStrass(orcamento.getQuantidadeStrass());
@@ -120,6 +128,14 @@ public class OrcamentoRepository extends BaseRepository<Orcamento> {
 			
 		}).collect(Collectors.toList());
 		
+	}
+	
+	public List<SolicitacaoOrcamento> getOrcamentosPorAtendimento(Long atendimento) {
+		return getOrcamentosPorAtendimento(atendimento, null);
+	}
+	
+	public List<SolicitacaoOrcamento> getOrcamentosPorAtendimentoParaEnvioEmail(Long atendimento) {
+		return getOrcamentosPorAtendimento(atendimento, true);
 	}
 
 }

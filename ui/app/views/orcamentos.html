@@ -8,6 +8,55 @@
 
 <div class="main-content clearfix" ng-controller="OrcamentosController"
 	ng-init="getOrcamentos">
+	<div class="grid fluid">
+		<div class="row">
+			<div class="span3">
+					<label for="txtData">Data do atendimento</label>
+			    	<input id="txtData" type="text" readonly="readonly" value="{{dados.dataInicio | date:'dd/MM/yyyy HH:mm:ss'}}" class="input-control text"/>
+			</div>
+			<div class="span3">
+					<label for="txtNumero">Número</label>
+			    	<input id="txtNumero" readonly="readonly" type="text" ng-model="dados.numero" class="input-control text"/>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span3">
+					<label for="txtCliente">Cliente 1</label>
+			    	<input id="txtCliente" readonly="readonly" type="text" ng-model="dados.cliente1.nome" class="input-control text"/>
+			</div>
+			<div class="span3">
+					<label for="txtEmail">Email</label>
+			    	<input id="txtEmail" type="text" ng-model="dados.cliente1.email" class="input-control text"/>
+			</div>
+			<div class="span3">
+					<label for="txtTelefone">Telefone</label>
+			    	<input id="txtTelefone" readonly="readonly" type="text" ng-model="dados.cliente1.telefone" class="input-control text"/>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span3">
+					<label for="txtCliente2">Cliente 2</label>
+			    	<input id="txtCliente2" readonly="readonly" type="text" ng-model="dados.cliente2.nome" class="input-control text"/>
+			</div>
+			<div class="span3">
+					<label for="txtEmail2">Email</label>
+			    	<input id="txtEmail2" type="text" ng-model="dados.cliente2.email" class="input-control text"/>
+			</div>
+			
+			<div class="span3">
+					<label for="txtTelefone2">Telefone</label>
+			    	<input id="txtTelefone2" readonly="readonly" type="text" ng-model="dados.cliente2.telefone" class="input-control text"/>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span12">
+					<label for="txtEmailEnviar">Enviar para email</label>
+			    	<input id="txtEnviarParaEmail" type="text" ng-model="enviarParaEmail" class="input-control text"/>
+			</div>
+		</div>
+	</div>
 
 	<tabset> 
 		<tab ng-repeat="orc in orcamentos" heading="{{ orc.modelo.nome}}-{{$index}}">
@@ -104,10 +153,23 @@
 			 			<td>Valor Total: </td>
 			 			<td>{{orc.precoCalculadoTotal}}</td>
 			 		</tr>
+			 		
+			 		<tr>
+			 			<td>Enviar email orçamento</td>
+			 			<td><input type="checkbox" ng-model="orc.enviarEmail" ng-change="atualizarEnviarEmail(orc)"/></td>
+			 		</tr>
+			 		
+			 		
 			 	</tfoot>
 			 	
 			 </table>
 		</tab> 
 	</tabset>
+	
+	<div class="row">
+		<div class="span2">
+	      <button class="button default" ng-click="enviarPorEmail()">Enviar por email</button>
+		</div>
+	</div>
 
 </div>
