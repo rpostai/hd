@@ -95,7 +95,7 @@ function AtendimentoController($scope, $http, store,$rootScope, $state) {
   $scope.verTodosOrcamentos = function() {
 	  var atendimento = store.get("atendimento");
 	  if (atendimento != null) {
-		  $state.go("layout.orcamentos");  
+		  $state.go("layout.orcamentos",  {atendimento: atendimento.id});  
 	  }
   }
   

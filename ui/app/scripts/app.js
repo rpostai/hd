@@ -58,7 +58,7 @@ var app = angular
             	}
             })
             .state('layout.orcamentos', {
-            	url: '/orcamentos',
+            	url: '/orcamentos/{atendimento}',
             	templateUrl: 'views/orcamentos.html'
             })
             .state('layout.atendimentos', {
