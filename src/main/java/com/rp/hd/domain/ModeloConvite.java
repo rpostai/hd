@@ -20,55 +20,57 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name="modelo_convite")
+@Table(name = "modelo_convite")
 @NamedQueries({
-	@NamedQuery(name="ModeloConvite.ModelosComFotos", query = "select distinct o from ModeloConvite o left join fetch o.fotos"),
-	@NamedQuery(name="ModeloConvite.ModeloComFotos", query = "select distinct o from ModeloConvite o left join fetch o.fotos f where o.id = :modelo order by f.ordem desc")
-})
+		@NamedQuery(name = "ModeloConvite.ModelosComFotos", query = "select distinct o from ModeloConvite o left join fetch o.fotos"),
+		@NamedQuery(name = "ModeloConvite.ModeloComFotos", query = "select distinct o from ModeloConvite o left join fetch o.fotos f where o.id = :modelo order by f.ordem desc") })
 public class ModeloConvite extends BaseEntity {
 
-	@Column(name="codigo")
+	@Column(name = "codigo")
 	private String codigo;
 
-	@Column(name="nome")
+	@Column(name = "nome")
 	private String nome;
 
-	@Column(name="modelo_faca")
+	@Column(name = "modelo_faca")
 	@Convert(converter = ModeloFacaConverter.class)
 	private ModeloFaca modeloFaca;
 
-	@Column(name="auto_envelopado")
-	@Convert(converter=BooleaToIntConverter.class)
+	@Column(name = "auto_envelopado")
+	@Convert(converter = BooleaToIntConverter.class)
 	private boolean autoEnvelopado; // indica se o modelo é auto envelopado
 
-	@Column(name="quantidade_fita_contorno")
+	@Column(name = "quantidade_fita_contorno")
 	private int quantidadeFitaContorno;
 
-	@Column(name="tamanho_item_interno")
+	@Column(name = "tamanho_item_interno")
 	private int tamanhoItemInterno; // armazena quantas folhas por F0 é possivel
 									// fazer por folha para este envelope
 
-	@Column(name="renda_aplicavel")
-	@Convert(converter=BooleaToIntConverter.class)
+	@Column(name = "renda_aplicavel")
+	@Convert(converter = BooleaToIntConverter.class)
 	private boolean rendaAplicavel; // indica se é aplicável renda ou não neste
 									// modelo de envelope
-	@Column(name="quantidade_renda_cm")
+	@Column(name = "quantidade_renda_cm")
 	private int quantidadeRendaEmCentimetros;
 
-	@Column(name="tem_colagem")
-	@Convert(converter=BooleaToIntConverter.class)
+	@Column(name = "tem_colagem")
+	@Convert(converter = BooleaToIntConverter.class)
 	private boolean temColagem; // indica se este modelo tem colagem;
-	
+
 	@Transient
 	private Papel papel;
 
 	@ManyToOne
 	@JoinColumn(name = "embalagem_id")
 	private Embalagem embalagem;
-	
+
 	@ElementCollection()
-	@CollectionTable(name="modelo_convite_fotos")
+	@CollectionTable(name = "modelo_convite_fotos")
 	private List<ModeloConviteFoto> fotos = new ArrayList<>();
+
+	@Column(name = "cobrar_corte")
+	private boolean cobrarCorte = true;
 
 	public String getCodigo() {
 		return codigo;
@@ -149,38 +151,46 @@ public class ModeloConvite extends BaseEntity {
 	public void setEmbalagem(Embalagem embalagem) {
 		this.embalagem = embalagem;
 	}
-	
+
 	public BigDecimal getCustoAtual(Papel papel, Colagem colagem) {
 		BigDecimal valorPapel = papel.getCustoAtual();
 		BigDecimal valorColagem = BigDecimal.ZERO;
 		if (temColagem) {
-			valorColagem = colagem !=null ? colagem.getPrecoAtual() : BigDecimal.ZERO;
+			valorColagem = colagem != null ? colagem.getPrecoAtual()
+					: BigDecimal.ZERO;
 		}
-		return valorPapel.divide(new BigDecimal(this.getModeloFaca().getValor()),4, RoundingMode.HALF_UP).add(valorColagem);
+		return valorPapel.divide(
+				new BigDecimal(this.getModeloFaca().getValor()), 4,
+				RoundingMode.HALF_UP).add(valorColagem);
 	}
-	
+
 	public BigDecimal getPrecoVenda(Papel papel, Colagem colagem) {
 		this.papel = papel;
 		BigDecimal valorPapel = papel.getPrecoAtual();
 		BigDecimal valorColagem = BigDecimal.ZERO;
 		if (temColagem) {
-			valorColagem = colagem !=null ? colagem.getPrecoAtual() : BigDecimal.ZERO;
+			valorColagem = colagem != null ? colagem.getPrecoAtual()
+					: BigDecimal.ZERO;
 		}
-		
-		return valorPapel.divide(new BigDecimal(this.getModeloFaca().getValor()),4, RoundingMode.HALF_UP).add(valorColagem).setScale(2,BigDecimal.ROUND_HALF_UP);
+
+		return valorPapel
+				.divide(new BigDecimal(this.getModeloFaca().getValor()), 4,
+						RoundingMode.HALF_UP).add(valorColagem)
+				.setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
-	
+
 	@Override
 	public String toString() {
 		String modelo = String.format("Envelope Modelo %s", getNome());
 		String papelStr = "";
 		if (papel != null) {
-			papelStr = String.format("Papel %s %dg", papel.getNome(), papel.getGramatura().getValor() );
+			papelStr = String.format("Papel %s %dg", papel.getNome(), papel
+					.getGramatura().getValor());
 			return String.format("%s - %s", modelo, papelStr);
 		}
 		return modelo;
 	}
-	
+
 	public List<ModeloConviteFoto> getFotos() {
 		return fotos;
 	}
@@ -189,9 +199,10 @@ public class ModeloConvite extends BaseEntity {
 		this.fotos.add(foto);
 	}
 
-
 	public static enum ModeloFaca {
-		FORMATO1(1), FORMATO2(2), FORMATO3(3), FORMATO4(4), FORMATO6(6), FORMATO8(8), FORMATO9(9), FORMATO16(12);
+		FORMATO1(1), FORMATO2(2), FORMATO3(3), FORMATO4(4), FORMATO5(5), FORMATO6(6), 
+		FORMATO7(7), FORMATO8(8), FORMATO9(9), FORMATO10(10), FORMATO11(
+				11), FORMATO16(12);
 
 		private int valor;
 
@@ -215,6 +226,14 @@ public class ModeloConvite extends BaseEntity {
 			return result.get();
 		}
 
+	}
+
+	public boolean isCobrarCorte() {
+		return cobrarCorte;
+	}
+
+	public void setCobrarCorte(boolean cobrarCorte) {
+		this.cobrarCorte = cobrarCorte;
 	}
 
 }

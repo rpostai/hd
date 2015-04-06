@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public enum Gramatura {
 
-	G120(120), G180(180), G240(240), G250(250), G300(300), G170(170), G220(220);
+	G50(50),G120(120), G180(180), G240(240), G250(250), G300(300), G170(170), G220(220),G320(320);
 
 	private final int valor;
 	

@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -16,23 +17,27 @@ import com.rp.hd.domain.atendimento.Orcamento;
 import com.rp.hd.domain.atendimento.OrcamentoComplemento;
 
 @Entity
-@Table(name="pedido_item")
+@Table(name = "pedido_item")
 public class PedidoItem implements Serializable {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Long id;
 
+	@ManyToOne
+	@JoinColumn(name = "pedido_id")
+	private Pedido pedido;
+
 	@OneToOne
-	@JoinColumn(name="orcamento_id")
+	@JoinColumn(name = "orcamento_id")
 	private Orcamento orcamento;
 
 	@OneToOne
-	@JoinColumn(name="complemento_id")
+	@JoinColumn(name = "complemento_id")
 	private OrcamentoComplemento complemento;
 
-	@JoinColumn(name="valor_unidade_final")
+	@JoinColumn(name = "valor_unidade_final")
 	private BigDecimal valorUnidadeFinal;
 
 	public Orcamento getOrcamento() {
@@ -57,6 +62,22 @@ public class PedidoItem implements Serializable {
 
 	public void setValorUnidadeFinal(BigDecimal valorUnidadeFinal) {
 		this.valorUnidadeFinal = valorUnidadeFinal;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
 	}
 
 }

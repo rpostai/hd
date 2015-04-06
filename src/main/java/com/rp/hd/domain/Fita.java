@@ -15,6 +15,8 @@ import javax.persistence.Entity;
 
 @Entity
 public class Fita extends BaseEntity {
+	
+	private static final float TAMANHO_LACO_TRADICIONAL_EM_RELACAO_CONTORNO = 2.5f;
 
 	@Convert(converter = TipoFitaConverter.class)
 	@Column(name = "tipo_fita")
@@ -62,7 +64,7 @@ public class Fita extends BaseEntity {
 	}
 
 	public enum TipoFita {
-		CETIM("C", "Cetim"), GORGURAO("G", "Gorgurão");
+		CETIM("C", "Cetim"), GORGURAO("G", "Gorgurão"), FIO_ENCERADO("F","Fio encerado"), SISAL("S", "Sisal");
 
 		private final String tipo;
 		private final String descricao;
@@ -96,7 +98,7 @@ public class Fita extends BaseEntity {
 	}
 
 	public enum NumeracaoFita {
-		DOIS(2), TRES(3), CINCO(5), NOVE(9);
+		DOIS(2), TRES(3), CINCO(5), NOVE(9), INDEFINIDO(0);
 
 		int numero;
 
@@ -126,14 +128,19 @@ public class Fita extends BaseEntity {
 	}
 	
 	public BigDecimal getPrecoCusto(ModeloConvite modelo) {
-		return getCustoAtual()
-				.multiply(new BigDecimal(modelo.getQuantidadeFitaContorno()))
-				.setScale(2, BigDecimal.ROUND_HALF_UP);
+		if (this.tipoFita.equals(TipoFita.FIO_ENCERADO) || this.tipoFita.equals(TipoFita.SISAL)) {
+			return getCustoAtual()
+					.multiply(new BigDecimal(modelo.getQuantidadeFitaContorno() * TAMANHO_LACO_TRADICIONAL_EM_RELACAO_CONTORNO))
+					.setScale(2, BigDecimal.ROUND_HALF_UP);
+		} else {
+			return getCustoAtual()
+					.multiply(new BigDecimal(modelo.getQuantidadeFitaContorno()))
+					.setScale(2, BigDecimal.ROUND_HALF_UP);	
+		}
 	}
 
 	public BigDecimal getPrecoVenda(ModeloConvite modelo) {
-		return getCustoAtual()
-				.multiply(new BigDecimal(modelo.getQuantidadeFitaContorno()))
+		return getPrecoCusto(modelo)
 				.multiply(markup).setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 

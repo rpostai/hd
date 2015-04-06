@@ -5,11 +5,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -42,6 +45,7 @@ public class Pedido {
 
 	private Date dataEvento;
 
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="pedido")
 	private List<PedidoItem> itens;
 
 	private BigDecimal valorTotalPedido;
@@ -50,6 +54,7 @@ public class Pedido {
 
 	private Date dataPrevistaEntrega;
 
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="pedido")
 	private List<PedidoFormaPagamento> pagamentos;
 
 	public Pedido() {
@@ -62,7 +67,6 @@ public class Pedido {
 			BigDecimal valorTotalPedido, String observacoes,
 			Date dataPrevistaEntrega, List<PedidoFormaPagamento> pagamentos) {
 		this();
-		this.id = id;
 		this.cliente = cliente;
 		this.rg = rg;
 		this.cpf = cpf;

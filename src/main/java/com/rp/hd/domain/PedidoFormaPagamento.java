@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,13 +21,17 @@ public class PedidoFormaPagamento {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name="numero_parcela")
+	@ManyToOne
+	@JoinColumn(name = "pedido_id")
+	private Pedido pedido;
+
+	@Column(name = "numero_parcela")
 	private int parcela;
 
-	@Column(name="valor_parcela")
+	@Column(name = "valor_parcela")
 	private BigDecimal valor;
 
-	@Column(name="data_pagamento")
+	@Column(name = "data_pagamento")
 	private Date data;
 
 	public Long getId() {
@@ -58,6 +64,14 @@ public class PedidoFormaPagamento {
 
 	public void setData(Date data) {
 		this.data = data;
+	}
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
 	}
 
 }

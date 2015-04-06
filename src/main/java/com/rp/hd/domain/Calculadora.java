@@ -251,13 +251,14 @@ public class Calculadora {
 	}
 
 	public void calcularPrecoCorte(Orcamento o) {
-		if (corte != null) {
+		if (modelo.isCobrarCorte() && corte != null) {
+			if (corte != null) {
+				custoUnidade = custoUnidade.add(corte.getCusto(quantidadeConvites));
+				atualizaCustoUnidade(o, custoUnidade);
 
-			custoUnidade = custoUnidade.add(corte.getCusto(quantidadeConvites));
-			atualizaCustoUnidade(o, custoUnidade);
-
-			o.addItem(o.new Item(corte.toString(), corte
-					.getPrecoVenda(quantidadeConvites)));
+				o.addItem(o.new Item(corte.toString(), corte
+						.getPrecoVenda(quantidadeConvites)));
+			}	
 		}
 	}
 
