@@ -13,6 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.rp.hd.domain.Acoplamento;
 import com.rp.hd.domain.Calculadora;
 import com.rp.hd.domain.Calculadora.Orcamento;
 import com.rp.hd.domain.Cliche;
@@ -32,6 +33,7 @@ import com.rp.hd.domain.Renda;
 import com.rp.hd.domain.Serigrafia;
 import com.rp.hd.domain.Strass;
 import com.rp.hd.domain.atendimento.Atendimento;
+import com.rp.hd.repository.jpa.AcoplamentoRepository;
 import com.rp.hd.repository.jpa.ClicheRepository;
 import com.rp.hd.repository.jpa.ColagemRepository;
 import com.rp.hd.repository.jpa.ConfiguracaoRepository;
@@ -104,6 +106,8 @@ public class CalculadoraService {
 	@Inject
 	private ConfiguracaoRepository configuracaoRepository;
 	
+	@Inject
+	private AcoplamentoRepository acoplamentoRepository;
 
 	@GET
 	@Path("atendimento")
@@ -241,6 +245,23 @@ public class CalculadoraService {
 		}
 
 		CorteEnvelope corte = corteEnvelopeRepository.getTodos().get(0);
+		
+		Acoplamento acoplamento = acoplamentoRepository.getTodos().get(0);
+		Acoplamento acoplamentoEnvelope = null;
+		if (orcamento.isAcoplamentoEnvelope()) {
+			acoplamentoEnvelope = acoplamento;
+		}
+		
+		Acoplamento acoplamentoInterno = null;
+		if (orcamento.isAcoplamentoInterno()) {
+			acoplamentoInterno = acoplamento;
+		}
+		
+		CorteEnvelope corteInternoAlmofadado = null;
+		if (orcamento.isCorteInternoAlmofadado()) {
+			corteInternoAlmofadado = corte;
+		}
+		
 		Colagem colagem = colagemRepository.getTodos().get(0);
 		
 		Cliche cliche = null;
@@ -258,13 +279,17 @@ public class CalculadoraService {
 		builder.quantidadeConvites(orcamento.getQuantidade())
 				.modeloConvite(m).papelEnvelope(papelEnvelopeAplicado)
 				.papelInterno(papelInternoAplicado).colagem(colagem)
-				.corte(corte).impressaoEnvelope(impressaoEnvelopeAplicado)
+				.corte(corte)
+				.corteInternoAlmofadado(corteInternoAlmofadado)
+				.impressaoEnvelope(impressaoEnvelopeAplicado)
 				.impressaoInterno(impressaoInternoAplicado).fita(fitaAplicada)
 				.laco(lacoAplicado).hotstamp(hotStampAplicado)
 				.strass(strassAplicado, orcamento.getQuantidadeStrass()).renda(rendaAplicada)
 				.ima(imaAplicado).impressaoNome(impressaoNomeAplicado)
 				.serigrafiaEnvelope(serigrafiaAplicadaEnvelope)
-				.serigrafiaInterno(serigrafiaAplicadaInterno).cliche(cliche);
+				.serigrafiaInterno(serigrafiaAplicadaInterno).cliche(cliche)
+				.acoplamentoEnvelope(acoplamentoEnvelope)
+				.acoplamentoInterno(acoplamentoInterno);
 		
 		if (taxaAdministraaoCartaoDebito.isPresent()) {
 			builder.taxaAdministracaoCartaoDebito(new BigDecimal(taxaAdministraaoCartaoDebito.get().getValor()));
@@ -382,6 +407,19 @@ public class CalculadoraService {
 		
 		if (sol.getCliche() != null) {
 			o.setCliche(clicheRepository.get(sol.getCliche().getId()));
+		}
+		
+		if (sol.isCorteInternoAlmofadado()) {
+			CorteEnvelope corte = corteEnvelopeRepository.getTodos().get(0);
+			o.setCorteInternoAlmofadado(corte);
+		}
+		
+		Acoplamento acoplamento = acoplamentoRepository.getTodos().get(0);
+		if (sol.isAcoplamentoEnvelope()) {
+			o.setAcoplamentoEnvelope(acoplamento);
+		}
+		if (sol.isAcoplamentoInterno()) {
+			o.setAcoplamentoInterno(acoplamento);
 		}
 		
 		orcamentoRepository.salvar(o);

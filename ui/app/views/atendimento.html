@@ -33,19 +33,25 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="span4">
+		<div class="span3">
 			<label for="cmbImpressaoInterno">Impressão interno</label>
 		    <select id="cmbImpressaoInterno" ng-model="orcamento.impressaoInterno" ng-options="imp as imp.nome for imp in impressoes track by imp.id" class="input-control text">
 		      <option value="">-- Selecione o tipo de impressão --</option>
 		    </select>
 		</div>
-		<div class="span4">
+		
+		<div class="span3">
+			<label for="chkEnvelopeAlmofadado">Papel interno almofadado</label>
+			<input type="checkbox" ng-model="orcamento.corteInternoAlmofadado"/>
+		</div>
+		
+		<div class="span3">
 			<label for="cmbFita">Fita</label>
 		    <select id="cmbFita" ng-model="orcamento.fita" ng-options="fita as fita.nome for fita in fitas track by fita.id" class="input-control text">
 		      <option value="">-- Selecione a fita --</option>
 		    </select>
 		</div>
-		<div class="span4">
+		<div class="span3">
 			<label for="cmbLaco">Laço</label>
 		    <select id="cmbLaco" ng-model="orcamento.laco" ng-options="laco as laco.nome for laco in lacos track by laco.id" class="input-control text">
 		      <option value="">-- Selecione o tipo de laço --</option>
@@ -106,6 +112,16 @@
 		      <option value="8">8</option>
 		      <option value="9">9</option>
 		      <option value="10">10</option>
+		      <option value="11">11</option>
+		      <option value="12">12</option>
+		      <option value="13">13</option>
+		      <option value="14">14</option>
+		      <option value="15">15</option>
+		      <option value="16">16</option>
+		      <option value="17">17</option>
+		      <option value="18">18</option>
+		      <option value="19">19</option>
+		      <option value="20">20</option>
 		    </select>
 		</div>
 		
@@ -123,6 +139,18 @@
 		    <select id="cmbCliche" ng-model="orcamento.cliche" ng-options="c as c.nome for c in cliches track by c.id" class="input-control text">
 		      <option value="">-- Selecione o modelo do cliche --</option>
 		    </select>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="span4">
+			<label for="chkEnvelopeAcoplado">Acoplamento do envelope</label>
+			<input id="chkEnvelopeAcoplado" type="checkbox" ng-model="orcamento.acoplamentoEnvelope"/>
+		</div>
+		
+		<div class="span4">
+			<label for="chkEnvelopeAcoplado">Acoplamento interno</label>
+			<input id="chkEnvelopeAcoplado" type="checkbox" ng-model="orcamento.acoplamentoInterno"/>
 		</div>
 	</div>
 	

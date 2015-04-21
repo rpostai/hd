@@ -1,10 +1,8 @@
 package com.rp.hd.domain.atendimento;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,9 +10,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
+import com.rp.hd.domain.Acoplamento;
 import com.rp.hd.domain.Cliche;
+import com.rp.hd.domain.CorteEnvelope;
 import com.rp.hd.domain.Fita;
 import com.rp.hd.domain.HotStamp;
 import com.rp.hd.domain.Ima;
@@ -100,6 +99,18 @@ public abstract class BaseConvite implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "cliche_id")
 	private Cliche cliche;
+
+	@ManyToOne
+	@JoinColumn(name = "acoplamento_envelope_id")
+	private Acoplamento acoplamentoEnvelope;
+
+	@ManyToOne
+	@JoinColumn(name = "acoplamento_interno_id")
+	private Acoplamento acoplamentoInterno;
+
+	@ManyToOne
+	@JoinColumn(name = "corte_interno_almofadado_id")
+	private CorteEnvelope corteInternoAlmofadado;
 
 	public ModeloConvite getModelo() {
 		return modelo;
@@ -243,6 +254,30 @@ public abstract class BaseConvite implements Serializable {
 
 	public void setCliche(Cliche cliche) {
 		this.cliche = cliche;
+	}
+
+	public Acoplamento getAcoplamentoEnvelope() {
+		return acoplamentoEnvelope;
+	}
+
+	public void setAcoplamentoEnvelope(Acoplamento acoplamentoEnvelope) {
+		this.acoplamentoEnvelope = acoplamentoEnvelope;
+	}
+
+	public Acoplamento getAcoplamentoInterno() {
+		return acoplamentoInterno;
+	}
+
+	public void setAcoplamentoInterno(Acoplamento acoplamentoInterno) {
+		this.acoplamentoInterno = acoplamentoInterno;
+	}
+
+	public CorteEnvelope getCorteInternoAlmofadado() {
+		return corteInternoAlmofadado;
+	}
+
+	public void setCorteInternoAlmofadado(CorteEnvelope corteInternoAlmofadado) {
+		this.corteInternoAlmofadado = corteInternoAlmofadado;
 	}
 
 }

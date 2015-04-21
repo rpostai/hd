@@ -82,11 +82,11 @@
 			 		</tr>
 			 		<tr>
 			 			<td>Papel Envelope: </td>
-			 			<td>{{orc.papelEnvelope.nome}}</td>
+			 			<td>{{orc.papelEnvelope != null ? orc.papelEnvelope.nome : 'Nenhum'}}</td>
 			 		</tr>
 			 		<tr>
 			 			<td>Papel Interno: </td>
-			 			<td>{{orc.papelInterno.nome}}</td>
+			 			<td>{{orc.papelInterno != null ? orc.papelInterno.nome : 'Nenhum'}}</td>
 			 		</tr>
 			 		<tr>
 			 			<td>Impressão Envelope: </td>
@@ -94,36 +94,58 @@
 			 		</tr>
 			 		<tr>
 			 			<td>Impressão Interno: </td>
-			 			<td>{{orc.impressaoInterno.nome}}</td>
+			 			<td>{{orc.impressaoInterno != null ? orc.impressaoInterno.nome : 'Sem impressão'}}</td>
 			 		</tr>
 			 		<tr>
 			 			<td>Fita: </td>
-			 			<td>{{orc.fita.nome}}</td>
+			 			<td>{{orc.fita != null ? orc.fita.nome : 'Não'}}</td>
 			 		</tr>
 			 		<tr>
 			 			<td>Laço: </td>
-			 			<td>{{orc.laco.nome}}</td>
+			 			<td>{{orc.laco != null ? orc.laco.nome : 'Não'}}</td>
 			 		</tr>
 			 		<tr>
 			 			<td>Impressão nome dos convidados: </td>
-			 			<td>{{orc.impressaoNome.nome}}</td>
+			 			<td>{{orc.impressaoNome != null ? orc.impressaoNome.nome : 'Não'}}</td>
 			 		</tr>
+			 		
+			 		<tr>
+			 			<td>Aplicação de renda: </td>
+			 			<td>{{orc.renda != null ? orc.renda.nome : 'Não'}}</td>
+			 		</tr>
+			 		
 			 		<tr>
 			 			<td>Strass/Meia Pérola: </td>
-			 			<td>{{orc.strass.nome}}</td>
+			 			<td>{{orc.strass != null ? orc.strass.nome : 'Não'}}</td>
 			 		</tr>
 			 		<tr>
 			 			<td>Fechamento com imã: </td>
-			 			<td>{{orc.ima.nome}}</td>
+			 			<td>{{orc.ima != null ? orc.ima.nome : 'Não'}}</td>
 			 		</tr>
 			 		<tr>
 			 			<td>Serigrafia Papel Interno: </td>
-			 			<td>{{orc.serigrafiaInterno.nome}}</td>
+			 			<td>{{orc.serigrafiaInterno != null ? orc.serigrafiaInterno.nome : 'Não'}}</td>
 			 		</tr>
 			 		<tr>
 			 			<td>Serigrafia Envelope: </td>
-			 			<td>{{orc.serigrafiaEnvelope.nome}}</td>
+			 			<td>{{orc.serigrafiaEnvelope != null ? orc.serigrafiaEnvelope.nome : 'Não'}}</td>
 			 		</tr>
+			 		
+			 		<tr>
+			 			<td>Interno com Borda Almofadada: </td>
+			 			<td>{{orc.corteInternoAlmofadado ? 'Sim' : 'Não'}}</td>
+			 		</tr>
+			 		
+			 		<tr>
+			 			<td>Papel Envelope Acoplado: </td>
+			 			<td>{{orc.acoplamentoEnvelope ? 'Sim' : 'Não'}}</td>
+			 		</tr>
+			 		
+			 		<tr>
+			 			<td>Papel Interno Acoplado: </td>
+			 			<td>{{orc.acoplamentoInterno ? 'Sim' : 'Não'}}</td>
+			 		</tr>
+			 		
 			 	</tbody>
 			 	
 			 	<tfoot>
@@ -142,16 +164,29 @@
 			 		</tr>
 			 	
 			 		<tr>
-			 			<td>Valor por unidade: </td>
+			 			<td>Valor por unidade (à vista): </td>
 			 			<td>{{orc.precoCalculado}}</td>
 			 		</tr>
 			 		<tr>
-			 			<td>Valores adicionais por pedido: </td>
+			 			<td>Valores adicionais por pedido (à vista): </td>
 			 			<td>{{orc.precoCalculadoItemsPedido}}</td>
 			 		</tr>
 			 		<tr>
-			 			<td>Valor Total: </td>
+			 			<td>Valor Total (à vista): </td>
 			 			<td>{{orc.precoCalculadoTotal}}</td>
+			 		</tr>
+					
+					<tr>
+			 			<td>Valor por unidade (em até 3x): </td>
+			 			<td>{{orc.precoCalculadoPrazo}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Valores adicionais por pedido (em até 3x): </td>
+			 			<td>{{orc.precoCalculadoItemsPedidoPrazo}}</td>
+			 		</tr>
+			 		<tr>
+			 			<td>Valor Total (em até 3x): </td>
+			 			<td>{{orc.precoCalculadoTotalPrazo}}</td>
 			 		</tr>
 			 		
 			 		<tr>

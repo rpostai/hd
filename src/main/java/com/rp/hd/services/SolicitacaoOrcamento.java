@@ -27,6 +27,9 @@ public class SolicitacaoOrcamento implements Serializable {
 	private int quantidadeStrass;
 	private Dado ima;
 	private Dado cliche;
+	private boolean corteInternoAlmofadado;
+	private boolean acoplamentoEnvelope;
+	private boolean acoplamentoInterno;
 
 	private BigDecimal precoCalculado;
 	private BigDecimal precoCalculadoConvites;
@@ -275,6 +278,30 @@ public class SolicitacaoOrcamento implements Serializable {
 
 	public void setEnviarEmail(Boolean enviarEmail) {
 		this.enviarEmail = enviarEmail;
+	}
+
+	public boolean isCorteInternoAlmofadado() {
+		return corteInternoAlmofadado;
+	}
+
+	public void setCorteInternoAlmofadado(boolean corteInternoAlmofadado) {
+		this.corteInternoAlmofadado = corteInternoAlmofadado;
+	}
+
+	public boolean isAcoplamentoEnvelope() {
+		return acoplamentoEnvelope;
+	}
+
+	public void setAcoplamentoEnvelope(boolean acoplamentoEnvelope) {
+		this.acoplamentoEnvelope = acoplamentoEnvelope;
+	}
+
+	public boolean isAcoplamentoInterno() {
+		return acoplamentoInterno;
+	}
+
+	public void setAcoplamentoInterno(boolean acoplamentoInterno) {
+		this.acoplamentoInterno = acoplamentoInterno;
 	}
 
 	@Override

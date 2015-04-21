@@ -14,7 +14,7 @@ public class Calculadora {
 
 	private static final int PRAZO_MAXIMO_PARCELAMENTO = 3;
 	private static final BigDecimal CEM = new BigDecimal(100);
-	private static final Locale BR = new Locale("pt","BR");
+	private static final Locale BR = new Locale("pt", "BR");
 	private static final NumberFormat NF = NumberFormat.getCurrencyInstance(BR);
 
 	private final int quantidadeConvites;
@@ -36,6 +36,9 @@ public class Calculadora {
 	private final ImpressaoNome impressaoNome;
 	private final Embalagem embalagem;
 	private final CorteEnvelope corte;
+	private final CorteEnvelope corteInternoAlmofadado;
+	private final Acoplamento acoplamentoEnvelope;
+	private final Acoplamento acoplamentoInterno;
 	private final Cliche cliche;
 	private BigDecimal taxaAdministracaoCartaoCredito;
 	private BigDecimal taxaAdministracaoCartaoDebito;
@@ -50,9 +53,9 @@ public class Calculadora {
 			Laco laco, HotStamp hotStamp, Serigrafia serigrafiaEnvelope,
 			Serigrafia serigrafiaInterno, Renda renda, Ima ima,
 			int quantidadeStrass, Strass strass, ImpressaoNome impressaoNome,
-			CorteEnvelope corte, Cliche cliche,
-			BigDecimal taxaAdministracaoCartaoCredito,
-			BigDecimal taxaAdministracaoCartaoDebito, BigDecimal taxaJurosMensal) {
+			CorteEnvelope corte, CorteEnvelope corteInternoAlmofadado,
+			Cliche cliche, BigDecimal taxaAdministracaoCartaoCredito,
+			BigDecimal taxaAdministracaoCartaoDebito, BigDecimal taxaJurosMensal, Acoplamento acoplamentoEnvelope, Acoplamento acoplamentoInterno) {
 		this.quantidadeConvites = quantidadeConvites;
 		this.modelo = modelo;
 		this.colagem = colagem;
@@ -76,6 +79,9 @@ public class Calculadora {
 		this.taxaAdministracaoCartaoCredito = taxaAdministracaoCartaoCredito;
 		this.taxaAdministracaoCartaoDebito = taxaAdministracaoCartaoDebito;
 		this.taxaJurosMensal = taxaJurosMensal;
+		this.corteInternoAlmofadado = corteInternoAlmofadado;
+		this.acoplamentoEnvelope=acoplamentoEnvelope;
+		this.acoplamentoInterno=acoplamentoInterno;
 	}
 
 	public Orcamento calcular() {
@@ -95,6 +101,9 @@ public class Calculadora {
 		calcularHotStamping(o);
 		calcularAplicacaoStrass(o);
 		calcularPrecoCorte(o);
+		calcularPrecoCorteInternoAlmofadado(o);
+		calcularPrecoAcoplamentoEvelope(o);
+		calcularPrecoAcoplamentoInterno(o);
 		calcularEmbalagem(o);
 		calcularCliche(o);
 		calcularFechamentoIma(o);
@@ -253,14 +262,68 @@ public class Calculadora {
 	public void calcularPrecoCorte(Orcamento o) {
 		if (modelo.isCobrarCorte() && corte != null) {
 			if (corte != null) {
-				custoUnidade = custoUnidade.add(corte.getCusto(quantidadeConvites));
+				custoUnidade = custoUnidade.add(corte
+						.getCusto(quantidadeConvites));
 				atualizaCustoUnidade(o, custoUnidade);
 
 				o.addItem(o.new Item(corte.toString(), corte
 						.getPrecoVenda(quantidadeConvites)));
-			}	
+			}
 		}
 	}
+
+	public void calcularPrecoCorteInternoAlmofadado(Orcamento o) {
+		if (corteInternoAlmofadado != null) {
+			custoUnidade = custoUnidade.add(corteInternoAlmofadado.getCusto(quantidadeConvites));
+			atualizaCustoUnidade(o, custoUnidade);
+			o.addItem(o.new Item(corteInternoAlmofadado.toString(), corte
+					.getPrecoVenda(quantidadeConvites)));
+		}
+	}
+	
+	public void calcularPrecoAcoplamentoEvelope(Orcamento o) {
+		if (acoplamentoEnvelope != null) {
+			
+			BigDecimal valorEnvelopeCusto = this.modelo.getCustoAtual(papelEnvelope, null);
+			BigDecimal valorEnvelopeVenda = this.modelo.getPrecoVenda(papelEnvelope, null);
+			
+			custoUnidade = custoUnidade.add(acoplamentoEnvelope.getCusto(quantidadeConvites).add(valorEnvelopeCusto));
+			atualizaCustoUnidade(o, custoUnidade);
+			
+			o.addItem(o.new Item(acoplamentoEnvelope.toString() + "Envelope", acoplamentoEnvelope
+					.getPrecoVenda(quantidadeConvites).add(valorEnvelopeVenda)));
+			
+		}
+	}
+	
+	public void calcularPrecoAcoplamentoInterno(Orcamento o) {
+		if (acoplamentoInterno != null) {
+			
+			int quantidadeFolhasParaPapelInterno = modelo.getTamanhoItemInterno();
+			if (papelInterno != null && quantidadeFolhasParaPapelInterno > 0) {
+
+				BigDecimal valorCustoUnidade = this.papelInterno
+						.getCustoAtual()
+						.divide(new BigDecimal(quantidadeFolhasParaPapelInterno),
+								4, RoundingMode.HALF_UP);
+
+				BigDecimal valorPapelVenda = this.papelInterno.getPrecoAtual();
+				valorPapelVenda = valorPapelVenda.divide(
+						new BigDecimal(quantidadeFolhasParaPapelInterno), 4,
+						RoundingMode.HALF_UP).setScale(4, RoundingMode.HALF_UP);
+				
+				custoUnidade = custoUnidade.add(acoplamentoInterno.getCusto(quantidadeConvites).add(valorCustoUnidade));
+				atualizaCustoUnidade(o, custoUnidade);
+				
+				o.addItem(o.new Item(acoplamentoInterno.toString() + " Interno", acoplamentoInterno
+						.getPrecoVenda(quantidadeConvites).add(valorPapelVenda)));
+				
+			} else {
+				throw new IllegalArgumentException("Para calcular acoplagem do papel interno, é necessário selecionar um papel interno!");
+			}
+		}
+	}
+	
 
 	public void calcularEmbalagem(Orcamento o) {
 		if (this.embalagem != null) {
@@ -443,7 +506,8 @@ public class Calculadora {
 			BigDecimal valorTotal = getValorTotalPrazo();
 			List<OpcaoParcelamento> resultado = new ArrayList<>();
 			for (int i = 2; i <= PRAZO_MAXIMO_PARCELAMENTO; i++) {
-				BigDecimal valorParcela = valorTotal.divide(new BigDecimal(i), 2, RoundingMode.HALF_UP);
+				BigDecimal valorParcela = valorTotal.divide(new BigDecimal(i),
+						2, RoundingMode.HALF_UP);
 				resultado.add(new OpcaoParcelamento(i, valorParcela));
 			}
 			return resultado;
@@ -466,7 +530,7 @@ public class Calculadora {
 			public BigDecimal getValorParcela() {
 				return valorParcela;
 			}
-			
+
 			public String getValorParcelaMoeda() {
 				return NF.format(getValorParcela());
 			}
@@ -520,10 +584,13 @@ public class Calculadora {
 		private ImpressaoNome impressaoNome;
 		private Colagem colagem;
 		private CorteEnvelope corte;
+		private CorteEnvelope corteInternoAlmofadado;
 		private Cliche cliche;
 		private BigDecimal taxaAdministracaoCartaoCredito;
 		private BigDecimal taxaAdministracaoCartaoDebito;
 		private BigDecimal taxaJurosMensal;
+		private Acoplamento acoplamentoEnvelope;
+		private Acoplamento acoplamentoInterno;
 
 		private CalculadoraBuilder() {
 
@@ -618,6 +685,11 @@ public class Calculadora {
 			this.corte = corte;
 			return this;
 		}
+		
+		public CalculadoraBuilder corteInternoAlmofadado(CorteEnvelope corteInternoAlmofadado) {
+			this.corteInternoAlmofadado = corteInternoAlmofadado;
+			return this;
+		}
 
 		public CalculadoraBuilder cliche(Cliche cliche) {
 			this.cliche = cliche;
@@ -640,6 +712,16 @@ public class Calculadora {
 			this.taxaJurosMensal = taxaJurosMensal;
 			return this;
 		}
+		
+		public CalculadoraBuilder acoplamentoEnvelope(Acoplamento acoplamento) {
+			this.acoplamentoEnvelope = acoplamento;
+			return this;
+		}
+		
+		public CalculadoraBuilder acoplamentoInterno(Acoplamento acoplamento) {
+			this.acoplamentoInterno = acoplamento;
+			return this;
+		}
 
 		public Calculadora build() {
 
@@ -659,10 +741,9 @@ public class Calculadora {
 					papelEnvelope, papelInterno, impressaoEnvelope,
 					impressaoInterno, fita, laco, hotStamp, serigrafiaEnvelope,
 					serigrafiaInterno, renda, ima, quantidadeStrass, strass,
-					impressaoNome, corte, cliche,
+					impressaoNome, corte,corteInternoAlmofadado,cliche,
 					taxaAdministracaoCartaoCredito,
-					taxaAdministracaoCartaoDebito, taxaJurosMensal);
-
+					taxaAdministracaoCartaoDebito, taxaJurosMensal, acoplamentoEnvelope, acoplamentoInterno);
 		}
 	}
 

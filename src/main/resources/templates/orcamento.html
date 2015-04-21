@@ -135,6 +135,20 @@
 					</tr>
 					#end
 					
+					#if ($orc.acoplamentoEnvelope)
+					<tr ng-show="{{orc.acoplamentoEnvelope != null}}">
+						<td>Acoplamento do envelope</td>
+						<td>Sim</td>
+					</tr>
+					#end
+					
+					#if ($orc.acoplamentoInterno)
+					<tr ng-show="{{orc.acoplamentoInterno != null}}">
+						<td>Acoplamento interno</td>
+						<td>Sim</td>
+					</tr>
+					#end
+					
 					<tr>
 						<td colspan="2"><b>TOTAIS PARA PAGAMENTO À VISTA NO FECHAMENTO DO CONTRATO</b></td>
 					</tr>
@@ -160,7 +174,7 @@
 					</tr>
 					
 					<tr>
-						<td colspan="2"><b>TOTAIS PARA PAGAMENTO EM ATÉ 6X NO CARTÃO DE CRÉDITO</b></td>
+						<td colspan="2"><b>TOTAIS PARA PAGAMENTO EM ATÉ 3X NO CARTÃO DE CRÉDITO</b></td>
 					</tr>
 				
 					<tr>

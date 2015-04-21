@@ -168,7 +168,7 @@ public class ModeloConvite extends BaseEntity {
 		this.papel = papel;
 		BigDecimal valorPapel = papel.getPrecoAtual();
 		BigDecimal valorColagem = BigDecimal.ZERO;
-		if (temColagem) {
+		if (temColagem && colagem != null) {
 			valorColagem = colagem != null ? colagem.getPrecoAtual()
 					: BigDecimal.ZERO;
 		}

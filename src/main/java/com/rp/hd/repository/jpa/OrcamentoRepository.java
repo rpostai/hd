@@ -111,6 +111,24 @@ public class OrcamentoRepository extends BaseRepository<Orcamento> {
 				s.getCliche().setValor(orcamento.getCliche().getValorVenda());
 			}
 			
+			if (orcamento.getAcoplamentoEnvelope() != null) {
+				s.setAcoplamentoEnvelope(true);
+			} else {
+				s.setAcoplamentoEnvelope(false);
+			}
+			
+			if (orcamento.getAcoplamentoInterno() != null) {
+				s.setAcoplamentoInterno(true);
+			} else {
+				s.setAcoplamentoInterno(false);
+			}
+			
+			if (orcamento.getCorteInternoAlmofadado() != null) {
+				s.setCorteInternoAlmofadado(true);
+			} else {
+				s.setCorteInternoAlmofadado(false);
+			}
+			
 			s.setPrecoCalculado(orcamento.getPrecoCalculado());
 			s.setPrecoCalculadoPrazo(orcamento.getPrecoCalculadoPrazo());
 			
