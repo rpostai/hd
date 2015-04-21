@@ -6,6 +6,8 @@ public class Dado {
 
 	private long id;
 
+	private String codigo;
+
 	private String nome;
 
 	private BigDecimal valor;
@@ -62,6 +64,14 @@ public class Dado {
 		if (id != other.id)
 			return false;
 		return true;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
 }

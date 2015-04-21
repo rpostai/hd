@@ -54,7 +54,9 @@ public class OrcamentoRepository extends BaseRepository<Orcamento> {
 			s.setQuantidade(orcamento.getQuantidade());
 			s.setQuantidadeStrass(orcamento.getQuantidadeStrass());
 			
-			s.setModelo(new Dado(orcamento.getModelo().getId(), orcamento.getModelo().getNome()));
+			Dado modelo = new Dado(orcamento.getModelo().getId(), orcamento.getModelo().getNome());
+			modelo.setCodigo(orcamento.getModelo().getCodigo());
+			s.setModelo(modelo);
 			s.setPapelEnvelope(new Dado(orcamento.getPapelEnvelope().getId(), orcamento.getPapelEnvelope().getNome()));
 			
 			if (orcamento.getPapelInterno() != null) {

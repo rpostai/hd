@@ -1,11 +1,14 @@
 package com.rp.hd.services;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FilenameFilter;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +42,8 @@ import org.apache.velocity.app.Velocity;
 
 import com.google.common.io.ByteStreams;
 import com.rp.hd.domain.Complemento;
+import com.rp.hd.domain.Configuracao;
+import com.rp.hd.domain.Constants;
 import com.rp.hd.domain.ModeloConvite;
 import com.rp.hd.domain.OrigemContato;
 import com.rp.hd.domain.atendimento.Atendimento;
@@ -47,12 +52,14 @@ import com.rp.hd.domain.atendimento.OrcamentoComplemento;
 import com.rp.hd.domain.atendimento.PromocaoConvite;
 import com.rp.hd.repository.jpa.ColagemRepository;
 import com.rp.hd.repository.jpa.ComplementoRepository;
+import com.rp.hd.repository.jpa.ConfiguracaoRepository;
 import com.rp.hd.repository.jpa.ModeloConviteRepository;
 import com.rp.hd.repository.jpa.OrcamentoComplementoRepository;
 import com.rp.hd.repository.jpa.OrcamentoRepository;
 import com.rp.hd.repository.jpa.OrigemContatoRepository;
 import com.rp.hd.repository.jpa.PromocaoConviteRepository;
 import com.rp.hd.repository.jpa.atendimento.AtendimentoRepository;
+
 
 @Path("atendimento")
 public class AtendimentoService {
@@ -88,6 +95,9 @@ public class AtendimentoService {
 	
 	@Inject
 	private OrigemContatoRepository origemContatoRepository;
+	
+	@Inject 
+	private ConfiguracaoRepository configuracaoRepository;
 	
 	@GET
 	@Path("origem")
@@ -165,19 +175,29 @@ public class AtendimentoService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ModeloFoto> getFotosModelos() {
+		
+		Configuracao pastaFotos = configuracaoRepository.getConfiguracao(Constants.CAMINHO_FOTOS.toString()).get();
+		Configuracao caminhoFotosWeb = configuracaoRepository.getConfiguracao(Constants.CAMINHO_FOTOS_WEB.toString()).get();
+		
 		return modeloConviteRepository
 				.getModelosComFotos()
 				.stream()
 				.map(modelo -> {
-					if (modelo.getFotos().size() > 0) {
-						String caminho = modelo.getFotos().stream()
-								.sorted((foto1, foto2) -> {
-									return foto1.getOrdem() - foto2.getOrdem();
-								}).collect(Collectors.toList()).get(0)
-								.getCaminho();
-
+					String codigo = modelo.getCodigo();
+					
+					File pasta = new File(pastaFotos.getValor());
+					
+					File[] fotos = pasta.listFiles(new FilenameFilter() {
+						
+						@Override
+						public boolean accept(File dir, String name) {
+							return name.startsWith(codigo);
+						}
+					});
+					
+					if (fotos != null && fotos.length > 0) {
 						ModeloFoto m = new ModeloFoto(modelo.getId(), modelo
-								.getNome(), new Foto(1, caminho));
+								.getNome(), new Foto(1, caminhoFotosWeb.getValor() + fotos[0].getName()));
 						return m;
 					} else {
 						ModeloFoto m = new ModeloFoto(modelo.getId(), modelo
@@ -195,11 +215,29 @@ public class AtendimentoService {
 		Optional<ModeloConvite> modelo = modeloConviteRepository
 				.getModeloComFotos(modeloId);
 		if (modelo.isPresent()) {
+			
+			Configuracao pastaFotos = configuracaoRepository.getConfiguracao(Constants.CAMINHO_FOTOS.toString()).get();
+			Configuracao caminhoFotosWeb = configuracaoRepository.getConfiguracao(Constants.CAMINHO_FOTOS_WEB.toString()).get();
+			
+			String codigo = modelo.get().getCodigo();
+			
+			File pasta = new File(pastaFotos.getValor());
+			
+			File[] fotos = pasta.listFiles(new FilenameFilter() {
+				
+				@Override
+				public boolean accept(File dir, String name) {
+					return name.startsWith(codigo);
+				}
+			});
+			
 			ModeloFoto m = new ModeloFoto(modelo.get().getId(), modelo.get()
 					.getNome(), null);
-			modelo.get().getFotos().forEach(foto -> {
-				m.addFoto(new Foto(foto.getOrdem(), foto.getCaminho()));
-			});
+			if (fotos != null && fotos.length > 0) {
+				for (int i = 0; i < fotos.length; i++) {
+					m.addFoto(new Foto(i,caminhoFotosWeb.getValor() + fotos[i].getName()));
+				}
+			}
 			return m;
 		}
 		return null;
@@ -210,20 +248,46 @@ public class AtendimentoService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ModeloFoto> getTodasFotos() {
+		
+		Configuracao pastaFotos = configuracaoRepository.getConfiguracao(Constants.CAMINHO_FOTOS.toString()).get();
+		Configuracao caminhoFotosWeb = configuracaoRepository.getConfiguracao(Constants.CAMINHO_FOTOS_WEB.toString()).get();
+		
 		List<ModeloFoto> result = new ArrayList<ModeloFoto>();
 		modeloConviteRepository
 				.getModelosComFotos()
 				.stream()
 				.forEach(
 						x -> {
-							x.getFotos().forEach(
-									foto -> {
-										ModeloFoto m = new ModeloFoto(
-												x.getId(), x.getNome(),
-												new Foto(foto.getOrdem(), foto
-														.getCaminho()));
-										result.add(m);
-									});
+							
+							String codigo = x.getCodigo();
+							
+							File pasta = new File(pastaFotos.getValor());
+							
+							File[] fotos = pasta.listFiles(new FilenameFilter() {
+								
+								@Override
+								public boolean accept(File dir, String name) {
+									return name.startsWith(codigo);
+								}
+							});
+							
+							if (fotos != null && fotos.length > 0) {
+								for (int i = 0; i < fotos.length; i++) {
+									ModeloFoto m = new ModeloFoto(
+											x.getId(), x.getNome(),
+											new Foto(i, caminhoFotosWeb.getValor() + fotos[i].getName()));
+									result.add(m);
+								}
+							}
+							
+//							x.getFotos().forEach(
+//									foto -> {
+//										ModeloFoto m = new ModeloFoto(
+//												x.getId(), x.getNome(),
+//												new Foto(foto.getOrdem(), foto
+//														.getCaminho()));
+//										result.add(m);
+//									});
 						});
 		return result;
 	}
@@ -406,6 +470,8 @@ public class AtendimentoService {
 			throws Exception {
 
 		Atendimento atendimento = repository.get(atendimentoId);
+		
+		Configuracao pastaFotos = configuracaoRepository.getConfiguracao(Constants.CAMINHO_FOTOS.toString()).get();
 
 		try {
 			Message msg = new MimeMessage(session);
@@ -452,49 +518,47 @@ public class AtendimentoService {
 			
 			orcamentos.stream().map(o -> {
 				return o.getModelo();
-			}).distinct().forEach(modeloOrcamento -> {
+			}).distinct().forEach(modelo -> {
 				
-//			});
-//
-//			orcamentos
-//					.forEach(orc -> {
-//						if (orc.getModelo() != null) {
-							Optional<ModeloConvite> ultimasFotosModelo = modeloConviteRepository
-									.getUltimasFotosModelo(modeloOrcamento
-											.getId());
-							ultimasFotosModelo
-									.ifPresent(modelo -> {
-										modelo.getFotos()
-												.forEach(
-														foto -> {
-															FileInputStream file;
-															try {
-																file = new FileInputStream(foto.getCaminho());
-																byte[] bytes = ByteStreams
-																		.toByteArray(file);
-																MimeBodyPart attachment = new MimeBodyPart();
-																attachment
-																		.setFileName(modelo
-																				.getNome()
-																				+ "_"
-																				+ RandomStringUtils
-																						.randomAlphabetic(4)
-																				+ ".jpg");
-																attachment
-																		.setContent(
-																				bytes,
-																				"image/jpeg");
-																mp.addBodyPart(attachment);
-
-																temImagens[0] = true;
-															} catch (Exception e) {
-																e.printStackTrace();
-															}
-
-														});
-									});
+					File dir = new File(pastaFotos.getValor());
+					File[] fotos = dir.listFiles(new FilenameFilter() {
+						
+						@Override
+						public boolean accept(File dir, String name) {
+							return name.startsWith(modelo.getCodigo());
+						}
 					});
+					
+					if (fotos != null && fotos.length > 0) {
+						
+						Arrays.asList(fotos).forEach(foto -> {
+							FileInputStream file;
+							try {
+								file = new FileInputStream(foto);
+								byte[] bytes = ByteStreams
+										.toByteArray(file);
+								MimeBodyPart attachment = new MimeBodyPart();
+								attachment
+										.setFileName(modelo
+												.getNome()
+												+ "_"
+												+ RandomStringUtils
+														.randomAlphabetic(4)
+												+ ".jpg");
+								attachment
+										.setContent(
+												bytes,
+												"image/jpeg");
+								mp.addBodyPart(attachment);
 
+								temImagens[0] = true;
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						});
+					}
+			});
+							
 			MimeBodyPart htmlPart = new MimeBodyPart();
 			htmlPart.setContent(
 					criarEmail(atendimento, orcamentos, temImagens[0]),
