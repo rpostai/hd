@@ -356,7 +356,7 @@ public class AtendimentoService {
 			}
 			
 			if (orcamento.getIma() != null) {
-				s.setIma(new Dado(orcamento.getIma().getId(), Integer.toString(orcamento.getIma().getTamanho())));
+				s.setIma(new Dado(orcamento.getIma().getId(), orcamento.getIma().getDescricao()));
 			}
 			
 			if (orcamento.getStrass() != null) {
@@ -449,12 +449,18 @@ public class AtendimentoService {
 			Multipart mp = new MimeMultipart();
 
 			boolean[] temImagens = new boolean[] { false };
-
-			orcamentos
-					.forEach(orc -> {
-						if (orc.getModelo() != null) {
+			
+			orcamentos.stream().map(o -> {
+				return o.getModelo();
+			}).distinct().forEach(modeloOrcamento -> {
+				
+//			});
+//
+//			orcamentos
+//					.forEach(orc -> {
+//						if (orc.getModelo() != null) {
 							Optional<ModeloConvite> ultimasFotosModelo = modeloConviteRepository
-									.getUltimasFotosModelo(orc.getModelo()
+									.getUltimasFotosModelo(modeloOrcamento
 											.getId());
 							ultimasFotosModelo
 									.ifPresent(modelo -> {
@@ -463,8 +469,7 @@ public class AtendimentoService {
 														foto -> {
 															FileInputStream file;
 															try {
-																file = new FileInputStream(
-																		"/images/img1.jpg");
+																file = new FileInputStream(foto.getCaminho());
 																byte[] bytes = ByteStreams
 																		.toByteArray(file);
 																MimeBodyPart attachment = new MimeBodyPart();
@@ -488,13 +493,7 @@ public class AtendimentoService {
 
 														});
 									});
-						}
 					});
-
-			// MimeBodyPart attachment = new MimeBodyPart();
-			// attachment.setFileName("manual.pdf");
-			// attachment.setContent(attachmentData, "application/pdf");
-			// mp.addBodyPart(attachment);
 
 			MimeBodyPart htmlPart = new MimeBodyPart();
 			htmlPart.setContent(

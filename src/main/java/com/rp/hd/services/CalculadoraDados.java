@@ -123,7 +123,7 @@ public class CalculadoraDados implements Serializable {
 	}
 	
 	public void addIma(Ima ima) {
-		this.add(imas, novoDado(ima.getId(), Integer.toString(ima.getTamanho())));
+		this.add(imas, novoDado(ima.getId(), ima.getDescricao()));
 	}
 	
 	public void  addImpressao(Impressao impressao) {

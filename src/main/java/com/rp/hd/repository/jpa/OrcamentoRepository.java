@@ -91,7 +91,7 @@ public class OrcamentoRepository extends BaseRepository<Orcamento> {
 			}
 			
 			if (orcamento.getIma() != null) {
-				s.setIma(new Dado(orcamento.getIma().getId(), Integer.toString(orcamento.getIma().getTamanho())));
+				s.setIma(new Dado(orcamento.getIma().getId(), orcamento.getIma().getDescricao()));
 			}
 			
 			if (orcamento.getStrass() != null) {
