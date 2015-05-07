@@ -73,4 +73,12 @@ var app = angular
             	url: '/promocoes',
             	templateUrl: 'views/promocoes.html'
             })
+            .state('layout.eventos', {
+            	url: '/eventos',
+            	templateUrl: 'views/eventos.html'
+            })
+            .state('layout.eventosdetalhe', {
+            	url: '/eventosdetalhe/{evento}/{codigo}',
+            	templateUrl: 'views/eventosdetalhe.html'
+            })
     });

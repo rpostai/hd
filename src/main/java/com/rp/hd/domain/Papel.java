@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -14,12 +15,18 @@ public class Papel extends BaseEntity {
 
 	private String nome;
 
-	@Convert(converter=GramaturaConverter.class)
+	@Convert(converter = GramaturaConverter.class)
 	private Gramatura gramatura;
 
 	@ElementCollection
 	@CollectionTable(name = "papel_precos")
 	private List<PrecoVigencia> precos = new ArrayList<>();
+
+	@Column(name = "inativo")
+	private boolean inativo;
+
+	@Column(name = "preco")
+	private BigDecimal preco;
 
 	private BigDecimal markup;
 
@@ -52,11 +59,13 @@ public class Papel extends BaseEntity {
 	}
 
 	public BigDecimal getCustoAtual() {
-		return PrecoVigenciaService.getPrecoAtual(this.precos).getValor();
+		// return PrecoVigenciaService.getPrecoAtual(this.precos).getValor();
+		return this.getPreco();
 	}
 
 	public BigDecimal getPrecoAtual() {
-		return getCustoAtual().multiply(markup).setScale(2, BigDecimal.ROUND_HALF_UP);
+		return getCustoAtual().multiply(markup).setScale(2,
+				BigDecimal.ROUND_HALF_UP);
 	}
 
 	public BigDecimal getMarkup() {
@@ -65,6 +74,22 @@ public class Papel extends BaseEntity {
 
 	public void setMarkup(BigDecimal markup) {
 		this.markup = markup;
+	}
+
+	public boolean isInativo() {
+		return inativo;
+	}
+
+	public void setInativo(boolean inativo) {
+		this.inativo = inativo;
+	}
+
+	public BigDecimal getPreco() {
+		return preco;
+	}
+
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
 	}
 
 }

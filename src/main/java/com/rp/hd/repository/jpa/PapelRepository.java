@@ -15,7 +15,7 @@ public class PapelRepository extends BaseRepository<Papel>{
 
 	@Override
 	public List<Papel> getTodos() {
-		return em.createQuery("select o from Papel o order by o.nome asc", Papel.class).getResultList();
+		return em.createQuery("select o from Papel o where inativo = false order by o.nome asc", Papel.class).getResultList();
 	}
 
 }

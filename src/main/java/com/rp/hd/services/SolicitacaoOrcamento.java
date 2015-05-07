@@ -9,6 +9,8 @@ import java.util.List;
 public class SolicitacaoOrcamento implements Serializable {
 
 	private Long id;
+	private String codigoEvento;
+	private BigDecimal precoEvento;
 	private Date dataAtendimento;
 	private int quantidade;
 	private Dado modelo;
@@ -302,6 +304,22 @@ public class SolicitacaoOrcamento implements Serializable {
 
 	public void setAcoplamentoInterno(boolean acoplamentoInterno) {
 		this.acoplamentoInterno = acoplamentoInterno;
+	}
+
+	public String getCodigoEvento() {
+		return codigoEvento;
+	}
+
+	public void setCodigoEvento(String codigoEvento) {
+		this.codigoEvento = codigoEvento;
+	}
+
+	public BigDecimal getPrecoEvento() {
+		return precoEvento;
+	}
+
+	public void setPrecoEvento(BigDecimal precoEvento) {
+		this.precoEvento = precoEvento;
 	}
 
 	@Override

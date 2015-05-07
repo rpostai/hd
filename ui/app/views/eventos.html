@@ -1,0 +1,35 @@
+<header class="margin20 nrm nlm">
+	<div class="clearfix">
+		<a class="place-left" href="#" title="">
+			<h1>Eventos</h1>
+		</a>
+	</div>
+</header>
+
+<div class="main-content clearfix" ng-controller="EventosController"
+	ng-init="getTodosEventos()">
+
+	<tabset> 
+		<tab ng-repeat="evento in eventos" heading="{{ evento.nome}}" ng-click="carregaConvites(evento.id)">
+			
+			<div class="tile-area no-padding clearfix">
+				
+				<div class="tile-group no-margin no-padding clearfix" style="width: 100%">
+					
+					<a  ui-sref="layout.eventosdetalhe({evento: evento.id,codigo: convite.codigoEvento})" class="tile double" style="height:200px" ng-repeat="convite in convites">
+						<div class="tile-content image">
+							<img src="{{convite.fotos[0]}}">
+							
+						</div>
+						<div class="brand bg-dark opacity">
+							<span class="text">
+								Código: {{convite.codigoEvento}} - R$ {{convite.precoEvento}} - {{convite.modelo.nome}}
+							</span>
+						</div>
+					</a>
+				</div>
+			</div>
+			
+		</tab> 
+	</tabset>
+</div>

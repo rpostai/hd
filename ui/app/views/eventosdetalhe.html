@@ -1,0 +1,98 @@
+<header class="margin20 nrm nlm">
+	<div class="clearfix">
+		<a class="place-left" href="#" title="">
+			<h1>Detalhe de convite</h1>
+		</a>
+	</div>
+</header>
+
+<div class="main-content clearfix" ng-controller="EventosController"
+	ng-init="getDetalhe()">
+	
+	 <table class="table striped">
+	 	<thead>
+	 		<tr>
+	 			<th width="30%">Item</th>
+	 			<th width="70%">Descrição</th>
+	 		</tr>
+	 	</thead>
+	 	<tbody>
+	 		<tr>
+	 			<td>Modelo: </td>
+	 			<td>{{convite.modelo.nome}}</td>
+	 		</tr>
+	 		<tr>
+	 			<td>Papel Envelope: </td>
+	 			<td>{{convite.papelEnvelope.nome}}</td>
+	 		</tr>
+	 		<tr>
+	 			<td>Papel Interno: </td>
+	 			<td>{{convite.papelInterno.nome}}</td>
+	 		</tr>
+	 		<tr>
+	 			<td>Impressão Envelope: </td>
+	 			<td>{{convite.impressaoEnvelope.nome}}</td>
+	 		</tr>
+	 		<tr>
+	 			<td>Impressão Interno: </td>
+	 			<td>{{convite.impressaoInterno.nome}}</td>
+	 		</tr>
+	 		<tr>
+	 			<td>Fita: </td>
+	 			<td>{{convite.fita.nome}}</td>
+	 		</tr>
+	 		<tr>
+	 			<td>Laço: </td>
+	 			<td>{{convite.laco.nome}}</td>
+	 		</tr>
+	 		<tr>
+	 			<td>Impressão nome dos convidados: </td>
+	 			<td>{{convite.impressaoNome.nome}}</td>
+	 		</tr>
+	 		<tr>
+	 			<td>Strass/Meia Pérola: </td>
+	 			<td>{{convite.strass.nome}}</td>
+	 		</tr>
+	 		<tr>
+	 			<td>Fechamento com imã: </td>
+	 			<td>{{convite.ima.nome}}</td>
+	 		</tr>
+	 		<tr>
+	 			<td>Serigrafia Papel Interno: </td>
+	 			<td>{{convite.serigrafiaInterno.nome}}</td>
+	 		</tr>
+	 		<tr>
+	 			<td>Serigrafia Envelope: </td>
+	 			<td>{{convite.serigrafiaEnvelope.nome}}</td>
+	 		</tr>
+	 	</tbody>
+	 	
+	 	<tfoot>
+	 		<tr ng-show="{{convite.hotstamp != null || convite.cliche != null}}">
+	 			<td colspan="2">Itens adicionais</td>
+	 		</tr>
+	 		
+	 		<tr ng-show="{{convite.hotstamp != null}}">
+	 			<td>Aplicação HotStamp</td>
+	 			<td>{{convite.hotstamp.nome}} - R$ {{convite.hotstamp.valor}}</td>
+	 		</tr>
+	 		
+	 		<tr ng-show="{{convite.cliche != null}}">
+	 			<td>Confecção clichê</td>
+	 			<td>{{convite.cliche.nome}} - R$ {{convite.cliche.valor}}</td>
+	 		</tr>
+	 	
+	 		<tr>
+	 			<td>Valor por unidade: </td>
+	 			<td>{{convite.precoEvento}}</td>
+	 		</tr>
+	 		
+	 		<tr ng-repeat="foto in convite.fotos">
+	 			<td colspan="2">
+	 				<img src="{{foto}}"/>
+	 			</td>
+	 		</tr>
+	 	</tfoot>
+	 	
+	 </table>
+</div>

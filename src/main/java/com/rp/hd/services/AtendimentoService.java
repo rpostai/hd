@@ -44,6 +44,7 @@ import com.google.common.io.ByteStreams;
 import com.rp.hd.domain.Complemento;
 import com.rp.hd.domain.Configuracao;
 import com.rp.hd.domain.Constants;
+import com.rp.hd.domain.Evento;
 import com.rp.hd.domain.ModeloConvite;
 import com.rp.hd.domain.OrigemContato;
 import com.rp.hd.domain.atendimento.Atendimento;
@@ -53,6 +54,7 @@ import com.rp.hd.domain.atendimento.PromocaoConvite;
 import com.rp.hd.repository.jpa.ColagemRepository;
 import com.rp.hd.repository.jpa.ComplementoRepository;
 import com.rp.hd.repository.jpa.ConfiguracaoRepository;
+import com.rp.hd.repository.jpa.EventoRepository;
 import com.rp.hd.repository.jpa.ModeloConviteRepository;
 import com.rp.hd.repository.jpa.OrcamentoComplementoRepository;
 import com.rp.hd.repository.jpa.OrcamentoRepository;
@@ -60,10 +62,9 @@ import com.rp.hd.repository.jpa.OrigemContatoRepository;
 import com.rp.hd.repository.jpa.PromocaoConviteRepository;
 import com.rp.hd.repository.jpa.atendimento.AtendimentoRepository;
 
-
 @Path("atendimento")
 public class AtendimentoService {
-	
+
 	private static final String caminhoFotos = "/imagem/";
 
 	private static final SimpleDateFormat SD = new SimpleDateFormat(
@@ -92,24 +93,28 @@ public class AtendimentoService {
 
 	@Resource(name = "java:jboss/mail/Default")
 	private Session session;
-	
+
 	@Inject
 	private OrigemContatoRepository origemContatoRepository;
-	
-	@Inject 
+
+	@Inject
 	private ConfiguracaoRepository configuracaoRepository;
-	
+
+	@Inject
+	private EventoRepository eventoRepository;
+
 	@GET
 	@Path("origem")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<OrigemContato> getOrigemContato() {
 		return origemContatoRepository.getTodos();
 	}
-	
+
 	@GET
 	@Path("detalhe/{atendimento}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Atendimento getDetalheAtendimento(@PathParam("atendimento") Long atendimentoId) {
+	public Atendimento getDetalheAtendimento(
+			@PathParam("atendimento") Long atendimentoId) {
 		return repository.get(atendimentoId);
 	}
 
@@ -175,29 +180,32 @@ public class AtendimentoService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ModeloFoto> getFotosModelos() {
-		
-		Configuracao pastaFotos = configuracaoRepository.getConfiguracao(Constants.CAMINHO_FOTOS.toString()).get();
-		Configuracao caminhoFotosWeb = configuracaoRepository.getConfiguracao(Constants.CAMINHO_FOTOS_WEB.toString()).get();
-		
+
+		Configuracao pastaFotos = configuracaoRepository.getConfiguracao(
+				Constants.CAMINHO_FOTOS.toString()).get();
+		Configuracao caminhoFotosWeb = configuracaoRepository.getConfiguracao(
+				Constants.CAMINHO_FOTOS_WEB.toString()).get();
+
 		return modeloConviteRepository
 				.getModelosComFotos()
 				.stream()
 				.map(modelo -> {
 					String codigo = modelo.getCodigo();
-					
+
 					File pasta = new File(pastaFotos.getValor());
-					
+
 					File[] fotos = pasta.listFiles(new FilenameFilter() {
-						
+
 						@Override
 						public boolean accept(File dir, String name) {
 							return name.startsWith(codigo);
 						}
 					});
-					
+
 					if (fotos != null && fotos.length > 0) {
 						ModeloFoto m = new ModeloFoto(modelo.getId(), modelo
-								.getNome(), new Foto(1, caminhoFotosWeb.getValor() + fotos[0].getName()));
+								.getNome(), new Foto(1, caminhoFotosWeb
+								.getValor() + fotos[0].getName()));
 						return m;
 					} else {
 						ModeloFoto m = new ModeloFoto(modelo.getId(), modelo
@@ -215,27 +223,31 @@ public class AtendimentoService {
 		Optional<ModeloConvite> modelo = modeloConviteRepository
 				.getModeloComFotos(modeloId);
 		if (modelo.isPresent()) {
-			
-			Configuracao pastaFotos = configuracaoRepository.getConfiguracao(Constants.CAMINHO_FOTOS.toString()).get();
-			Configuracao caminhoFotosWeb = configuracaoRepository.getConfiguracao(Constants.CAMINHO_FOTOS_WEB.toString()).get();
-			
+
+			Configuracao pastaFotos = configuracaoRepository.getConfiguracao(
+					Constants.CAMINHO_FOTOS.toString()).get();
+			Configuracao caminhoFotosWeb = configuracaoRepository
+					.getConfiguracao(Constants.CAMINHO_FOTOS_WEB.toString())
+					.get();
+
 			String codigo = modelo.get().getCodigo();
-			
+
 			File pasta = new File(pastaFotos.getValor());
-			
+
 			File[] fotos = pasta.listFiles(new FilenameFilter() {
-				
+
 				@Override
 				public boolean accept(File dir, String name) {
 					return name.startsWith(codigo);
 				}
 			});
-			
+
 			ModeloFoto m = new ModeloFoto(modelo.get().getId(), modelo.get()
 					.getNome(), null);
 			if (fotos != null && fotos.length > 0) {
 				for (int i = 0; i < fotos.length; i++) {
-					m.addFoto(new Foto(i,caminhoFotosWeb.getValor() + fotos[i].getName()));
+					m.addFoto(new Foto(i, caminhoFotosWeb.getValor()
+							+ fotos[i].getName()));
 				}
 			}
 			return m;
@@ -248,46 +260,51 @@ public class AtendimentoService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ModeloFoto> getTodasFotos() {
-		
-		Configuracao pastaFotos = configuracaoRepository.getConfiguracao(Constants.CAMINHO_FOTOS.toString()).get();
-		Configuracao caminhoFotosWeb = configuracaoRepository.getConfiguracao(Constants.CAMINHO_FOTOS_WEB.toString()).get();
-		
+
+		Configuracao pastaFotos = configuracaoRepository.getConfiguracao(
+				Constants.CAMINHO_FOTOS.toString()).get();
+		Configuracao caminhoFotosWeb = configuracaoRepository.getConfiguracao(
+				Constants.CAMINHO_FOTOS_WEB.toString()).get();
+
 		List<ModeloFoto> result = new ArrayList<ModeloFoto>();
 		modeloConviteRepository
 				.getModelosComFotos()
 				.stream()
 				.forEach(
 						x -> {
-							
+
 							String codigo = x.getCodigo();
-							
+
 							File pasta = new File(pastaFotos.getValor());
-							
-							File[] fotos = pasta.listFiles(new FilenameFilter() {
-								
-								@Override
-								public boolean accept(File dir, String name) {
-									return name.startsWith(codigo);
-								}
-							});
-							
+
+							File[] fotos = pasta
+									.listFiles(new FilenameFilter() {
+
+										@Override
+										public boolean accept(File dir,
+												String name) {
+											return name.startsWith(codigo);
+										}
+									});
+
 							if (fotos != null && fotos.length > 0) {
 								for (int i = 0; i < fotos.length; i++) {
-									ModeloFoto m = new ModeloFoto(
-											x.getId(), x.getNome(),
-											new Foto(i, caminhoFotosWeb.getValor() + fotos[i].getName()));
+									ModeloFoto m = new ModeloFoto(x.getId(), x
+											.getNome(), new Foto(i,
+											caminhoFotosWeb.getValor()
+													+ fotos[i].getName()));
 									result.add(m);
 								}
 							}
-							
-//							x.getFotos().forEach(
-//									foto -> {
-//										ModeloFoto m = new ModeloFoto(
-//												x.getId(), x.getNome(),
-//												new Foto(foto.getOrdem(), foto
-//														.getCaminho()));
-//										result.add(m);
-//									});
+
+							// x.getFotos().forEach(
+							// foto -> {
+							// ModeloFoto m = new ModeloFoto(
+							// x.getId(), x.getNome(),
+							// new Foto(foto.getOrdem(), foto
+							// .getCaminho()));
+							// result.add(m);
+							// });
 						});
 		return result;
 	}
@@ -342,7 +359,8 @@ public class AtendimentoService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Atendimento> consultaAtendimentos(ConsultaAtendimento consulta) {
 		Calendar c = Calendar.getInstance();
-		if (consulta.getData() != null && StringUtils.isNotBlank(consulta.getData())) {
+		if (consulta.getData() != null
+				&& StringUtils.isNotBlank(consulta.getData())) {
 			try {
 				c.setTime(SD.parse(consulta.getData()));
 			} catch (ParseException e) {
@@ -378,86 +396,111 @@ public class AtendimentoService {
 		List<PromocaoConvite> promocoes = promocaoConviteRepository
 				.getPromocoesAtivas();
 
-		return promocoes.stream().map(orcamento -> {
-			
-			SolicitacaoOrcamento s = new SolicitacaoOrcamento();
-			s.setQuantidadeStrass(orcamento.getQuantidadeStrass());
-			
-			s.setModelo(new Dado(orcamento.getModelo().getId(), orcamento.getModelo().getNome()));
-			s.setPapelEnvelope(new Dado(orcamento.getPapelEnvelope().getId(), orcamento.getPapelEnvelope().getNome()));
-			
-			if (orcamento.getPapelInterno() != null) {
-				s.setPapelInterno(new Dado(orcamento.getPapelInterno().getId(), orcamento.getPapelInterno().getNome()));	
-			}
-			
-			if (orcamento.getImpressaoEnvelope() != null) {
-				s.setImpressaoEnvelope(new Dado(orcamento.getImpressaoEnvelope().getId(), orcamento.getImpressaoEnvelope().getDescricao()));
-			}
-			
-			if (orcamento.getImpressaoInterno() != null) {
-				s.setImpressaoInterno(new Dado(orcamento.getImpressaoInterno().getId(), orcamento.getImpressaoInterno().getDescricao()));
-			}
-			
-			if (orcamento.getFita() != null) {
-				s.setFita(new Dado(orcamento.getFita().getId(), orcamento.getFita().toString()));
-			}
-			
-			if (orcamento.getLaco() != null) {
-				s.setLaco(new Dado(orcamento.getLaco().getId(), orcamento.getLaco().getDescricao()));
-			}
-			
-			if (orcamento.getRenda() != null) {
-				s.setRenda(new Dado(orcamento.getRenda().getId(), orcamento.getRenda().getDescricao()));
-			}
-			
-			if (orcamento.getImpressaoNome() != null) {
-				s.setImpressaoNome(new Dado(orcamento.getImpressaoNome().getId(), orcamento.getImpressaoNome().getDescricao()));
-			}
-			
-			if (orcamento.getHotstamp() != null) {
-				s.setHotstamp(new Dado(orcamento.getHotstamp().getId(), orcamento.getHotstamp().getDescricao()));
-				s.getHotstamp().setValor(orcamento.getHotstamp().getPrecoVenda());
-			}
-			
-			if (orcamento.getIma() != null) {
-				s.setIma(new Dado(orcamento.getIma().getId(), orcamento.getIma().getDescricao()));
-			}
-			
-			if (orcamento.getStrass() != null) {
-				s.setStrass(new Dado(orcamento.getStrass().getId(), orcamento.getStrass().getDescricao()));
-			}
-			
-			if (orcamento.getSerigrafiaEnvelope() != null) {
-				s.setSerigrafiaEnvelope(new Dado(orcamento.getSerigrafiaEnvelope().getId(), orcamento.getSerigrafiaEnvelope().getDescricao()));
-			}
-			
-			if (orcamento.getSerigrafiaInterno() != null) {
-				s.setSerigrafiaInterno(new Dado(orcamento.getSerigrafiaInterno().getId(), orcamento.getSerigrafiaInterno().getDescricao()));
-			}
-			
-			if (orcamento.getCliche() != null) {
-				s.setCliche(new Dado(orcamento.getCliche().getId(), orcamento.getCliche().getDescricao()));
-				s.getCliche().setValor(orcamento.getCliche().getValorVenda());
-			}
-			
-			s.setPrecoCalculado(orcamento.getValor());
-			
-			if (CollectionUtils.isNotEmpty(orcamento.getFotos())) {
-				orcamento.getFotos().stream().sorted((a,b) -> {
-					return a.getOrdem() - b.getOrdem();
-				}).forEach(foto -> {
-					s.addFoto(caminhoFotos+ foto.getCaminho());
-				});
-			}
-			
-			return s;
-		}).collect(Collectors.toList());
+		return promocoes
+				.stream()
+				.map(orcamento -> {
+
+					SolicitacaoOrcamento s = new SolicitacaoOrcamento();
+					s.setQuantidadeStrass(orcamento.getQuantidadeStrass());
+
+					s.setModelo(new Dado(orcamento.getModelo().getId(),
+							orcamento.getModelo().getNome()));
+					s.setPapelEnvelope(new Dado(orcamento.getPapelEnvelope()
+							.getId(), orcamento.getPapelEnvelope().getNome()));
+
+					if (orcamento.getPapelInterno() != null) {
+						s.setPapelInterno(new Dado(orcamento.getPapelInterno()
+								.getId(), orcamento.getPapelInterno().getNome()));
+					}
+
+					if (orcamento.getImpressaoEnvelope() != null) {
+						s.setImpressaoEnvelope(new Dado(orcamento
+								.getImpressaoEnvelope().getId(), orcamento
+								.getImpressaoEnvelope().getDescricao()));
+					}
+
+					if (orcamento.getImpressaoInterno() != null) {
+						s.setImpressaoInterno(new Dado(orcamento
+								.getImpressaoInterno().getId(), orcamento
+								.getImpressaoInterno().getDescricao()));
+					}
+
+					if (orcamento.getFita() != null) {
+						s.setFita(new Dado(orcamento.getFita().getId(),
+								orcamento.getFita().toString()));
+					}
+
+					if (orcamento.getLaco() != null) {
+						s.setLaco(new Dado(orcamento.getLaco().getId(),
+								orcamento.getLaco().getDescricao()));
+					}
+
+					if (orcamento.getRenda() != null) {
+						s.setRenda(new Dado(orcamento.getRenda().getId(),
+								orcamento.getRenda().getDescricao()));
+					}
+
+					if (orcamento.getImpressaoNome() != null) {
+						s.setImpressaoNome(new Dado(orcamento
+								.getImpressaoNome().getId(), orcamento
+								.getImpressaoNome().getDescricao()));
+					}
+
+					if (orcamento.getHotstamp() != null) {
+						s.setHotstamp(new Dado(orcamento.getHotstamp().getId(),
+								orcamento.getHotstamp().getDescricao()));
+						s.getHotstamp().setValor(
+								orcamento.getHotstamp().getPrecoVenda());
+					}
+
+					if (orcamento.getIma() != null) {
+						s.setIma(new Dado(orcamento.getIma().getId(), orcamento
+								.getIma().getDescricao()));
+					}
+
+					if (orcamento.getStrass() != null) {
+						s.setStrass(new Dado(orcamento.getStrass().getId(),
+								orcamento.getStrass().getDescricao()));
+					}
+
+					if (orcamento.getSerigrafiaEnvelope() != null) {
+						s.setSerigrafiaEnvelope(new Dado(orcamento
+								.getSerigrafiaEnvelope().getId(), orcamento
+								.getSerigrafiaEnvelope().getDescricao()));
+					}
+
+					if (orcamento.getSerigrafiaInterno() != null) {
+						s.setSerigrafiaInterno(new Dado(orcamento
+								.getSerigrafiaInterno().getId(), orcamento
+								.getSerigrafiaInterno().getDescricao()));
+					}
+
+					if (orcamento.getCliche() != null) {
+						s.setCliche(new Dado(orcamento.getCliche().getId(),
+								orcamento.getCliche().getDescricao()));
+						s.getCliche().setValor(
+								orcamento.getCliche().getValorVenda());
+					}
+
+					s.setPrecoCalculado(orcamento.getValor());
+
+					if (CollectionUtils.isNotEmpty(orcamento.getFotos())) {
+						orcamento.getFotos().stream().sorted((a, b) -> {
+							return a.getOrdem() - b.getOrdem();
+						}).forEach(foto -> {
+							s.addFoto(caminhoFotos + foto.getCaminho());
+						});
+					}
+
+					return s;
+				}).collect(Collectors.toList());
 	}
-	
+
 	@POST
 	@Path("atualizarenviaremail/{id}/{enviar}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public void enviarEmail(@PathParam("id") Long orcamentoId, @PathParam("enviar") Boolean enviarEmail) {
+	public void enviarEmail(@PathParam("id") Long orcamentoId,
+			@PathParam("enviar") Boolean enviarEmail) {
 		Orcamento o = orcamentoRepository.get(orcamentoId);
 		o.setEnviarEmail(enviarEmail);
 		orcamentoRepository.salvar(o);
@@ -466,26 +509,27 @@ public class AtendimentoService {
 	@GET
 	@Path("enviaremail/{atendimento}/{email}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public void enviarEmail(@PathParam("atendimento") Long atendimentoId, @PathParam("email") String email)
-			throws Exception {
+	public void enviarEmail(@PathParam("atendimento") Long atendimentoId,
+			@PathParam("email") String email) throws Exception {
 
 		Atendimento atendimento = repository.get(atendimentoId);
-		
-		Configuracao pastaFotos = configuracaoRepository.getConfiguracao(Constants.CAMINHO_FOTOS.toString()).get();
+
+		Configuracao pastaFotos = configuracaoRepository.getConfiguracao(
+				Constants.CAMINHO_FOTOS.toString()).get();
 
 		try {
 			Message msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(
 					"fernanda@happydayconviteria.com.br",
 					"Happy Day Conviteria"));
-			
+
 			if (StringUtils.isNotBlank(email)) {
 				String[] emails = email.split("\\s");
 				if (emails != null && emails.length > 0) {
-					for (String enviarEmail: emails) {
+					for (String enviarEmail : emails) {
 						enviarEmail = StringUtils.trim(enviarEmail);
-						msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-								enviarEmail, atendimento
+						msg.addRecipient(Message.RecipientType.TO,
+								new InternetAddress(enviarEmail, atendimento
 										.getCliente1().getNome()));
 					}
 				}
@@ -493,72 +537,86 @@ public class AtendimentoService {
 				if (atendimento.getCliente1() != null
 						&& StringUtils.isNotBlank(atendimento.getCliente1()
 								.getEmail())) {
-					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-							atendimento.getCliente1().getEmail(), atendimento
-									.getCliente1().getNome()));
+					msg.addRecipient(Message.RecipientType.TO,
+							new InternetAddress(atendimento.getCliente1()
+									.getEmail(), atendimento.getCliente1()
+									.getNome()));
 				}
 
 				if (atendimento.getCliente2() != null
 						&& StringUtils.isNotBlank(atendimento.getCliente2()
 								.getEmail())) {
-					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-							atendimento.getCliente2().getEmail(), atendimento
-									.getCliente2().getNome()));
-				}				
+					msg.addRecipient(Message.RecipientType.TO,
+							new InternetAddress(atendimento.getCliente2()
+									.getEmail(), atendimento.getCliente2()
+									.getNome()));
+				}
 			}
 			msg.setSubject(String.format("Orçamento %s",
 					atendimento.getNumero()));
 
-			List<SolicitacaoOrcamento> orcamentos = orcamentoRepository.getOrcamentosPorAtendimentoParaEnvioEmail(atendimento
-					.getId());
+			List<SolicitacaoOrcamento> orcamentos = orcamentoRepository
+					.getOrcamentosPorAtendimentoParaEnvioEmail(atendimento
+							.getId());
 
 			Multipart mp = new MimeMultipart();
 
 			boolean[] temImagens = new boolean[] { false };
-			
-			orcamentos.stream().map(o -> {
-				return o.getModelo();
-			}).distinct().forEach(modelo -> {
-				
-					File dir = new File(pastaFotos.getValor());
-					File[] fotos = dir.listFiles(new FilenameFilter() {
-						
-						@Override
-						public boolean accept(File dir, String name) {
-							return name.startsWith(modelo.getCodigo());
-						}
-					});
-					
-					if (fotos != null && fotos.length > 0) {
-						
-						Arrays.asList(fotos).forEach(foto -> {
-							FileInputStream file;
-							try {
-								file = new FileInputStream(foto);
-								byte[] bytes = ByteStreams
-										.toByteArray(file);
-								MimeBodyPart attachment = new MimeBodyPart();
-								attachment
-										.setFileName(modelo
-												.getNome()
-												+ "_"
-												+ RandomStringUtils
-														.randomAlphabetic(4)
-												+ ".jpg");
-								attachment
-										.setContent(
-												bytes,
-												"image/jpeg");
-								mp.addBodyPart(attachment);
 
-								temImagens[0] = true;
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						});
-					}
-			});
-							
+			orcamentos
+					.stream()
+					.map(o -> {
+						return o.getModelo();
+					})
+					.distinct()
+					.forEach(
+							modelo -> {
+
+								File dir = new File(pastaFotos.getValor());
+								File[] fotos = dir
+										.listFiles(new FilenameFilter() {
+
+											@Override
+											public boolean accept(File dir,
+													String name) {
+												return name.startsWith(modelo
+														.getCodigo());
+											}
+										});
+
+								if (fotos != null && fotos.length > 0) {
+
+									Arrays.asList(fotos)
+											.forEach(
+													foto -> {
+														FileInputStream file;
+														try {
+															file = new FileInputStream(
+																	foto);
+															byte[] bytes = ByteStreams
+																	.toByteArray(file);
+															MimeBodyPart attachment = new MimeBodyPart();
+															attachment
+																	.setFileName(modelo
+																			.getNome()
+																			+ "_"
+																			+ RandomStringUtils
+																					.randomAlphabetic(4)
+																			+ ".jpg");
+															attachment
+																	.setContent(
+																			bytes,
+																			"image/jpeg");
+															mp.addBodyPart(attachment);
+
+															temImagens[0] = true;
+														} catch (Exception e) {
+															e.printStackTrace();
+														}
+													});
+								}
+							});
+
 			MimeBodyPart htmlPart = new MimeBodyPart();
 			htmlPart.setContent(
 					criarEmail(atendimento, orcamentos, temImagens[0]),
@@ -614,6 +672,81 @@ public class AtendimentoService {
 		template.merge(context, sw);
 
 		return sw.toString();
+	}
+
+	@GET
+	@Path("eventos")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Evento> getEventoAtual() {
+		List<Evento> eventos = eventoRepository.getTodosEventos();
+		return eventos;
+	}
+
+	@GET
+	@Path("eventos/{evento}/convites")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<SolicitacaoOrcamento> getConvitesDoEvento(
+			@PathParam("evento") Long eventoId) {
+
+		
+		Evento evento = eventoRepository.get(eventoId);
+		List<SolicitacaoOrcamento> convites = eventoRepository
+				.getTodosConvites(evento);
+
+		convites.forEach(convite -> {
+			adicionaFotosNoOrcamento(convite);
+		});
+
+		return convites;
+	}
+
+	@GET
+	@Path("eventos/{evento}/convites/{convite}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public SolicitacaoOrcamento getDetalheConviteEvento(
+			@PathParam("evento") Long eventoId,
+			@PathParam("convite") String codigoConvite) {
+
+		Configuracao pastaFotos = configuracaoRepository.getConfiguracao(
+				Constants.CAMINHO_FOTOS.toString()).get();
+
+		Configuracao caminhoFotosWeb = configuracaoRepository.getConfiguracao(
+				Constants.CAMINHO_FOTOS_WEB.toString()).get();
+
+		File dir = new File(pastaFotos.getValor());
+
+		Evento evento = eventoRepository.get(eventoId);
+		SolicitacaoOrcamento convite = eventoRepository
+				.getDetalheConviteEvento(evento, codigoConvite);
+
+		adicionaFotosNoOrcamento(convite);
+
+		return convite;
+	}
+
+	private void adicionaFotosNoOrcamento(SolicitacaoOrcamento convite) {
+		
+		Configuracao pastaFotos = configuracaoRepository.getConfiguracao(
+				Constants.CAMINHO_FOTOS.toString()).get();
+
+		Configuracao caminhoFotosWeb = configuracaoRepository.getConfiguracao(
+				Constants.CAMINHO_FOTOS_WEB.toString()).get();
+
+		File dir = new File(pastaFotos.getValor());
+		
+		File[] fotos = dir.listFiles(new FilenameFilter() {
+
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.startsWith(convite.getCodigoEvento());
+			}
+		});
+
+		if (fotos != null && fotos.length > 0) {
+			Arrays.asList(fotos).forEach(foto -> {
+				convite.addFoto(caminhoFotosWeb.getValor() + foto.getName());
+			});
+		}
 	}
 
 }
