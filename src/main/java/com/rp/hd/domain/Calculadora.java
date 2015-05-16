@@ -22,6 +22,7 @@ public class Calculadora {
 	private final Colagem colagem;
 	private final Papel papelEnvelope;
 	private final Papel papelInterno;
+	private final Papel papelRevestimentoInterno;
 	private final Impressao impressaoEnvelope;
 	private final Impressao impressaoInterno;
 	private final Fita fita;
@@ -55,7 +56,7 @@ public class Calculadora {
 			int quantidadeStrass, Strass strass, ImpressaoNome impressaoNome,
 			CorteEnvelope corte, CorteEnvelope corteInternoAlmofadado,
 			Cliche cliche, BigDecimal taxaAdministracaoCartaoCredito,
-			BigDecimal taxaAdministracaoCartaoDebito, BigDecimal taxaJurosMensal, Acoplamento acoplamentoEnvelope, Acoplamento acoplamentoInterno) {
+			BigDecimal taxaAdministracaoCartaoDebito, BigDecimal taxaJurosMensal, Acoplamento acoplamentoEnvelope, Acoplamento acoplamentoInterno, Papel papelRevestimentoInterno) {
 		this.quantidadeConvites = quantidadeConvites;
 		this.modelo = modelo;
 		this.colagem = colagem;
@@ -82,6 +83,7 @@ public class Calculadora {
 		this.corteInternoAlmofadado = corteInternoAlmofadado;
 		this.acoplamentoEnvelope=acoplamentoEnvelope;
 		this.acoplamentoInterno=acoplamentoInterno;
+		this.papelRevestimentoInterno = papelRevestimentoInterno;
 	}
 
 	public Orcamento calcular() {
@@ -90,6 +92,7 @@ public class Calculadora {
 		o.setQuantidade(this.quantidadeConvites);
 		calcularPrecoModeloConvite(o);
 		calcularPapelInterno(o);
+		calcularPapelRevestimentoInterno(o);
 		calcularValorImpressaoEnvelope(o);
 		calcularValorImpressaoInterno(o);
 		calcularValorFita(o);
@@ -154,6 +157,49 @@ public class Calculadora {
 					RoundingMode.HALF_UP).setScale(4, RoundingMode.HALF_UP);
 			o.addItem(o.new Item(String.format("Papel Interno %s",
 					papelInterno.toString()), valorPapel));
+		}
+	}
+	
+	public void calcularPapelRevestimentoInterno(Orcamento o) {
+		Integer quantidadeFolhasRevestimentoIterno = modelo.getQuantidadeFolhasParaRevestimento();
+		if (papelRevestimentoInterno != null && (quantidadeFolhasRevestimentoIterno != null && quantidadeFolhasRevestimentoIterno > 0)) {
+
+			custoUnidade = custoUnidade.add(this.papelRevestimentoInterno
+					.getCustoAtual()
+					.divide(new BigDecimal(quantidadeFolhasRevestimentoIterno),
+							4, RoundingMode.HALF_UP)
+					.setScale(2, RoundingMode.HALF_UP));
+			atualizaCustoUnidade(o, custoUnidade);
+			
+			BigDecimal valorCorteUnidade = BigDecimal.ZERO;
+			if (corte != null) {
+				custoUnidade = custoUnidade.add(corte
+						.getCusto(quantidadeConvites));
+				atualizaCustoUnidade(o, custoUnidade);
+				
+				valorCorteUnidade = corte
+						.getPrecoVenda(quantidadeConvites);
+
+				o.addItem(o.new Item("Corte Revestimento Interno do Envelope", valorCorteUnidade));
+			}
+			
+			BigDecimal valorColagem = BigDecimal.ZERO;
+			if (colagem != null) {
+					valorColagem = colagem != null ? colagem.getPrecoAtual()
+							: BigDecimal.ZERO;
+					
+					o.addItem(o.new Item("Colagem do Revestimento Interno do Envelope", valorColagem));
+			}
+
+			BigDecimal valorPapel = this.papelRevestimentoInterno.getPrecoAtual();
+			valorPapel = valorPapel.divide(
+					new BigDecimal(quantidadeFolhasRevestimentoIterno), 4,
+					RoundingMode.HALF_UP).setScale(4, RoundingMode.HALF_UP);
+			
+			valorPapel = valorPapel.add(valorCorteUnidade).add(valorColagem);
+			
+			o.addItem(o.new Item(String.format("Papel Revestimento Interno %s",
+					papelRevestimentoInterno.toString()), valorPapel));
 		}
 	}
 
@@ -570,6 +616,7 @@ public class Calculadora {
 		private ModeloConvite modelo;
 		private Papel papelEnvelope;
 		private Papel papelInterno;
+		private Papel papelRevestimentoInterno;
 		private Impressao impressaoEnvelope;
 		private Impressao impressaoInterno;
 		private Fita fita;
@@ -617,6 +664,11 @@ public class Calculadora {
 
 		public CalculadoraBuilder papelInterno(Papel papel) {
 			this.papelInterno = papel;
+			return this;
+		}
+		
+		public CalculadoraBuilder papelRevestimentoInterno(Papel papel) {
+			this.papelRevestimentoInterno = papel;
 			return this;
 		}
 
@@ -743,7 +795,7 @@ public class Calculadora {
 					serigrafiaInterno, renda, ima, quantidadeStrass, strass,
 					impressaoNome, corte,corteInternoAlmofadado,cliche,
 					taxaAdministracaoCartaoCredito,
-					taxaAdministracaoCartaoDebito, taxaJurosMensal, acoplamentoEnvelope, acoplamentoInterno);
+					taxaAdministracaoCartaoDebito, taxaJurosMensal, acoplamentoEnvelope, acoplamentoInterno, papelRevestimentoInterno);
 		}
 	}
 

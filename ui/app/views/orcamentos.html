@@ -84,10 +84,22 @@
 			 			<td>Papel Envelope: </td>
 			 			<td>{{orc.papelEnvelope != null ? orc.papelEnvelope.nome : 'Nenhum'}}</td>
 			 		</tr>
+			 		
+			 		<tr>
+			 			<td>Papel Revestimento Interno Envelope: </td>
+			 			<td>{{orc.papelRevestimentoInterno != null ? orc.papelRevestimentoInterno.nome : 'Nenhum'}}</td>
+			 		</tr>
+			 		
 			 		<tr>
 			 			<td>Papel Interno: </td>
 			 			<td>{{orc.papelInterno != null ? orc.papelInterno.nome : 'Nenhum'}}</td>
 			 		</tr>
+			 		
+			 		<tr>
+			 			<td>Corte Interno com Borda Almofadada: </td>
+			 			<td>{{orc.corteInternoAlmofadado ? 'Sim' : 'Não'}}</td>
+			 		</tr>
+			 		
 			 		<tr>
 			 			<td>Impressão Envelope: </td>
 			 			<td>{{orc.impressaoEnvelope.nome}}</td>

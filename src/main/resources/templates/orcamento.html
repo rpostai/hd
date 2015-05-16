@@ -55,6 +55,21 @@
 						<td>$orc.papelInterno.nome</td>
 					</tr>
 					#end
+					
+					#if($orc.corteInternoAlmofadado)
+					<tr>
+			 			<td>Corte Interno com Borda Almofadada: </td>
+			 			<td>{{orc.corteInternoAlmofadado ? 'Sim' : 'Não'}}</td>
+			 		</tr>
+			 		#end
+					
+					#if($orc.papelRevestimentoInterno)
+					<tr>
+						<td>Papel Revestimento Interno Envelope: </td>
+						<td>$orc.papelRevestimentoInterno.nome</td>
+					</tr>
+					#end
+
 					#if($orc.impressaoEnvelope)
 					<tr>
 						<td>Impressão Envelope: </td>

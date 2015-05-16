@@ -54,7 +54,7 @@
 	 			<td>{{convite.strass.nome}}</td>
 	 		</tr>
 	 		<tr>
-	 			<td>Fechamento com imã: </td>
+	 			<td>Fechamento: </td>
 	 			<td>{{convite.ima.nome}}</td>
 	 		</tr>
 	 		<tr>
@@ -65,23 +65,20 @@
 	 			<td>Serigrafia Envelope: </td>
 	 			<td>{{convite.serigrafiaEnvelope.nome}}</td>
 	 		</tr>
+	 		
+	 		<tr>
+	 			<td>Aplicação HotStamp</td>
+	 			<td>{{convite.hotstamp.nome}}</td>
+	 		</tr>
+	 		
+	 		<tr>
+	 			<td>Confecção clichê</td>
+	 			<td>{{convite.cliche.nome}}</td>
+	 		</tr>
+	 		
 	 	</tbody>
 	 	
 	 	<tfoot>
-	 		<tr ng-show="{{convite.hotstamp != null || convite.cliche != null}}">
-	 			<td colspan="2">Itens adicionais</td>
-	 		</tr>
-	 		
-	 		<tr ng-show="{{convite.hotstamp != null}}">
-	 			<td>Aplicação HotStamp</td>
-	 			<td>{{convite.hotstamp.nome}} - R$ {{convite.hotstamp.valor}}</td>
-	 		</tr>
-	 		
-	 		<tr ng-show="{{convite.cliche != null}}">
-	 			<td>Confecção clichê</td>
-	 			<td>{{convite.cliche.nome}} - R$ {{convite.cliche.valor}}</td>
-	 		</tr>
-	 	
 	 		<tr>
 	 			<td>Valor por unidade: </td>
 	 			<td>{{convite.precoEvento}}</td>

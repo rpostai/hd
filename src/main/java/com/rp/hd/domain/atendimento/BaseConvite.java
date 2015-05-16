@@ -51,6 +51,10 @@ public abstract class BaseConvite implements Serializable {
 	private Papel papelInterno;
 
 	@ManyToOne
+	@JoinColumn(name = "papel_revestimento_id")
+	private Papel papelRevestimentoInterno;
+
+	@ManyToOne
 	@JoinColumn(name = "impressao_envelope_id")
 	private Impressao impressaoEnvelope;
 
@@ -278,6 +282,14 @@ public abstract class BaseConvite implements Serializable {
 
 	public void setCorteInternoAlmofadado(CorteEnvelope corteInternoAlmofadado) {
 		this.corteInternoAlmofadado = corteInternoAlmofadado;
+	}
+
+	public Papel getPapelRevestimentoInterno() {
+		return papelRevestimentoInterno;
+	}
+
+	public void setPapelRevestimentoInterno(Papel papelRevestimentoInterno) {
+		this.papelRevestimentoInterno = papelRevestimentoInterno;
 	}
 
 }

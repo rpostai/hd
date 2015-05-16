@@ -67,6 +67,11 @@ public class EventoRepository extends BaseRepository<Evento> {
 			s.setPapelInterno(new Dado(c.getPapelInterno().getId(), c
 					.getPapelInterno().getNome()));
 		}
+		
+		if (c.getPapelRevestimentoInterno() != null) {
+			s.setPapelRevestimentoInterno(new Dado(c.getPapelRevestimentoInterno().getId(), c
+					.getPapelRevestimentoInterno().getNome()));
+		}
 
 		if (c.getImpressaoEnvelope() != null) {
 			s.setImpressaoEnvelope(new Dado(c.getImpressaoEnvelope().getId(), c
@@ -130,6 +135,10 @@ public class EventoRepository extends BaseRepository<Evento> {
 		s.setPrecoCalculado(c.getPrecoEvento());
 
 		return s;
+	}
+	
+	public void adicionaEventoConvite(EventoConvite ec) {
+		em.persist(ec);
 	}
 
 }

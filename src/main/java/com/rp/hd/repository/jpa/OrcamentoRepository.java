@@ -63,6 +63,11 @@ public class OrcamentoRepository extends BaseRepository<Orcamento> {
 				s.setPapelInterno(new Dado(orcamento.getPapelInterno().getId(), orcamento.getPapelInterno().getNome()));	
 			}
 			
+			if (orcamento.getPapelRevestimentoInterno() != null) {
+				s.setPapelRevestimentoInterno(new Dado(orcamento.getPapelRevestimentoInterno().getId(), orcamento
+						.getPapelRevestimentoInterno().getNome()));
+			}
+			
 			if (orcamento.getImpressaoEnvelope() != null) {
 				s.setImpressaoEnvelope(new Dado(orcamento.getImpressaoEnvelope().getId(), orcamento.getImpressaoEnvelope().getDescricao()));
 			}

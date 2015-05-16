@@ -1,6 +1,6 @@
 <div ng-include="'views/header-atendimento.html'"></div>
-<div class="grid fluid" ng-controller="AtendimentoController">
-	<div class="row">
+<div class="grid" ng-controller="AtendimentoController">
+	
 		<div class="span4">
 			<label for="txtQuantidade">Quantidade</label>
 	    	<input id="txtQuantidade" type="text" ng-model="orcamento.quantidade" class="input-control text"/>
@@ -11,40 +11,31 @@
 	      		<option value="">-- Selecione o modelo --</option>
 	    	</select>
 		</div>
-	</div>
-	<div class="row">
-		<div class="span3">
+	
+	
+		<div class="span4">
 			<label for="cmbPapelEnvelope">Papel do envelope</label>
 		    <select id="cmbPapelEnvelope" ng-model="orcamento.papelEnvelope" ng-options="papel as papel.nome for papel in papeis track by papel.id" class="input-control text">
 		      <option value="">-- Selecione o modelo --</option>
 		    </select>
 		</div>
-		
-		<div class="span3">
-			<label for="cmbPapelInterno">Papel Revestimento Interno</label>
-		    <select id="cmbPapelInterno" ng-model="orcamento.papelRevestimentoInterno" ng-options="papel as papel.nome for papel in papeis track by papel.id" class="input-control text">
-		      <option value="">-- Selecione o papel para revestimento interno --</option>
-		    </select>
-		</div>
-		
-		<div class="span3">
+		<div class="span4">
 			<label for="cmbPapelInterno">Papel interno</label>
 		    <select id="cmbPapelInterno" ng-model="orcamento.papelInterno" ng-options="papel as papel.nome for papel in papeis track by papel.id" class="input-control text">
 		      <option value="">-- Selecione o modelo --</option>
 		    </select>
 		</div>
-		<div class="span3">
-			<label for="cmbImpressaoEnvelope">Impress√£o no envelope</label>
+		<div class="span4">
+			<label for="cmbImpressaoEnvelope">Impress„o no envelope</label>
 		    <select id="cmbImpressaoEnvelope" ng-model="orcamento.impressaoEnvelope" ng-options="imp as imp.nome for imp in impressoes track by imp.id" class="input-control text">
-		      <option value="">-- Selecione o tipo de impress√£o --</option>
+		      <option value="">-- Selecione o tipo de impress„o --</option>
 		    </select>	
 		</div>
-	</div>
-	<div class="row">
+	
 		<div class="span3">
-			<label for="cmbImpressaoInterno">Impress√£o interno</label>
+			<label for="cmbImpressaoInterno">Impress„o interno</label>
 		    <select id="cmbImpressaoInterno" ng-model="orcamento.impressaoInterno" ng-options="imp as imp.nome for imp in impressoes track by imp.id" class="input-control text">
-		      <option value="">-- Selecione o tipo de impress√£o --</option>
+		      <option value="">-- Selecione o tipo de impress„o --</option>
 		    </select>
 		</div>
 		
@@ -60,56 +51,56 @@
 		    </select>
 		</div>
 		<div class="span3">
-			<label for="cmbLaco">La√ßo</label>
+			<label for="cmbLaco">LaÁo</label>
 		    <select id="cmbLaco" ng-model="orcamento.laco" ng-options="laco as laco.nome for laco in lacos track by laco.id" class="input-control text">
-		      <option value="">-- Selecione o tipo de la√ßo --</option>
+		      <option value="">-- Selecione o tipo de laÁo --</option>
 		    </select>
 		</div>
-	</div>
-	<div class="row">
+	
+	
 		<div class="span4">
-			<label for="cmbRenda">Aplica√ß√£o de Renda</label>
+			<label for="cmbRenda">AplicaÁ„o de Renda</label>
 		    <select id="cmbRenda" ng-model="orcamento.renda" ng-options="renda as renda.nome for renda in rendas track by renda.id" class="input-control text">
-		      <option value="">-- Selecione aplica√ß√£o de renda --</option>
+		      <option value="">-- Selecione aplicaÁ„o de renda --</option>
 		    </select>
 		</div>
 		<div class="span4">
-			<label for="cmbImpressaoNome">Impress√£o do nome</label>
+			<label for="cmbImpressaoNome">Impress„o do nome</label>
 		    <select id="cmbImpressaoNome" ng-model="orcamento.impressaoNome" ng-options="impnome as impnome.nome for impnome in impressoesNome track by impnome.id" class="input-control text">
-		      <option value="">-- Selecione a impress√£o do nome--</option>
+		      <option value="">-- Selecione a impress„o do nome--</option>
 		    </select>
 		</div>
 		<div class="span4">
-			<label for="cmbSerigrafiaInterno">Impress√£o em Serigrafia Interno</label>
+			<label for="cmbSerigrafiaInterno">Impress„o em Serigrafia Interno</label>
 	    	<select id="cmbSerigrafiaInterno" ng-model="orcamento.serigrafiaInterno" ng-options="ser as ser.nome for ser in serigrafias track by ser.id" class="input-control text">
-	      		<option value="">-- Selecione aplica√ß√£o de serigrafia-</option>
+	      		<option value="">-- Selecione aplicaÁ„o de serigrafia-</option>
 	    	</select>
 		</div>
-	</div>
-	<div class="row">
+	
+	
 		<div class="span3">
-		    <label for="cmbSerigrafiaEnvelope">Impress√£o em Serigrafia Envelope</label>
+		    <label for="cmbSerigrafiaEnvelope">Impress„o em Serigrafia Envelope</label>
 		    <select id="cmbSerigrafiaEnvelope" ng-model="orcamento.serigrafiaEnvelope" ng-options="ser as ser.nome for ser in serigrafias track by ser.id" class="input-control text">
-		      <option value="">-- Selecione aplica√ß√£o de serigrafia-</option>
+		      <option value="">-- Selecione aplicaÁ„o de serigrafia-</option>
 		    </select>
 		</div>
 		<div class="span3">
-			 <label for="cmbHotStamp">Aplica√ß√£o Hot Stamp</label>
+			 <label for="cmbHotStamp">AplicaÁ„o Hot Stamp</label>
 		    <select id="cmbHotStamp" ng-model="orcamento.hotstamp" ng-options="hot as hot.nome for hot in hotstamp track by hot.id" class="input-control text">
-		      <option value="">-- Selecione aplica√ß√£o de hotstamp-</option>
+		      <option value="">-- Selecione aplicaÁ„o de hotstamp-</option>
 		    </select>
 		</div>
 		<div class="span3">
-		    <label for="cmbStrass">Aplica√ß√£o de Strass/Meia P√©rola</label>
+		    <label for="cmbStrass">AplicaÁ„o de Strass/Meia PÈrola</label>
 		    <select id="cmbStrass" ng-model="orcamento.strass" ng-options="st as st.nome for st in strass track by st.id" class="input-control text">
-		      <option value="">-- Selecione strass/p√©rola-</option>
+		      <option value="">-- Selecione strass/pÈrola-</option>
 		    </select>
 		</div>
 		
 		<div class="span3">
-		    <label for="cmbStrass">Quantidade de Strass/Meia P√©rola</label>
+		    <label for="cmbStrass">Quantidade de Strass/Meia PÈrola</label>
 		    <select id="cmbStrass" ng-model="orcamento.quantidadeStrass" class="input-control text">
-		      <option value="0">-- Selecione strass/p√©rola-</option>
+		      <option value="0">-- Selecione strass/pÈrola-</option>
 		      <option value="1">1</option>
 		      <option value="2">2</option>
 		      <option value="3">3</option>
@@ -133,24 +124,24 @@
 		    </select>
 		</div>
 		
-	</div>
-	<div class="row">
+	
+	
 		<div class="span4">
 			<label for="cmbIma">Fechamento</label>
 		    <select id="cmbIma" ng-model="orcamento.ima" ng-options="ima as ima.nome for ima in imas track by ima.id" class="input-control text">
-		      <option value="">-- Selecione a op√ß√£o de fechamento --</option>
+		      <option value="">-- Selecione a opÁ„o de fechamento --</option>
 		    </select>
 		</div>
 		
 		<div class="span4">
-			<label for="cmbCliche">Clich√™</label>
+			<label for="cmbCliche">ClichÍ</label>
 		    <select id="cmbCliche" ng-model="orcamento.cliche" ng-options="c as c.nome for c in cliches track by c.id" class="input-control text">
 		      <option value="">-- Selecione o modelo do cliche --</option>
 		    </select>
 		</div>
-	</div>
 	
-	<div class="row">
+	
+	
 		<div class="span4">
 			<label for="chkEnvelopeAcoplado">Acoplamento do envelope</label>
 			<input id="chkEnvelopeAcoplado" type="checkbox" ng-model="orcamento.acoplamentoEnvelope"/>
@@ -160,11 +151,26 @@
 			<label for="chkEnvelopeAcoplado">Acoplamento interno</label>
 			<input id="chkEnvelopeAcoplado" type="checkbox" ng-model="orcamento.acoplamentoInterno"/>
 		</div>
-	</div>
 	
-	<div class="row">
+		<div class="row">
+			<div class="span3"> 
+			  <button class="button default" ng-click="calcular()">Calcular</button>
+			</div>
+			<div class="span3">
+			  <button class="button default" ui-sref="layout.complementos({'atendimento':atendimentoId})">Complementos</button>
+			</div>
+			<div class="span3">
+			  <button class="button default" ng-click="verTodosOrcamentos()">Ver orÁamentos</button>
+			</div>
+			
+			<div class="span3">
+			  <button class="button default" ng-click="fechar()">Fechar venda</button>
+			</div>
+		</div>
+		
+		
 		<fieldset>
-			<legend>VALORES PARA PAGAMENTO √Ä EM AT√â <b>3X</b> NO CART√ÉO DE CR√âDITO</legend>
+			<legend>VALORES PARA PAGAMENTO ¿ EM AT… <b>3X</b> NO CART√O DE CR…DITO</legend>
 			<div class="span3">
 		      <p>Valor da unidade: <b> R$ {{precoPorUnidadePrazo}} </b> por unidade</p>
 			</div>
@@ -181,13 +187,12 @@
 		      <p>Valor total do pedido: <b> R$ {{precoTotalPrazo}} </b></p>
 			</div>
 		</fieldset>
-	</div>
 	
-	<div class="row">
+	
 		<table>
 				<thead>
 					<tr>
-						<td>N√∫m.Parcelas</td>
+						<td>N˙m.Parcelas</td>
 						<td>Valor da parcela</td>
 					</tr>
 				</thead>
@@ -198,11 +203,11 @@
 					</tr>
 				</tbody>
 			</table>
-	</div>
 	
-	<div class="row">
+	
+	
 		<fieldset>
-			<legend>VALORES PARA PAGAMENTO √Ä VISTA</legend>
+			<legend>VALORES PARA PAGAMENTO ¿ VISTA</legend>
 			<div class="span3">
 		      <p>Valor da unidade: <b> R$ {{precoPorUnidade}} </b> por unidade</p>
 			</div>
@@ -218,32 +223,10 @@
 			<div class="span3">
 		      <p>Valor total do pedido: <b> R$ {{precoTotal}} </b></p>
 			</div>
-		</fieldset>
+	
 		
 	</div>
 	
-	
-	
-	<div class="row">
-		<div class="span3"> 
-	      <button class="button default" ng-click="calcular()">Calcular</button>
-		</div>
-		<div class="span2">
-	      <button class="button default" ui-sref="layout.complementos({'atendimento':atendimentoId})">Complementos</button>
-		</div>
-		<div class="span2">
-	      <button class="button default" ng-click="verTodosOrcamentos()">Ver or√ßamentos</button>
-		</div>
-		
-		<div class="span2">
-	      <button class="button default" ng-click="fechar()">Fechar venda</button>
-		</div>
-		
-		<div class="span2">
-	      <button class="button default" ng-click="adicionarEvento()">Adicionar Evento</button>
-		</div>
-		
-	</div>
 	
 </div>
 

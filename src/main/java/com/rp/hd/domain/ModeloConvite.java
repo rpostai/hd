@@ -72,6 +72,12 @@ public class ModeloConvite extends BaseEntity {
 	@Column(name = "cobrar_corte")
 	private boolean cobrarCorte = true;
 
+	@Column(name = "qtd_folhas_revestimento_env")
+	private Integer quantidadeFolhasParaRevestimento = 0;
+
+	@Column(name = "aplica_revestimento")
+	private Boolean aplicaRevestimento = false;
+
 	public String getCodigo() {
 		return codigo;
 	}
@@ -200,8 +206,8 @@ public class ModeloConvite extends BaseEntity {
 	}
 
 	public static enum ModeloFaca {
-		FORMATO1(1), FORMATO2(2), FORMATO3(3), FORMATO4(4), FORMATO5(5), FORMATO6(6), 
-		FORMATO7(7), FORMATO8(8), FORMATO9(9), FORMATO10(10), FORMATO11(
+		FORMATO1(1), FORMATO2(2), FORMATO3(3), FORMATO4(4), FORMATO5(5), FORMATO6(
+				6), FORMATO7(7), FORMATO8(8), FORMATO9(9), FORMATO10(10), FORMATO11(
 				11), FORMATO16(12);
 
 		private int valor;
@@ -260,8 +266,22 @@ public class ModeloConvite extends BaseEntity {
 			return false;
 		return true;
 	}
-	
-	
-	
+
+	public Integer getQuantidadeFolhasParaRevestimento() {
+		return quantidadeFolhasParaRevestimento;
+	}
+
+	public void setQuantidadeFolhasParaRevestimento(
+			Integer quantidadeFolhasParaRevestimento) {
+		this.quantidadeFolhasParaRevestimento = quantidadeFolhasParaRevestimento;
+	}
+
+	public Boolean getAplicaRevestimento() {
+		return aplicaRevestimento;
+	}
+
+	public void setAplicaRevestimento(Boolean aplicaRevestimento) {
+		this.aplicaRevestimento = aplicaRevestimento;
+	}
 
 }

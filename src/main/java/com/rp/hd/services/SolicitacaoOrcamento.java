@@ -16,6 +16,7 @@ public class SolicitacaoOrcamento implements Serializable {
 	private Dado modelo;
 	private Dado papelEnvelope;
 	private Dado papelInterno;
+	private Dado papelRevestimentoInterno;
 	private Dado impressaoEnvelope;
 	private Dado impressaoInterno;
 	private Dado fita;
@@ -333,6 +334,14 @@ public class SolicitacaoOrcamento implements Serializable {
 				+ serigrafiaInterno + ", serigrafiaEnvelope="
 				+ serigrafiaEnvelope + ", hotstamp=" + hotstamp + ", strass="
 				+ strass + ", ima=" + ima + "]";
+	}
+
+	public Dado getPapelRevestimentoInterno() {
+		return papelRevestimentoInterno;
+	}
+
+	public void setPapelRevestimentoInterno(Dado papelRevestimentoInterno) {
+		this.papelRevestimentoInterno = papelRevestimentoInterno;
 	}
 
 }

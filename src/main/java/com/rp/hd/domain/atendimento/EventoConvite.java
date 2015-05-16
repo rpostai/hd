@@ -18,11 +18,20 @@ public class EventoConvite extends BaseConvite {
 	@JoinColumn(name = "evento_id")
 	private Evento evento;
 
-	@Column(name="codigo")
+	@Column(name = "codigo")
 	private String codigo;
 
-	@Column(name="preco_evento")
+	@Column(name = "preco_evento")
 	private BigDecimal precoEvento;
+
+	@Column(name = "preco_calculado_vista")
+	private BigDecimal precoCalculadoAVista;
+
+	@Column(name = "preco_calculado_prazo")
+	private BigDecimal precoCalculadoPrazo;
+
+	@Column(name = "custo_direto")
+	private BigDecimal custoDireto;
 
 	public Evento getEvento() {
 		return evento;
@@ -46,6 +55,30 @@ public class EventoConvite extends BaseConvite {
 
 	public void setPrecoEvento(BigDecimal precoEvento) {
 		this.precoEvento = precoEvento;
+	}
+
+	public BigDecimal getPrecoCalculadoAVista() {
+		return precoCalculadoAVista;
+	}
+
+	public void setPrecoCalculadoAVista(BigDecimal precoCalculadoAVista) {
+		this.precoCalculadoAVista = precoCalculadoAVista;
+	}
+
+	public BigDecimal getPrecoCalculadoPrazo() {
+		return precoCalculadoPrazo;
+	}
+
+	public void setPrecoCalculadoPrazo(BigDecimal precoCalculadoPrazo) {
+		this.precoCalculadoPrazo = precoCalculadoPrazo;
+	}
+
+	public BigDecimal getCustoDireto() {
+		return custoDireto;
+	}
+
+	public void setCustoDireto(BigDecimal custoDireto) {
+		this.custoDireto = custoDireto;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.rp.hd.services;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 
 import javax.ejb.Stateless;
@@ -13,6 +14,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
+
 import com.rp.hd.domain.Acoplamento;
 import com.rp.hd.domain.Calculadora;
 import com.rp.hd.domain.Calculadora.Orcamento;
@@ -21,6 +25,7 @@ import com.rp.hd.domain.Colagem;
 import com.rp.hd.domain.Configuracao;
 import com.rp.hd.domain.Constants;
 import com.rp.hd.domain.CorteEnvelope;
+import com.rp.hd.domain.Evento;
 import com.rp.hd.domain.Fita;
 import com.rp.hd.domain.HotStamp;
 import com.rp.hd.domain.Ima;
@@ -33,11 +38,13 @@ import com.rp.hd.domain.Renda;
 import com.rp.hd.domain.Serigrafia;
 import com.rp.hd.domain.Strass;
 import com.rp.hd.domain.atendimento.Atendimento;
+import com.rp.hd.domain.atendimento.EventoConvite;
 import com.rp.hd.repository.jpa.AcoplamentoRepository;
 import com.rp.hd.repository.jpa.ClicheRepository;
 import com.rp.hd.repository.jpa.ColagemRepository;
 import com.rp.hd.repository.jpa.ConfiguracaoRepository;
 import com.rp.hd.repository.jpa.CorteEnvelopeRepository;
+import com.rp.hd.repository.jpa.EventoRepository;
 import com.rp.hd.repository.jpa.FitaRepository;
 import com.rp.hd.repository.jpa.HotStampRepository;
 import com.rp.hd.repository.jpa.ImaRepository;
@@ -108,6 +115,9 @@ public class CalculadoraService {
 	
 	@Inject
 	private AcoplamentoRepository acoplamentoRepository;
+	
+	@Inject
+	private EventoRepository eventoRepository;
 
 	@GET
 	@Path("atendimento")
@@ -165,13 +175,183 @@ public class CalculadoraService {
 
 		return dados;
 	}
-
+	
 	@POST
-	@Path("calcular/{atendimento}")
+	@Path("adicionarevento")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Orcamento calcular(@PathParam("atendimento") Long atendimentoId, SolicitacaoOrcamento orcamento) {
+	public void adicionarEvento(SolicitacaoOrcamento orcamento) {
+		adicionarOrcamentoFeira(orcamento);	
+	}
+	
+	private void adicionarOrcamentoFeira(SolicitacaoOrcamento solicitacaoOrcamento) {
+		
+		Orcamento orcamento = calcular(solicitacaoOrcamento);
+		
+		EventoConvite ec = new EventoConvite();
 
+		ModeloConvite m = modeloConviteRepository.get(solicitacaoOrcamento.getModelo().getId());
+		ec.setModelo(m);
+		
+
+		Papel papelEnvelopeAplicado = null;
+		if (solicitacaoOrcamento.getPapelEnvelope() != null) {
+			papelEnvelopeAplicado = papelRepository.get(solicitacaoOrcamento.getPapelEnvelope().getId());
+			ec.setPapelEnvelope(papelEnvelopeAplicado);
+			
+		}
+		Papel papelInternoAplicado = null;
+		if (solicitacaoOrcamento.getPapelInterno() != null) {
+			papelInternoAplicado = papelRepository.get(solicitacaoOrcamento.getPapelInterno().getId());
+			ec.setPapelInterno(papelInternoAplicado);
+		}
+		
+		Papel papelRevestimentoInterno = null;
+		if (solicitacaoOrcamento.getPapelRevestimentoInterno() != null) {
+			papelRevestimentoInterno = papelRepository.get(solicitacaoOrcamento.getPapelRevestimentoInterno().getId());
+			ec.setPapelRevestimentoInterno(papelRevestimentoInterno);
+		}
+		
+		Impressao impressaoEnvelopeAplicado = null;
+		if (solicitacaoOrcamento.getImpressaoEnvelope() != null) {
+			impressaoEnvelopeAplicado = impressaoRepository
+					.get(solicitacaoOrcamento.getImpressaoEnvelope().getId());
+			ec.setImpressaoEnvelope(impressaoEnvelopeAplicado);
+		}
+		Impressao impressaoInternoAplicado = null;
+		if (solicitacaoOrcamento.getImpressaoInterno() != null) {
+			impressaoInternoAplicado = impressaoRepository
+					.get(solicitacaoOrcamento.getImpressaoInterno().getId());
+			ec.setImpressaoInterno(impressaoInternoAplicado);
+		}
+		Renda rendaAplicada = null;
+		if (solicitacaoOrcamento.getRenda() != null) {
+			rendaAplicada = rendaRepository.get(solicitacaoOrcamento.getRenda().getId());
+			ec.setRenda(rendaAplicada);
+		}
+		Ima imaAplicado = null;
+		if (solicitacaoOrcamento.getIma() != null) {
+			imaAplicado = imaRepository.get(solicitacaoOrcamento.getIma().getId());
+			ec.setIma(imaAplicado);
+		}
+		HotStamp hotStampAplicado = null;
+		if (solicitacaoOrcamento.getHotstamp() != null) {
+			hotStampAplicado = hotStampRepository.get(solicitacaoOrcamento.getHotstamp().getId());
+			ec.setHotstamp(hotStampAplicado);
+		}
+		Strass strassAplicado = null;
+		if (solicitacaoOrcamento.getStrass() != null) {
+			strassAplicado = strassRepository.get(solicitacaoOrcamento.getStrass().getId());
+			ec.setStrass(strassAplicado);
+		}
+		ImpressaoNome impressaoNomeAplicado = null;
+		if (solicitacaoOrcamento.getImpressaoNome() != null) {
+			impressaoNomeAplicado = impressaoNomeRepository.get(solicitacaoOrcamento.getImpressaoNome().getId());
+			ec.setImpressaoNome(impressaoNomeAplicado);
+		}
+		Fita fitaAplicada = null;
+		if (solicitacaoOrcamento.getFita() != null) {
+			fitaAplicada = fitaRepository.get(solicitacaoOrcamento.getFita().getId());
+			ec.setFita(fitaAplicada);
+		}
+
+		Laco lacoAplicado = null;
+		if (solicitacaoOrcamento.getLaco() != null) {
+			lacoAplicado = lacoRepository.get(solicitacaoOrcamento.getLaco().getId());
+			ec.setLaco(lacoAplicado);
+		}
+
+		Serigrafia serigrafiaAplicadaEnvelope = null;
+		if (solicitacaoOrcamento.getSerigrafiaEnvelope() != null ) {
+			serigrafiaAplicadaEnvelope = serigrafiaRepository
+					.get(solicitacaoOrcamento.getSerigrafiaEnvelope().getId());
+			ec.setSerigrafiaEnvelope(serigrafiaAplicadaEnvelope);
+		}
+
+		Serigrafia serigrafiaAplicadaInterno = null;
+		if (solicitacaoOrcamento.getSerigrafiaInterno() != null) {
+			serigrafiaAplicadaInterno = serigrafiaRepository
+					.get(solicitacaoOrcamento.getSerigrafiaInterno().getId());
+			ec.setSerigrafiaInterno(serigrafiaAplicadaInterno);
+		}
+
+		CorteEnvelope corte = corteEnvelopeRepository.getTodos().get(0);
+		
+		Acoplamento acoplamento = acoplamentoRepository.getTodos().get(0);
+		Acoplamento acoplamentoEnvelope = null;
+		if (solicitacaoOrcamento.isAcoplamentoEnvelope()) {
+			acoplamentoEnvelope = acoplamento;
+			ec.setAcoplamentoEnvelope(acoplamentoEnvelope);
+		}
+		
+		Acoplamento acoplamentoInterno = null;
+		if (solicitacaoOrcamento.isAcoplamentoInterno()) {
+			acoplamentoInterno = acoplamento;
+			ec.setAcoplamentoInterno(acoplamentoInterno);
+		}
+		
+		CorteEnvelope corteInternoAlmofadado = null;
+		if (solicitacaoOrcamento.isCorteInternoAlmofadado()) {
+			corteInternoAlmofadado = corte;
+			ec.setCorteInternoAlmofadado(corteInternoAlmofadado);
+		}
+		
+		Cliche cliche = null;
+		if (solicitacaoOrcamento.getCliche() != null) {
+			cliche = clicheRepository.get(solicitacaoOrcamento.getCliche().getId());
+			ec.setCliche(cliche);
+		}
+		
+		ec.setQuantidadeStrass(solicitacaoOrcamento.getQuantidadeStrass());
+		
+		BigDecimal valorUnidadeTotalAVista = orcamento.getValorTotal().divide(new BigDecimal(solicitacaoOrcamento.getQuantidade()));
+		BigDecimal valorUnidadeTotalPrazo = orcamento.getValorTotalPrazo().divide(new BigDecimal(solicitacaoOrcamento.getQuantidade()));
+		
+		ec.setPrecoCalculadoAVista(valorUnidadeTotalAVista);
+		ec.setPrecoCalculadoPrazo(valorUnidadeTotalPrazo);
+		
+		BigDecimal custoUnidadeOutros =  BigDecimal.ZERO;
+		if (orcamento.getCustoOutros() != null) {
+			custoUnidadeOutros =  orcamento.getCustoOutros().divide(new BigDecimal(solicitacaoOrcamento.getQuantidade()));	
+		}
+		
+		ec.setCustoDireto(orcamento.getCustoUnidade().add(custoUnidadeOutros));
+		
+		ec.setPrecoEvento(valorUnidadeTotalAVista.setScale(1, RoundingMode.HALF_UP));
+		
+		String[] nomes = m.getNome().split(" ");
+		StringBuilder codigo = new StringBuilder();
+		if (nomes.length > 1) {
+			for (String nome: nomes) {
+				codigo.append(nome.charAt(0));
+			}
+		} else {
+			codigo.append(nomes[0].substring(0, 1));
+		}
+		
+		codigo.append("_");
+		
+		codigo.append(RandomStringUtils.randomAlphabetic(2).toUpperCase());
+		
+		codigo.append("_");
+		
+		BigDecimal valorAVistaArredondado = valorUnidadeTotalAVista.setScale(1, RoundingMode.HALF_UP);
+		String valor = valorAVistaArredondado.toPlainString();
+		valor = valor.replace(".", "");
+		valor = valor.concat("0");
+		
+		codigo.append(StringUtils.reverse(valor));
+		
+		ec.setCodigo(codigo.toString());
+		
+		Evento evento = eventoRepository.get(1l); // giardino
+		ec.setEvento(evento);
+		
+		eventoRepository.adicionaEventoConvite(ec);
+		
+	}
+	
+	private Orcamento calcular( SolicitacaoOrcamento orcamento) {
 		if (orcamento.getQuantidade() == 0) {
 			throw new IllegalArgumentException(
 					"Quantidade deve ser maior do que zero");
@@ -179,7 +359,7 @@ public class CalculadoraService {
 
 		if (orcamento.getModelo() == null) {
 			throw new IllegalArgumentException(
-					"Modelo de convite ï¿½ obrigatï¿½rio");
+					"Modelo de convite é obrigatório");
 		}
 
 		ModeloConvite m = modeloConviteRepository.get(orcamento.getModelo().getId());
@@ -192,6 +372,12 @@ public class CalculadoraService {
 		if (orcamento.getPapelInterno() != null) {
 			papelInternoAplicado = papelRepository.get(orcamento.getPapelInterno().getId());
 		}
+		
+		Papel papelRevestimentoInterno = null;
+		if (orcamento.getPapelRevestimentoInterno() != null) {
+			papelRevestimentoInterno = papelRepository.get(orcamento.getPapelRevestimentoInterno().getId());
+		}
+		
 		Impressao impressaoEnvelopeAplicado = null;
 		if (orcamento.getImpressaoEnvelope() != null) {
 			impressaoEnvelopeAplicado = impressaoRepository
@@ -289,7 +475,8 @@ public class CalculadoraService {
 				.serigrafiaEnvelope(serigrafiaAplicadaEnvelope)
 				.serigrafiaInterno(serigrafiaAplicadaInterno).cliche(cliche)
 				.acoplamentoEnvelope(acoplamentoEnvelope)
-				.acoplamentoInterno(acoplamentoInterno);
+				.acoplamentoInterno(acoplamentoInterno)
+				.papelRevestimentoInterno(papelRevestimentoInterno);
 		
 		if (taxaAdministraaoCartaoDebito.isPresent()) {
 			builder.taxaAdministracaoCartaoDebito(new BigDecimal(taxaAdministraaoCartaoDebito.get().getValor()));
@@ -306,6 +493,17 @@ public class CalculadoraService {
 		Calculadora calc = builder.build();
 		
 		Orcamento resultado =  calc.calcular();
+		
+		return resultado;
+	}
+
+	@POST
+	@Path("calcular/{atendimento}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Orcamento calcular(@PathParam("atendimento") Long atendimentoId, SolicitacaoOrcamento orcamento) {
+
+		Orcamento resultado = calcular(orcamento);
 		
 		adicionarOrcamento(atendimentoId, orcamento, resultado);
 		
@@ -355,6 +553,10 @@ public class CalculadoraService {
 		
 		if (sol.getPapelInterno() != null) {
 			o.setPapelInterno(papelRepository.get(sol.getPapelInterno().getId()));
+		}
+		
+		if (sol.getPapelRevestimentoInterno() != null) {
+			o.setPapelRevestimentoInterno(papelRepository.get(sol.getPapelRevestimentoInterno().getId()));
 		}
 		
 		if (sol.getFita() != null) {

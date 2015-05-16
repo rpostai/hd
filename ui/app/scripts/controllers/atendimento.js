@@ -29,6 +29,15 @@ function AtendimentoController($scope, $http, store,$rootScope, $state) {
 	  $scope.iniciarAtendimento();
   })
   
+  $scope.adicionarEvento = function() {
+	  
+	  $http.post("/servicos/calculadora/adicionarevento/",$scope.orcamento).success(function(data) {
+		  alert('Convite adicionado ao evento');
+	  }).error(function(data) {
+		 alert('Erro ao calcular preço. Procure o administrador do sistema'); 
+	  });
+  }
+  
 
   $scope.getDadosAtendimento = function() {
 	  $http.get("/servicos/calculadora/atendimento").success(

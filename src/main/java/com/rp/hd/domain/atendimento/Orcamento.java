@@ -8,6 +8,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import com.rp.hd.domain.Papel;
+
 @Entity
 @Table(name = "orcamento")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -47,7 +49,7 @@ public class Orcamento extends BaseConvite {
 
 	@Column(name = "enviar_email")
 	private Boolean enviarEmail = true;
-
+	
 	public int getQuantidade() {
 		return quantidade;
 	}
