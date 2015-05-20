@@ -1,7 +1,7 @@
 /**
  * Created by rodrigo.postai on 06/02/2015.
  */
-function OrcamentosController($scope, $http, store, $stateParams) {
+function OrcamentosController($scope, $http, store, $stateParams, $state) {
 	
   $scope.verTodosOrcamentos = function(atendimento) {
 	  // var atendimentoSalvo = store.get('atendimento');
@@ -34,6 +34,13 @@ function OrcamentosController($scope, $http, store, $stateParams) {
 		  }).error(function(data) {
 			  alert('Erro ao enviar email!')
 		  });
+	  }
+  }
+  
+  $scope.selecionarFotos = function() {
+	  var atendimento = $stateParams.atendimento;
+	  if (atendimento != null) {
+		  $state.go("layout.selecaofotos",  {atendimento: atendimento});
 	  }
   }
   

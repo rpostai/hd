@@ -326,7 +326,7 @@ public class CalculadoraService {
 				codigo.append(nome.charAt(0));
 			}
 		} else {
-			codigo.append(nomes[0].substring(0, 1));
+			codigo.append(nomes[0].substring(0, 2));
 		}
 		
 		codigo.append("_");

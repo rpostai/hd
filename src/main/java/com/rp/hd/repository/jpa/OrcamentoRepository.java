@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
+import com.rp.hd.domain.Complemento;
 import com.rp.hd.domain.atendimento.Orcamento;
+import com.rp.hd.domain.atendimento.OrcamentoComplemento;
 import com.rp.hd.services.Dado;
 import com.rp.hd.services.SolicitacaoOrcamento;
 
@@ -161,6 +163,28 @@ public class OrcamentoRepository extends BaseRepository<Orcamento> {
 	
 	public List<SolicitacaoOrcamento> getOrcamentosPorAtendimentoParaEnvioEmail(Long atendimento) {
 		return getOrcamentosPorAtendimento(atendimento, true);
+	}
+	
+	public List<Complemento> getComplementosOrcamento(Long atendimentoId) {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("select o from OrcamentoComplemento o ");
+		sb.append(" join o.atendimento    a ");
+		sb.append("where a.id = :id");
+		
+		TypedQuery<OrcamentoComplemento> tq = em.createQuery(sb.toString(),OrcamentoComplemento.class);
+		
+		tq.setParameter("id", atendimentoId);
+		
+		List<OrcamentoComplemento> resultList = tq.getResultList();
+		
+		List<Complemento> result = new ArrayList<Complemento>();
+		if (resultList != null) {
+			for (OrcamentoComplemento oc : resultList) {
+				result.add(oc.getComplemento());
+			}
+		}
+		return result;
 	}
 
 }

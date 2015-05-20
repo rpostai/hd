@@ -46,6 +46,7 @@ import com.rp.hd.domain.Configuracao;
 import com.rp.hd.domain.Constants;
 import com.rp.hd.domain.Evento;
 import com.rp.hd.domain.ModeloConvite;
+import com.rp.hd.domain.OrcamentoFoto;
 import com.rp.hd.domain.OrigemContato;
 import com.rp.hd.domain.atendimento.Atendimento;
 import com.rp.hd.domain.atendimento.Orcamento;
@@ -510,6 +511,57 @@ public class AtendimentoService {
 		o.setEnviarEmail(enviarEmail);
 		orcamentoRepository.salvar(o);
 	}
+	
+	
+	
+	@GET
+	@Path("fotos/{atendimento}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<ModeloFoto> selecionarFotos(@PathParam("atendimento") Long atendimentoId) throws Exception {
+
+		List<ModeloFoto> result = new ArrayList<ModeloFoto>();
+
+		List<SolicitacaoOrcamento> orcamentos = orcamentoRepository
+				.getOrcamentosPorAtendimentoParaEnvioEmail(atendimentoId);
+		
+		orcamentos.stream().map(o -> {
+			return o.getModelo();
+		})
+		.distinct().forEach(
+				modelo -> {
+					ModeloFoto m = getFotosModelo(modelo.getId());
+					result.add(m);
+				}
+		);
+		
+		return result;
+	}
+	
+	@POST
+	@Path("fotos/{atendimento}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void adicionarFotoEmailOrcamento(@PathParam("atendimento") Long atendimentoId, List<ModeloFoto> fotos) throws Exception {
+		Atendimento atendimento = repository.get(atendimentoId);
+		fotos.stream().forEach(foto -> {
+			foto.getFotos().stream().forEach(imagem -> {
+				
+				OrcamentoFoto o = new OrcamentoFoto();
+				o.setAtendimento(atendimento);
+				ModeloConvite m = modeloConviteRepository.get(foto.getId());
+				o.setModelo(m);
+				o.setCaminhoFoto(imagem.getCaminho());
+				
+//				fotosEnviar.add(o);
+				
+				// SALVAR NO BANCO
+				
+				
+			});
+		});
+		
+	}
+	
+	
 
 	@GET
 	@Path("enviaremail/{atendimento}/{email}")
@@ -563,6 +615,8 @@ public class AtendimentoService {
 			List<SolicitacaoOrcamento> orcamentos = orcamentoRepository
 					.getOrcamentosPorAtendimentoParaEnvioEmail(atendimento
 							.getId());
+			
+			//List<Complemento> complementos = orcamentoRepository.getComplementosOrcamento(atendimento.getId());
 
 			Multipart mp = new MimeMultipart();
 

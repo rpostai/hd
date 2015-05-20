@@ -81,4 +81,8 @@ var app = angular
             	url: '/eventosdetalhe/{evento}/{codigo}',
             	templateUrl: 'views/eventosdetalhe.html'
             })
+            .state('layout.selecaofotos', {
+            	url: '/orcamentos/fotos/{atendimento}',
+            	templateUrl: 'views/orcamentofotos.html'
+            })
     });

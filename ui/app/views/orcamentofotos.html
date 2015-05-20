@@ -1,0 +1,21 @@
+<header class="margin20 nrm nlm">
+	<div class="clearfix">
+		<a class="place-left" href="#" title="">
+			<h1>Fotos do orçamento</h1>
+		</a>
+	</div>
+</header>
+
+<ul class="fotos" ng-controller="OrcamentosFotosController">
+	<li ng-repeat="modelo in fotos">
+		<h3>{{modelo.nome}}</h3>
+		<img src="{{modelo.foto.caminho}}" class="span6">
+		<input type="checkbox" checked="checked" ng-model="modelo.foto.enviar" /> 
+	</li>
+</ul>
+
+<div class="row">
+	<div class="span2">
+      <button class="button default" ng-click="adicionarFotoEmail()">Adicionar foto no email</button>
+	</div>
+</div>

@@ -59,7 +59,11 @@
 					#if($orc.corteInternoAlmofadado)
 					<tr>
 			 			<td>Corte Interno com Borda Almofadada: </td>
-			 			<td>{{orc.corteInternoAlmofadado ? 'Sim' : 'Não'}}</td>
+						#set($borda = 'Não')
+						#if($orc.corteInternoAlmofadado) 
+						   #set($borda = 'Sim')
+						#end
+			 			<td>$borda</td>
 			 		</tr>
 			 		#end
 					
