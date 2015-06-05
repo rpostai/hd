@@ -1,5 +1,7 @@
 package com.rp.hd.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,13 +9,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import com.rp.hd.domain.atendimento.Atendimento;
 
 @Entity
 @Table(name = "orcamento_foto")
-public class OrcamentoFoto {
+@NamedQueries({
+	@NamedQuery(name="OrcamentoFotos.PorAtendimento", query="select o from OrcamentoFoto o where o.atendimento.id = :id")
+})
+public class OrcamentoFoto implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
