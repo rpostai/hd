@@ -31,7 +31,7 @@ function OrcamentosFotosController($scope, $http, store, $stateParams, $state) {
 		});
 		
 		$http.post("/servicos/atendimento/fotos/"+atendimento, fotos).success(function(data) {
-			$state.go("layout.orcamentos",  {atendimento: atendimento.id});
+			$state.go("layout.orcamentos",  {atendimento: atendimento});
 		}).error(function(data) {
 			  alert('Erro ao adicionar foto!')
 		});

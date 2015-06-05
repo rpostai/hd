@@ -18,7 +18,8 @@ import com.rp.hd.domain.atendimento.Atendimento;
 @Entity
 @Table(name = "orcamento_foto")
 @NamedQueries({
-	@NamedQuery(name="OrcamentoFotos.PorAtendimento", query="select o from OrcamentoFoto o where o.atendimento.id = :id")
+	@NamedQuery(name="OrcamentoFotos.PorAtendimento", query="select o from OrcamentoFoto o where o.atendimento.id = :id"),
+	@NamedQuery(name="OrcamentoFotos.RemoverPorAtendimento", query="delete from OrcamentoFoto o where o.atendimento.id = :id")
 })
 public class OrcamentoFoto implements Serializable {
 

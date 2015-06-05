@@ -7,20 +7,26 @@
 </header>
 
 <div ng-controller="OrcamentosFotosController">
-	<ul class="fotos" >
-		<li ng-repeat="modelo in fotos">
-			<h3>{{modelo.nome}}</h3>
-			<img src="{{modelo.foto.caminho}}" class="span3">
-			<input type="checkbox" checked="checked" ng-model="modelo.foto.enviar" /> 
-		</li>
-	</ul>
-
-	<div class="row">
-		<div class="span2">
-		  <button class="button default" ng-click="adicionarFotoEmail()">Adicionar foto no email</button>
-		</div>
-		<div class="span2">
-		  <button class="button default" ui-sref="layout.orcamentos({atendimento: atendimento})">Voltar</button>
-		</div>
+	<div class="grid fluid">
+		<ul class="fotos" >
+			<li ng-repeat="modelo in fotos">
+				<h3>{{modelo.nome}}</h3>
+				<img src="{{modelo.foto.caminho}}" class="span4">
+				<input type="checkbox" checked="checked" ng-model="modelo.foto.enviar" /> 
+			</li>
+		</ul>
+	</div>	
+	<div class="grid fluid">
+	
+		<div class="row">
+				<div class="span2">
+				  <button class="button default" ng-click="adicionarFotoEmail()">Adicionar foto no email</button>
+				</div>
+				<div class="span2">
+				  <button class="button default" ui-sref="layout.orcamentos({atendimento: atendimento})">Voltar</button>
+				</div>
+			</div>
+	
 	</div>
 </div>
+		

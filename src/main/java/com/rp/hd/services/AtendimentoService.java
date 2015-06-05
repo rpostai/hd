@@ -528,6 +528,7 @@ public class AtendimentoService {
 		List<SolicitacaoOrcamento> orcamentos = orcamentoRepository
 				.getOrcamentosPorAtendimentoParaEnvioEmail(atendimentoId);
 		
+		List<OrcamentoFoto> fotosJaSelecionadas = orcamentoFotoRepository.getFotosPorAtendimento(atendimentoId);
 		orcamentos.stream().map(o -> {
 			return o.getModelo();
 		})
@@ -537,6 +538,13 @@ public class AtendimentoService {
 					if (CollectionUtils.isNotEmpty(m.getFotos())) {
 						m.getFotos().forEach(foto -> {
 							ModeloFoto f = new ModeloFoto(modelo.getId(), modelo.getNome(), foto);
+							
+							fotosJaSelecionadas.stream().filter(sel -> {
+								return sel.getCaminhoFoto().equals(foto.getCaminho());
+							}).findAny().ifPresent(sel-> {
+								f.getFoto().setEnviar(true);
+							});
+							
 							result.add(f);
 						});
 					} else {
@@ -553,6 +561,7 @@ public class AtendimentoService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void adicionarFotoEmailOrcamento(@PathParam("atendimento") Long atendimentoId, List<ModeloFotoAdicionar> fotos) throws Exception {
 		Atendimento atendimento = repository.get(atendimentoId);
+		orcamentoFotoRepository.removerFotosPorAtendimento(atendimentoId);
 		fotos.stream().forEach(foto -> {
 			OrcamentoFoto o = new OrcamentoFoto();
 			o.setAtendimento(atendimento);

@@ -6,6 +6,7 @@ public class Foto implements Serializable {
 
 	private final int ordem;
 	private final String caminho;
+	private boolean enviar;
 
 	public Foto(int ordem, String caminho) {
 		super();
@@ -19,6 +20,14 @@ public class Foto implements Serializable {
 
 	public String getCaminho() {
 		return caminho;
+	}
+
+	public boolean isEnviar() {
+		return enviar;
+	}
+
+	public void setEnviar(boolean enviar) {
+		this.enviar = enviar;
 	}
 
 }
