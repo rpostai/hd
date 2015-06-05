@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.mail.Message;
+import javax.mail.Message.RecipientType;
 import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -71,6 +72,8 @@ public class AtendimentoService {
 
 	private static final SimpleDateFormat SD = new SimpleDateFormat(
 			"dd/MM/yyyy");
+	
+	private static final String UNDEFINED = "undefined";
 
 	@Inject
 	private AtendimentoRepository repository;
@@ -593,7 +596,7 @@ public class AtendimentoService {
 					"fernanda@happydayconviteria.com.br",
 					"Happy Day Conviteria"));
 
-			if (StringUtils.isNotBlank(email)) {
+			if (StringUtils.isNotBlank(email) && !email.equals(UNDEFINED)) {
 				String[] emails = email.split("\\s");
 				if (emails != null && emails.length > 0) {
 					for (String enviarEmail : emails) {
@@ -604,9 +607,11 @@ public class AtendimentoService {
 					}
 				}
 			} else {
+				boolean emailAdicionado = false;
 				if (atendimento.getCliente1() != null
 						&& StringUtils.isNotBlank(atendimento.getCliente1()
 								.getEmail())) {
+					emailAdicionado = true;
 					msg.addRecipient(Message.RecipientType.TO,
 							new InternetAddress(atendimento.getCliente1()
 									.getEmail(), atendimento.getCliente1()
@@ -616,7 +621,11 @@ public class AtendimentoService {
 				if (atendimento.getCliente2() != null
 						&& StringUtils.isNotBlank(atendimento.getCliente2()
 								.getEmail())) {
-					msg.addRecipient(Message.RecipientType.TO,
+					RecipientType recipient = Message.RecipientType.TO; 
+					if (emailAdicionado) {
+						recipient = Message.RecipientType.CC;
+					}
+					msg.addRecipient(recipient,
 							new InternetAddress(atendimento.getCliente2()
 									.getEmail(), atendimento.getCliente2()
 									.getNome()));
