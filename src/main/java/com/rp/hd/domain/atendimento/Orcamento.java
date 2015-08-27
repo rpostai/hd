@@ -49,7 +49,10 @@ public class Orcamento extends BaseConvite {
 
 	@Column(name = "enviar_email")
 	private Boolean enviarEmail = true;
-	
+
+	@Column(name = "tempo_estimado_unidade_em_segundos")
+	private int tempoEstimadoPorUnidadeEmSegundos = 0;
+
 	public int getQuantidade() {
 		return quantidade;
 	}
@@ -148,4 +151,14 @@ public class Orcamento extends BaseConvite {
 	public void setEnviarEmail(Boolean enviarEmail) {
 		this.enviarEmail = enviarEmail;
 	}
+
+	public int getTempoEstimadoPorUnidadeEmSegundos() {
+		return tempoEstimadoPorUnidadeEmSegundos;
+	}
+
+	public void setTempoEstimadoPorUnidadeEmSegundos(
+			int tempoEstimadoPorUnidadeEmSegundos) {
+		this.tempoEstimadoPorUnidadeEmSegundos = tempoEstimadoPorUnidadeEmSegundos;
+	}
+
 }

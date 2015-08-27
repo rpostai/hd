@@ -78,6 +78,9 @@ public class ModeloConvite extends BaseEntity {
 	@Column(name = "aplica_revestimento")
 	private Boolean aplicaRevestimento = false;
 
+	@Column(name = "qtd_dobras")
+	private int quantidadeDobras;
+
 	public String getCodigo() {
 		return codigo;
 	}
@@ -158,27 +161,19 @@ public class ModeloConvite extends BaseEntity {
 		this.embalagem = embalagem;
 	}
 
-	public BigDecimal getCustoAtual(Papel papel, Colagem colagem) {
+	public BigDecimal getCustoAtual(Papel papel) {
 		BigDecimal valorPapel = papel.getCustoAtual();
 		BigDecimal valorColagem = BigDecimal.ZERO;
-		if (temColagem) {
-			valorColagem = colagem != null ? colagem.getPrecoAtual()
-					: BigDecimal.ZERO;
-		}
+
 		return valorPapel.divide(
 				new BigDecimal(this.getModeloFaca().getValor()), 4,
 				RoundingMode.HALF_UP).add(valorColagem);
 	}
 
-	public BigDecimal getPrecoVenda(Papel papel, Colagem colagem) {
+	public BigDecimal getPrecoVenda(Papel papel) {
 		this.papel = papel;
 		BigDecimal valorPapel = papel.getPrecoAtual();
 		BigDecimal valorColagem = BigDecimal.ZERO;
-		if (temColagem && colagem != null) {
-			valorColagem = colagem != null ? colagem.getPrecoAtual()
-					: BigDecimal.ZERO;
-		}
-
 		return valorPapel
 				.divide(new BigDecimal(this.getModeloFaca().getValor()), 4,
 						RoundingMode.HALF_UP).add(valorColagem)
@@ -208,7 +203,8 @@ public class ModeloConvite extends BaseEntity {
 	public static enum ModeloFaca {
 		FORMATO1(1), FORMATO2(2), FORMATO3(3), FORMATO4(4), FORMATO5(5), FORMATO6(
 				6), FORMATO7(7), FORMATO8(8), FORMATO9(9), FORMATO10(10), FORMATO11(
-				11), FORMATO16(12);
+				11), FORMATO12(12), FORMATO13(13), FORMATO14(14), FORMATO15(15), FORMATO16(
+				16);
 
 		private int valor;
 
@@ -282,6 +278,14 @@ public class ModeloConvite extends BaseEntity {
 
 	public void setAplicaRevestimento(Boolean aplicaRevestimento) {
 		this.aplicaRevestimento = aplicaRevestimento;
+	}
+
+	public int getQuantidadeDobras() {
+		return quantidadeDobras;
+	}
+
+	public void setQuantidadeDobras(int quantidadeDobras) {
+		this.quantidadeDobras = quantidadeDobras;
 	}
 
 }

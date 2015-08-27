@@ -19,7 +19,7 @@ public class ModeloConviteTest {
 	public void deveCalcularModeloGabrielaLinear() {
 		ModeloConvite gabriela = dados.getModelo("gabriela");
 		Papel linear = dados.getPapel("linear");
-		BigDecimal valor = gabriela.getPrecoVenda(linear, null);
+		BigDecimal valor = gabriela.getPrecoVenda(linear);
 		Assert.assertEquals(new BigDecimal("0.97"), valor);
 	}
 	
@@ -27,7 +27,7 @@ public class ModeloConviteTest {
 	public void deveCalcularModeloGabrielaAspen250() {
 		ModeloConvite gabriela = dados.getModelo("gabriela");
 		Papel linear = dados.getPapel("aspen250");
-		BigDecimal valor = gabriela.getPrecoVenda(linear, null);
+		BigDecimal valor = gabriela.getPrecoVenda(linear);
 		Assert.assertEquals(new BigDecimal("1.90"), valor);
 	}
 	
@@ -35,7 +35,7 @@ public class ModeloConviteTest {
 	public void deveCalcularModeloGabrielaAspen180() {
 		ModeloConvite gabriela = dados.getModelo("gabriela");
 		Papel linear = dados.getPapel("aspen180");
-		BigDecimal valor = gabriela.getPrecoVenda(linear, null);
+		BigDecimal valor = gabriela.getPrecoVenda(linear);
 		Assert.assertEquals(new BigDecimal("1.32"), valor);
 	}
 	
@@ -47,7 +47,7 @@ public class ModeloConviteTest {
 		
 		Colagem colagem = dados.getColagem();
 		
-		BigDecimal valor = paulamedio.getPrecoVenda(linear, colagem);
+		BigDecimal valor = paulamedio.getPrecoVenda(linear);
 		Assert.assertEquals(new BigDecimal("1.49"), valor);
 	}
 

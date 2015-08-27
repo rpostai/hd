@@ -64,7 +64,7 @@ public class Fita extends BaseEntity {
 	}
 
 	public enum TipoFita {
-		CETIM("C", "Cetim"), GORGURAO("G", "Gorgurão"), FIO_ENCERADO("F","Fio encerado"), SISAL("S", "Sisal");
+		CETIM("C", "Cetim"), GORGURAO("G", "Gorgurão"), FIO_ENCERADO("F","Fio encerado"), SISAL("S", "Sisal"), APLIQUE_CETIM("A","Aplique de cetim");
 
 		private final String tipo;
 		private final String descricao;

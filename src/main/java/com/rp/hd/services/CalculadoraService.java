@@ -2,6 +2,7 @@ package com.rp.hd.services;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 import java.util.Optional;
 
 import javax.ejb.Stateless;
@@ -15,7 +16,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
 
 import com.rp.hd.domain.Acoplamento;
 import com.rp.hd.domain.Calculadora;
@@ -32,6 +32,7 @@ import com.rp.hd.domain.Ima;
 import com.rp.hd.domain.Impressao;
 import com.rp.hd.domain.ImpressaoNome;
 import com.rp.hd.domain.Laco;
+import com.rp.hd.domain.MaoObra;
 import com.rp.hd.domain.ModeloConvite;
 import com.rp.hd.domain.Papel;
 import com.rp.hd.domain.Renda;
@@ -51,6 +52,7 @@ import com.rp.hd.repository.jpa.ImaRepository;
 import com.rp.hd.repository.jpa.ImpressaoNomeRepository;
 import com.rp.hd.repository.jpa.ImpressaoRepository;
 import com.rp.hd.repository.jpa.LacoRepository;
+import com.rp.hd.repository.jpa.MaoObraRepository;
 import com.rp.hd.repository.jpa.ModeloConviteRepository;
 import com.rp.hd.repository.jpa.OrcamentoRepository;
 import com.rp.hd.repository.jpa.PapelRepository;
@@ -118,6 +120,9 @@ public class CalculadoraService {
 	
 	@Inject
 	private EventoRepository eventoRepository;
+	
+	@Inject
+	private MaoObraRepository maoObraRepository;
 
 	@GET
 	@Path("atendimento")
@@ -340,11 +345,12 @@ public class CalculadoraService {
 		valor = valor.replace(".", "");
 		valor = valor.concat("0");
 		
-		codigo.append(StringUtils.reverse(valor));
+		BigDecimal codigoNovo = valorAVistaArredondado.multiply(new BigDecimal("7.22"));
+		codigo.append(codigoNovo.toPlainString());
 		
-		ec.setCodigo(codigo.toString());
+		ec.setCodigo(codigoNovo.toString());
 		
-		Evento evento = eventoRepository.get(1l); // giardino
+		Evento evento = eventoRepository.get(2l); // acim 2015
 		ec.setEvento(evento);
 		
 		eventoRepository.adicionaEventoConvite(ec);
@@ -363,6 +369,8 @@ public class CalculadoraService {
 		}
 
 		ModeloConvite m = modeloConviteRepository.get(orcamento.getModelo().getId());
+		
+		List<MaoObra> custoMaoObra = maoObraRepository.getTodos();
 
 		Papel papelEnvelopeAplicado = null;
 		if (orcamento.getPapelEnvelope() != null) {
@@ -476,7 +484,8 @@ public class CalculadoraService {
 				.serigrafiaInterno(serigrafiaAplicadaInterno).cliche(cliche)
 				.acoplamentoEnvelope(acoplamentoEnvelope)
 				.acoplamentoInterno(acoplamentoInterno)
-				.papelRevestimentoInterno(papelRevestimentoInterno);
+				.papelRevestimentoInterno(papelRevestimentoInterno)
+				.maoObra(custoMaoObra);
 		
 		if (taxaAdministraaoCartaoDebito.isPresent()) {
 			builder.taxaAdministracaoCartaoDebito(new BigDecimal(taxaAdministraaoCartaoDebito.get().getValor()));
@@ -541,6 +550,8 @@ public class CalculadoraService {
 		o.setCustoUnidade(orcamentoCalculado.getCustoUnidade());
 		
 		o.setCustoOutros(orcamentoCalculado.getCustoOutros());
+		
+		o.setTempoEstimadoPorUnidadeEmSegundos(orcamentoCalculado.getTempoEstimado());
 		
 		
 		if (sol.getModelo() != null) {
